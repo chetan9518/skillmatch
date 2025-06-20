@@ -99,12 +99,12 @@ This project was built during Summer 2025 not as a clone or tutorial-following a
 
 ## ✨ Author
 
-**Aman Jangid**  
+**Chetan**  
 CSE Undergrad @ IIIT Agartala  
 Learning deeply by building from scratch — full-stack, cloud-native, and industry-aligned.
 
-> LinkedIn: [linkedin.com/in/YOURNAME](#)  
-> GitHub Repo: [github.com/YOUR_USERNAME/skillmatch](#)
+> LinkedIn: [https://www.linkedin.com/in/chetan-bb87bb31a/](#)  
+> GitHub Repo: [github.com/chetan9518/skillmatch](#)
 
 ---
 
