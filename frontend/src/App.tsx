@@ -14,6 +14,7 @@ import { Profile } from "./pages/otherprofile"
 import { Postjob } from "./pages/postjob"
 import { Toaster } from "sonner"
 import { Seekjobs } from "./pages/seekjobs"
+import { JobDetails } from "./pages/jobdetail"
 
 
 
@@ -56,7 +57,9 @@ function App2() {
         <Route path= "/dashboard" element={<MainLayout/>}>
         
         <Route index element= {<Dashboard/>}/>
-        <Route path="seekjob" element={<Seekjobs/>}/>
+        <Route path="seekjob" element={<Seekjobs/>}>
+        </Route>
+        <Route path="jobdetail" element={<JobDetails/>}/>
         <Route path="postjob" element={<Postjob/>}/>
         <Route path="update" element={<Update/>}/>
         <Route path="search" element={<Search/>}></Route>

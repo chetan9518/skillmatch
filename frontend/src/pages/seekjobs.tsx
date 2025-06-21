@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export function Seekjobs(){
@@ -56,7 +57,13 @@ type user = {
     email?: string
 }
 function Jobcard({user}:{user:user}){
+    const [job,setjob]=useState<user|null>(null)
+    const navigate = useNavigate()
  const userskill = user.skills.split(",").map((e) => e.trim());
+ async function send(){
+     let job= user
+    navigate("/dashboard/jobdetail",{state:job})
+}
 
 return <div className="bg-white dark:bg-zinc-900 shadow-md rounded-xl p-5 w-full max-w-md border border-zinc-200 dark:border-zinc-700">
   <div className="flex items-center justify-between mb-3">
@@ -82,12 +89,13 @@ return <div className="bg-white dark:bg-zinc-900 shadow-md rounded-xl p-5 w-full
         ))}
   </div>
 
-  <button className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition">
+  <button onClick={send} className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition">
     View Details
   </button>
 </div>
 
 }
+
 
 function getRandomColorName() {
   const colors = ["green", "blue", "purple"];
