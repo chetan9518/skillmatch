@@ -1,5 +1,5 @@
 import express from "express"
-import { string, z } from "zod"
+import { any, string, z } from "zod"
 import { client } from "../DB/postgre";
 import { redis } from "../conection/redis";
 import { resend } from "../conection/resend";
@@ -316,12 +316,12 @@ userRouter.get("/fetchuser", auth, async (req: meget, res: Response): Promise<an
                 skills: true
             }
         })
-          if(!users){
-        return res.status(404).json({
-            success:false,
-            msg :"User not found"
-        })
-    }
+        if (!users) {
+            return res.status(404).json({
+                success: false,
+                msg: "User not found"
+            })
+        }
         return res.status(200).json({
             success: true,
             users: users
@@ -335,47 +335,182 @@ userRouter.get("/fetchuser", auth, async (req: meget, res: Response): Promise<an
     }
 })
 userRouter.get("/searchuser", auth, async (req: meget, res: Response): Promise<any> => {
-    const filter:any ={}
-   
-    if(req.query.skill){
-        filter.skills={
-            contains:req.query.skill as string,
-            mode:"insensitive"
+    const filter: any = {}
+
+    if (req.query.skill) {
+        filter.skills = {
+            contains: req.query.skill as string,
+            mode: "insensitive"
         }
     }
-    if(req.query.email){
-        filter.email={
-            contains:req.query.email as string,
-            mode:"insensitive"
+    if (req.query.email) {
+        filter.email = {
+            contains: req.query.email as string,
+            mode: "insensitive"
         }
     }
-    
-    try{
-    const users = await prisma.users.findMany({
-        where:filter,
-        take: 10,
-        select: {
-            firstname: true,
-            lastname: true,
-            email: true,
-            skills: true
+
+    try {
+        const users = await prisma.users.findMany({
+            where: filter,
+            take: 10,
+            select: {
+                firstname: true,
+                lastname: true,
+                email: true,
+                skills: true
+            }
+        })
+        if (!users) {
+            return res.status(404).json({
+                success: false,
+                msg: "User not found"
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            users: users
+        })
+    }
+    catch (e) {
+        return res.status(500).json({
+            success: false,
+            msg: "Server Error"
+        })
+    }
+})
+
+userRouter.get("/fetchone", auth, async (req: meget, res: Response): Promise<any> => {
+
+    const { email } = req.query
+
+    if (typeof email !== "string") {
+        return res.status(401).json({
+            success: false,
+            msg: "Unauthorized",
+        });
+    }
+
+    let result = await prisma.users.findUnique({
+        where: {
+            email: email
         }
     })
-    if(!users){
+    if (!result) {
         return res.status(404).json({
-            success:false,
-            msg :"User not found"
+            success: false,
+            msg: "User not found"
         })
     }
     return res.status(200).json({
         success: true,
-        users: users
+        details: {
+            firstname: result.firstname,
+            lastname: result.lastname,
+            email: result.email,
+            bio: result.bio,
+            skills: result.skills,
+            github: result.github,
+            portfolio: result.portfolio,
+            resumelink: result.resumelink
+
+        }
     })
-}
-catch (e) {
-    return res.status(500).json({
-        success: false,
-        msg: "Server Error"
-    })
-}
 })
+type job = {
+    jobtitle: string,
+    companyname: string,
+    jobtype: string,
+    location: string,
+    salary: number,
+    eligibility: string,
+    duration: string,
+    deadline: Date,
+    skills: string,
+    aboutjob: string,
+    link: string,
+    email?: string
+
+}
+const uploadjobi = z.object({
+    jobtitle: z.string(),
+    companyname: z.string(),
+    jobtype: z.string(),
+    location: z.string(),
+    salary: z.number(),
+    eligibility: z.string(),
+    duration: z.string(),
+    deadline: z.coerce.date(),
+    skills: z.string(),
+    aboutjob: z.string(),
+    link: z.string(),
+    email: z.string().optional()
+
+})
+
+userRouter.post("/postjob", auth, async (req: meget, res: Response): Promise<any> => {
+    const payload: job = req.body;
+    const re = uploadjobi.safeParse(payload)
+
+    if (!re.success) {
+        return res.status(400).json({
+            success: false,
+            msg: "Invalid input"
+        })
+    }
+
+
+    try {
+        await prisma.jobs.create({
+            data: {
+
+                jobtitle: payload.jobtitle,
+                companyname: payload.companyname,
+                jobtype: payload.jobtype,
+                location: payload.location,
+                salary: payload.salary,
+                eligibility: payload.eligibility,
+                duration: payload.duration,
+                deadline: payload.deadline,
+                skills: payload.skills,
+                aboutjob: payload.aboutjob,
+                link: payload.link,
+                email: payload.email || null,
+            }
+        });
+        return res.status(200).json({
+            success: true,
+            msg: "Succefully upload"
+        })
+
+
+    }
+    catch (e) {
+
+        console.error(e);
+        return res.status(500).json({
+            success: false,
+            msg: "Server error"
+        })
+
+    }
+})
+userRouter.get("/seekjobs",auth,async (req:meget,res:Response):Promise<any>=>{
+     try{
+       let jobs =await prisma.jobs.findMany({
+        take:10,
+       })
+       return res.json({
+        success:true,
+        jobs:jobs
+       })
+     }
+     catch(e){
+        console.error(e)
+        return res.status(500).json({
+            success:false,
+            msg:"Server error"
+        })
+     }
+})
+

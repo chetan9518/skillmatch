@@ -10,6 +10,10 @@ import MainLayout from "./layout/mainlaylout"
 import { Search } from "./pages/search"
 import { useState } from "react"
 import { UserContext } from "./context"
+import { Profile } from "./pages/otherprofile"
+import { Postjob } from "./pages/postjob"
+import { Toaster } from "sonner"
+import { Seekjobs } from "./pages/seekjobs"
 
 
 
@@ -38,7 +42,9 @@ function App2() {
 <UserContext.Provider value ={{islogin,setislogin}}>
     <div className="pt-16 bg-zinc-950">
       <Navbar isLoggedIn={islogin} onLogin={login} onLogout={logout} />
+      <Toaster position="top-mid" richColors/>
       <Routes>
+        
        
         <Route path="/" element={<Home />} />
         
@@ -50,8 +56,12 @@ function App2() {
         <Route path= "/dashboard" element={<MainLayout/>}>
         
         <Route index element= {<Dashboard/>}/>
+        <Route path="seekjob" element={<Seekjobs/>}/>
+        <Route path="postjob" element={<Postjob/>}/>
         <Route path="update" element={<Update/>}/>
-        <Route path="search" element={<Search/>}/>
+        <Route path="search" element={<Search/>}></Route>
+        <Route path= "profile/:email" element={<Profile/>}/>
+        
         </Route>
        
       </Routes>

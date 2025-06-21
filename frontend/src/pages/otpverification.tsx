@@ -5,6 +5,7 @@ import { PageWrapper } from "../components/pagewrapper";
 import { UserContext } from "../context";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export function Otp() {
    const navigate= useNavigate();
@@ -24,6 +25,7 @@ export function Otp() {
         }
         localStorage.setItem("token",response.data.token);
         setislogin(true)
+        toast.success("Signup successfully")
         navigate("/dashboard")
     }
     const [otp, setotp] = useState(0)

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 
 
@@ -64,6 +64,7 @@ const token = localStorage.getItem("token")
    
   }
   
+  
 
   return (
     <div className="flex flex-col gap-6 px-6 py-4">
@@ -114,12 +115,14 @@ type user = {
 }
 //usercard
 function UserCard({ user }: { user: user }) {
+  function nav(){
+navigate(`/dashboard/profile/${user.email}`);
+
+  }
   const userskill = user.skills.split(",").map((e) => e.trim());
 const navigate = useNavigate();
   return (
-    <button onClick={()=>{
-      navigate("Profile",)
-    }}className="p-4 bg-white border-zinc-200 dark:border-zinc-700 rounded-lg shadow hover:shadow-md transition">
+    <button onClick={nav}className="p-4 bg-white border-zinc-200 dark:border-zinc-700 rounded-lg shadow hover:shadow-md transition">
       <div className="flex items-center gap-3 mb-3">
         <div className="w-12 h-12 rounded-full bg-zinc-300" />
         <div>
@@ -131,12 +134,13 @@ const navigate = useNavigate();
       </div>
       <div className="flex flex-wrap gap-2">
         {userskill.map((e) => (
-          <SkillBadge name={e} color={getRandomColorName()} />
+          <SkillBadge name={e} key={e} color={getRandomColorName()} />
         ))}
 
 
       </div>
     </button>
+    
   );
 }
 function getRandomColorName() {

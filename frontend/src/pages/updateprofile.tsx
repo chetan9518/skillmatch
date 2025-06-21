@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export function Update() {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ export function Update() {
           setProfileLoaded(true);
         }
       } catch (e) {
+        toast.error("Failed to fetch profile")
         console.error("Failed to fetch profile");
       }
     }
@@ -85,7 +87,7 @@ export function Update() {
         seterror(true);
         return;
       }
-
+      toast.success("Updated")
       navigate("/dashboard");
     } catch (e) {
       setmsg("Update failed");

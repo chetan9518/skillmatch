@@ -11,10 +11,10 @@ export function Sidebar() {
       <nav className="space-y-3">
         <NavLink to="update" className=" block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition">Profile</NavLink>
         <NavLink to="skill-tracker" className=" block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition">Skill Tracker</NavLink>
-        <NavLink to="" className="block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition">Opportunities</NavLink>
+        <NavLink to="seekjob" className="block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition">Find job</NavLink>
         <NavLink to="messages" className=" block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition">Messages</NavLink>
         <NavLink to="search" className=" block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition">Find skillmatch</NavLink>
-        
+         <NavLink to="postjob" className=" block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition">Post Job</NavLink>
       </nav>
       
     </aside>
