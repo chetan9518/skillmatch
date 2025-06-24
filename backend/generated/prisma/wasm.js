@@ -131,6 +131,7 @@ exports.Prisma.UsersScalarFieldEnum = {
   github: 'github',
   portfolio: 'portfolio',
   resumelink: 'resumelink',
+  profilelink: 'profilelink',
   created_at: 'created_at'
 };
 

@@ -4,7 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export function Update() {
+
+  {/*Login check*/ }
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Session Expired")
+      navigate("/signin")
+      return
+    };
+  }, [])
 
   const [firstname, setfirstname] = useState("");
   const [lastname, setlastname] = useState("");
@@ -12,16 +24,18 @@ export function Update() {
   const [skills, setskills] = useState("");
   const [link, setlink] = useState({ github: "", portfolio: "" });
   const [resume, setresume] = useState<null | File>(null);
+  const [profile, setprofile] = useState<null | File | string>(null)
 
   const [error, seterror] = useState(false);
   const [msg, setmsg] = useState<string>("");
   const [loading, setloading] = useState(false);
   const [showfile, setshowfile] = useState(false);
   const [profileLoaded, setProfileLoaded] = useState(false);
-  const [resumlink ,setresumelink]= useState("")
+  const [resumlink, setresumelink] = useState("")
+  const [showEditBut, setEditBut] = useState(false)
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-  let token = localStorage.getItem("token");
+
   let email = localStorage.getItem("email")!;
 
   // ftch user details to show and prefill form
@@ -42,8 +56,9 @@ export function Update() {
             github: data.github || "",
             portfolio: data.portfolio || "",
           });
-          setresumelink(data.resumelink||"")
-          setProfileLoaded(true);
+          setresumelink(data.resumelink || "")
+          setprofile(data.profilelink || "")
+          setProfileLoaded(true); ``
         }
       } catch (e) {
         toast.error("Failed to fetch profile")
@@ -66,6 +81,8 @@ export function Update() {
     formdata.append("github", link.github);
     formdata.append("portfolio", link.portfolio);
     formdata.append("email", email);
+    if (profile) { formdata.append("profile", profile) }
+
 
     if (resume) {
       formdata.append("resume", resume);
@@ -104,6 +121,12 @@ export function Update() {
       setshowfile(true);
     }
   };
+  const userprofile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const setpro = e.target.files?.[0];
+    if (setpro != null) {
+      setprofile(setpro)
+    }
+  }
 
   const handleDelete = () => {
     setresume(null);
@@ -123,8 +146,27 @@ export function Update() {
 
       {/* Show  profile infomatioon*/}
       {profileLoaded && (
-        <div className="mb-6 bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
+        <div className="mb-8 grid grid-col gap-y-4 bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
           <h3 className="text-lg font-semibold mb-2">Current Profile Info</h3>
+
+          <div className="flex justify-center mb-4">
+            <div className="relative w-28 h-28">
+              <img
+                src={profile instanceof File
+                  ? URL.createObjectURL(profile)
+                  : profile || `https://ui-avatars.com/api/?name=${firstname}+${lastname}&background=random`}
+                alt="Avatar"
+                className="w-28 h-28 object-cover rounded-full border-2 border-white"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={userprofile}
+                className="absolute top-0 left-0 w-28 h-28 opacity-0 cursor-pointer"
+              />
+            </div>
+          </div>
+
           <p>
             <strong>Full Name:</strong> {firstname} {lastname}
           </p>
@@ -165,112 +207,119 @@ export function Update() {
           <p>
             <strong>Resume:</strong>{" "}
             {resumlink ? (
-              <a
-                href={resumlink}
-                target="_blank"
-                className="text-blue-600 underline"
-              >
-                {resumlink}
+              <a href={resumlink} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+                Download Resume
               </a>
+
             ) : (
               "Not added"
             )}
           </p>
+          <button
+            onClick={() => setEditBut(pre => !pre)}
+            className="mt-4 px-4 py-2 w-auto shadow-lg bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            {showEditBut ? "Hide" : "Update profile"}
+          </button>
+
         </div>
       )}
 
       {/*updateform */}
-      <form className="space-y-4" onSubmit={handleUpdate}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium">First Name</label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
-              value={firstname}
-              onChange={(e) => setfirstname(e.target.value)}
-            />
+
+      {showEditBut && (
+        <form className="space-y-4" onSubmit={handleUpdate}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium">First Name</label>
+              <input
+                type="text"
+                className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
+                value={firstname}
+                onChange={(e) => setfirstname(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Last Name</label>
+              <input
+                type="text"
+                className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
+                value={lastname}
+                onChange={(e) => setlastname(e.target.value)}
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium">Bio</label>
+              <textarea
+                className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
+                value={bio}
+                onChange={(e) => setbio(e.target.value)}
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium">Skills (comma separated)</label>
+              <input
+                type="text"
+                className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
+                value={skills}
+                onChange={(e) => setskills(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">GitHub</label>
+              <input
+                name="github"
+                type="url"
+                className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
+                value={link.github}
+                onChange={(e) =>
+                  setlink((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+                }
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Portfolio</label>
+              <input
+                name="portfolio"
+                type="url"
+                className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
+                value={link.portfolio}
+                onChange={(e) =>
+                  setlink((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+                }
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium">Upload Resume (PDF)</label>
+              <input
+                name="resume"
+                type="file"
+                accept=".pdf"
+                ref={inputRef}
+                onChange={file}
+              />
+              {showfile && (
+                <div className="mt-2 text-sm">
+                  Selected: {resume?.name}
+                  <button
+                    onClick={handleDelete}
+                    className="ml-2 px-2 py-1 text-white bg-red-500 rounded"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium">Last Name</label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
-              value={lastname}
-              onChange={(e) => setlastname(e.target.value)}
-            />
-          </div>
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium">Bio</label>
-            <textarea
-              className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
-              value={bio}
-              onChange={(e) => setbio(e.target.value)}
-            />
-          </div>
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium">Skills (comma separated)</label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
-              value={skills}
-              onChange={(e) => setskills(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">GitHub</label>
-            <input
-              name="github"
-              type="url"
-              className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
-              value={link.github}
-              onChange={(e) =>
-                setlink((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-              }
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Portfolio</label>
-            <input
-              name="portfolio"
-              type="url"
-              className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 rounded border focus:outline-none"
-              value={link.portfolio}
-              onChange={(e) =>
-                setlink((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-              }
-            />
-          </div>
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium">Upload Resume (PDF)</label>
-            <input
-              name="resume"
-              type="file"
-              accept=".pdf"
-              ref={inputRef}
-              onChange={file}
-            />
-            {showfile && (
-              <div className="mt-2 text-sm">
-                Selected: {resume?.name}
-                <button
-                  onClick={handleDelete}
-                  className="ml-2 px-2 py-1 text-white bg-red-500 rounded"
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-        <button
-          disabled={loading}
-          type="submit"
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          {loading ? "Updating..." : "Save Changes"}
-        </button>
-      </form>
+          <button
+            disabled={loading}
+            type="submit"
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            {loading ? "Updating..." : "Save Changes"}
+          </button>
+        </form>
+      )}
     </div>
   );
 }

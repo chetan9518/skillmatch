@@ -16,7 +16,7 @@ import { Toaster } from "sonner"
 import { Seekjobs } from "./pages/seekjobs"
 import { JobDetails } from "./pages/jobdetail"
 
-
+console.log("in app")
 
 function App() {
   return <BrowserRouter>
@@ -27,7 +27,7 @@ function App() {
 
 function App2() {
   const navigate = useNavigate()
-  const navigate2=useNavigate();
+
   const [islogin,setislogin]= useState(false);
 
   const login = () => {
@@ -37,13 +37,13 @@ function App2() {
   function logout() {
      localStorage.setItem("token","")
       setislogin(false)
-    navigate2("/home")
+    navigate("/home")
   }
   return <div>
 <UserContext.Provider value ={{islogin,setislogin}}>
     <div className="pt-16 bg-zinc-950">
       <Navbar isLoggedIn={islogin} onLogin={login} onLogout={logout} />
-      <Toaster position="top-mid" richColors/>
+      <Toaster position="top-right" richColors/>
       <Routes>
         
        
@@ -57,8 +57,7 @@ function App2() {
         <Route path= "/dashboard" element={<MainLayout/>}>
         
         <Route index element= {<Dashboard/>}/>
-        <Route path="seekjob" element={<Seekjobs/>}>
-        </Route>
+        <Route path="seekjob" element={<Seekjobs/>}></Route>
         <Route path="jobdetail" element={<JobDetails/>}/>
         <Route path="postjob" element={<Postjob/>}/>
         <Route path="update" element={<Update/>}/>

@@ -991,6 +991,7 @@ export namespace Prisma {
     github: string | null
     portfolio: string | null
     resumelink: string | null
+    profilelink: string | null
     created_at: Date | null
   }
 
@@ -1005,6 +1006,7 @@ export namespace Prisma {
     github: string | null
     portfolio: string | null
     resumelink: string | null
+    profilelink: string | null
     created_at: Date | null
   }
 
@@ -1019,6 +1021,7 @@ export namespace Prisma {
     github: number
     portfolio: number
     resumelink: number
+    profilelink: number
     created_at: number
     _all: number
   }
@@ -1043,6 +1046,7 @@ export namespace Prisma {
     github?: true
     portfolio?: true
     resumelink?: true
+    profilelink?: true
     created_at?: true
   }
 
@@ -1057,6 +1061,7 @@ export namespace Prisma {
     github?: true
     portfolio?: true
     resumelink?: true
+    profilelink?: true
     created_at?: true
   }
 
@@ -1071,6 +1076,7 @@ export namespace Prisma {
     github?: true
     portfolio?: true
     resumelink?: true
+    profilelink?: true
     created_at?: true
     _all?: true
   }
@@ -1172,6 +1178,7 @@ export namespace Prisma {
     github: string | null
     portfolio: string | null
     resumelink: string | null
+    profilelink: string | null
     created_at: Date | null
     _count: UsersCountAggregateOutputType | null
     _avg: UsersAvgAggregateOutputType | null
@@ -1205,6 +1212,7 @@ export namespace Prisma {
     github?: boolean
     portfolio?: boolean
     resumelink?: boolean
+    profilelink?: boolean
     created_at?: boolean
   }, ExtArgs["result"]["users"]>
 
@@ -1219,6 +1227,7 @@ export namespace Prisma {
     github?: boolean
     portfolio?: boolean
     resumelink?: boolean
+    profilelink?: boolean
     created_at?: boolean
   }, ExtArgs["result"]["users"]>
 
@@ -1233,6 +1242,7 @@ export namespace Prisma {
     github?: boolean
     portfolio?: boolean
     resumelink?: boolean
+    profilelink?: boolean
     created_at?: boolean
   }, ExtArgs["result"]["users"]>
 
@@ -1247,10 +1257,11 @@ export namespace Prisma {
     github?: boolean
     portfolio?: boolean
     resumelink?: boolean
+    profilelink?: boolean
     created_at?: boolean
   }
 
-  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstname" | "lastname" | "email" | "password" | "bio" | "skills" | "github" | "portfolio" | "resumelink" | "created_at", ExtArgs["result"]["users"]>
+  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstname" | "lastname" | "email" | "password" | "bio" | "skills" | "github" | "portfolio" | "resumelink" | "profilelink" | "created_at", ExtArgs["result"]["users"]>
 
   export type $usersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "users"
@@ -1266,6 +1277,7 @@ export namespace Prisma {
       github: string | null
       portfolio: string | null
       resumelink: string | null
+      profilelink: string | null
       created_at: Date | null
     }, ExtArgs["result"]["users"]>
     composites: {}
@@ -1700,6 +1712,7 @@ export namespace Prisma {
     readonly github: FieldRef<"users", 'String'>
     readonly portfolio: FieldRef<"users", 'String'>
     readonly resumelink: FieldRef<"users", 'String'>
+    readonly profilelink: FieldRef<"users", 'String'>
     readonly created_at: FieldRef<"users", 'DateTime'>
   }
     
@@ -3242,6 +3255,7 @@ export namespace Prisma {
     github: 'github',
     portfolio: 'portfolio',
     resumelink: 'resumelink',
+    profilelink: 'profilelink',
     created_at: 'created_at'
   };
 
@@ -3370,6 +3384,7 @@ export namespace Prisma {
     github?: StringNullableFilter<"users"> | string | null
     portfolio?: StringNullableFilter<"users"> | string | null
     resumelink?: StringNullableFilter<"users"> | string | null
+    profilelink?: StringNullableFilter<"users"> | string | null
     created_at?: DateTimeNullableFilter<"users"> | Date | string | null
   }
 
@@ -3384,6 +3399,7 @@ export namespace Prisma {
     github?: SortOrderInput | SortOrder
     portfolio?: SortOrderInput | SortOrder
     resumelink?: SortOrderInput | SortOrder
+    profilelink?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
   }
 
@@ -3401,6 +3417,7 @@ export namespace Prisma {
     github?: StringNullableFilter<"users"> | string | null
     portfolio?: StringNullableFilter<"users"> | string | null
     resumelink?: StringNullableFilter<"users"> | string | null
+    profilelink?: StringNullableFilter<"users"> | string | null
     created_at?: DateTimeNullableFilter<"users"> | Date | string | null
   }, "id" | "email">
 
@@ -3415,6 +3432,7 @@ export namespace Prisma {
     github?: SortOrderInput | SortOrder
     portfolio?: SortOrderInput | SortOrder
     resumelink?: SortOrderInput | SortOrder
+    profilelink?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
     _count?: usersCountOrderByAggregateInput
     _avg?: usersAvgOrderByAggregateInput
@@ -3437,6 +3455,7 @@ export namespace Prisma {
     github?: StringNullableWithAggregatesFilter<"users"> | string | null
     portfolio?: StringNullableWithAggregatesFilter<"users"> | string | null
     resumelink?: StringNullableWithAggregatesFilter<"users"> | string | null
+    profilelink?: StringNullableWithAggregatesFilter<"users"> | string | null
     created_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
   }
 
@@ -3549,6 +3568,7 @@ export namespace Prisma {
     github?: string | null
     portfolio?: string | null
     resumelink?: string | null
+    profilelink?: string | null
     created_at?: Date | string | null
   }
 
@@ -3563,6 +3583,7 @@ export namespace Prisma {
     github?: string | null
     portfolio?: string | null
     resumelink?: string | null
+    profilelink?: string | null
     created_at?: Date | string | null
   }
 
@@ -3576,6 +3597,7 @@ export namespace Prisma {
     github?: NullableStringFieldUpdateOperationsInput | string | null
     portfolio?: NullableStringFieldUpdateOperationsInput | string | null
     resumelink?: NullableStringFieldUpdateOperationsInput | string | null
+    profilelink?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -3590,6 +3612,7 @@ export namespace Prisma {
     github?: NullableStringFieldUpdateOperationsInput | string | null
     portfolio?: NullableStringFieldUpdateOperationsInput | string | null
     resumelink?: NullableStringFieldUpdateOperationsInput | string | null
+    profilelink?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -3604,6 +3627,7 @@ export namespace Prisma {
     github?: string | null
     portfolio?: string | null
     resumelink?: string | null
+    profilelink?: string | null
     created_at?: Date | string | null
   }
 
@@ -3617,6 +3641,7 @@ export namespace Prisma {
     github?: NullableStringFieldUpdateOperationsInput | string | null
     portfolio?: NullableStringFieldUpdateOperationsInput | string | null
     resumelink?: NullableStringFieldUpdateOperationsInput | string | null
+    profilelink?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -3631,6 +3656,7 @@ export namespace Prisma {
     github?: NullableStringFieldUpdateOperationsInput | string | null
     portfolio?: NullableStringFieldUpdateOperationsInput | string | null
     resumelink?: NullableStringFieldUpdateOperationsInput | string | null
+    profilelink?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -3818,6 +3844,7 @@ export namespace Prisma {
     github?: SortOrder
     portfolio?: SortOrder
     resumelink?: SortOrder
+    profilelink?: SortOrder
     created_at?: SortOrder
   }
 
@@ -3836,6 +3863,7 @@ export namespace Prisma {
     github?: SortOrder
     portfolio?: SortOrder
     resumelink?: SortOrder
+    profilelink?: SortOrder
     created_at?: SortOrder
   }
 
@@ -3850,6 +3878,7 @@ export namespace Prisma {
     github?: SortOrder
     portfolio?: SortOrder
     resumelink?: SortOrder
+    profilelink?: SortOrder
     created_at?: SortOrder
   }
 

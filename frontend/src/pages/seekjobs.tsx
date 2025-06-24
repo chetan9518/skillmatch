@@ -4,14 +4,25 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export function Seekjobs(){
+    const navigate = useNavigate()
+
+
+       const token = localStorage.getItem("token")
+         useEffect(()=>{
+      
+       const token = localStorage.getItem("token");
+          if (!token) {
+            toast.error("Session Expired")
+            navigate("/signin")
+            return};
+    },[])
+
+
      const [jobs, setjobs] = useState<user[]>([]);
     useEffect(() => {
     async function fetch() {
       try {
-        const token = localStorage.getItem("token")
-        if (!token) {
-          console.log("Login to get users")
-        }
+     
         const result = await axios.get("http://localhost:3000/user/seekjobs", {
           headers: {
             Authorization: `Bearer ${token}`
@@ -21,6 +32,7 @@ export function Seekjobs(){
           console.log(result.data.msg)
         }
         setjobs(result.data.jobs)
+        
       }
 
       catch (e) {
@@ -57,7 +69,7 @@ type user = {
     email?: string
 }
 function Jobcard({user}:{user:user}){
-    const [job,setjob]=useState<user|null>(null)
+
     const navigate = useNavigate()
  const userskill = user.skills.split(",").map((e) => e.trim());
  async function send(){

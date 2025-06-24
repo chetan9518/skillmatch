@@ -7,10 +7,6 @@ const MainLayout = () => {
   return (
     <div className="flex h-screen bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-white">
       <Sidebar />
-
-      
-
-
         <main className="flex-1 overflow-y-auto p-6">
           <Outlet />
         </main>

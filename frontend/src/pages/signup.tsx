@@ -5,6 +5,7 @@ import { Slide } from "../components/slide";
 import { PageWrapper } from "../components/pagewrapper";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 
 export function Signup() {
@@ -39,6 +40,7 @@ export function Signup() {
     }
     localStorage.setItem("email",response.data.email);
     setloading(false);
+    toast.success("Otp send succesully")
     navigate("/verification")
     
     console.log("Form submitted");
@@ -47,7 +49,6 @@ export function Signup() {
     console.error(err)
   }
   };
-
 
   return (
    <PageWrapper>

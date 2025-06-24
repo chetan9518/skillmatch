@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 type UserProfile = {
   firstname: string;
@@ -9,16 +11,27 @@ type UserProfile = {
   github?: string;
   portfolio?: string;
   email: string;
+  profilelink? : string
 };
 
 export default function Dashboard() {
+  const navigate = useNavigate()
+  const token = localStorage.getItem("token");
+  useEffect(()=>{
+  
+   const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Session Expired")
+        navigate("/signin")
+        return};
+},[])
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile,setProfile] = useState<UserProfile | null>(null);
+  
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+     
 
       try {
         const res = await axios.get("http://localhost:3000/user/fetchinfo", {
@@ -26,6 +39,7 @@ export default function Dashboard() {
         });
         if (res.data.success) {
           setProfile(res.data.details);
+          
         }
       } catch (err) {
         console.error("Failed to fetch user data", err);
@@ -61,7 +75,7 @@ export default function Dashboard() {
               </p>
             </div>
             <img
-              src={`https://ui-avatars.com/api/?name=${profile?.firstname}+${profile?.lastname}&background=random`}
+              src={profile?.profilelink ? profile?.profilelink:`https://ui-avatars.com/api/?name=${profile?.firstname}&background=random`}
               className="w-16 h-16 rounded-full border-2 border-white"
               alt="Avatar"
             />

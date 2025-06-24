@@ -1,6 +1,17 @@
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export function JobDetails() {
+  const navigate = useNavigate()
+    useEffect(()=>{
+    
+     const token = localStorage.getItem("token");
+        if (!token) {
+          toast.error("Session Expired")
+          navigate("/signin")
+          return};
+  },[])
   const location = useLocation();
   const job = location.state; // sent via navigate(..., { state: job })
 

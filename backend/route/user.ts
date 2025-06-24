@@ -11,7 +11,8 @@ import { PrismaClient } from "../generated/prisma"
 import { Request, Response } from "express";
 import multer from "multer"
 import { s3 } from "./upload";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -209,7 +210,7 @@ userRouter.get("/me", auth, async function (req: meget, res: any) {
     }
 })
 
-userRouter.post("/update", upload.single("resume"), auth, async function (req: Request, res: Response): Promise<any> {
+userRouter.post("/update", upload.fields([{ name: "resume", maxCount: 1 }, { name: "profile", maxCount: 1 }]), auth, async function (req: Request, res: Response): Promise<any> {
     try {
         const body: updatedbody = req.body;
         let zodbody = updateSchema.safeParse(body);
@@ -221,20 +222,47 @@ userRouter.post("/update", upload.single("resume"), auth, async function (req: R
         }
 
         const bucketname = process.env.AWS_BUCKET_NAME!
-        const file = req.file
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        const file = files["resume"]?.[0];
+        const profile = files["profile"]?.[0]
+
+
 
         const command = new PutObjectCommand({
             Bucket: bucketname,
-            Key: `users/${body.email}.pdf`,
+            Key: `resume/${body.email}.pdf`,
             Body: file?.buffer,
             ContentType: file?.mimetype,
+        })
 
+
+        const originalName = profile?.originalname || "profile.jpg";
+        const extension = originalName.split(".").pop() || "jpg";
+
+        const command2 = new PutObjectCommand({
+            Bucket: bucketname,
+            Key: `profile/${body.email}.${extension}`,
+            Body: profile?.buffer,
+            ContentType: profile?.mimetype,
+        })
+
+        const data = await s3.send(command);
+        const data2 = await s3.send(command2);
+        const commandurl = new GetObjectCommand({
+            Bucket: bucketname,
+            Key: `resume/${body.email}.pdf`
 
         })
-        const data = await s3.send(command);
-        const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/users/${body.email}.pdf`
 
-        console.log(fileUrl)
+        const fileUrl = await getSignedUrl(s3, commandurl, { expiresIn: 3600 })
+
+
+
+        const cmdUrl = new GetObjectCommand({
+            Bucket: bucketname,
+            Key: `profile/${body.email}.${extension}`
+        })
+        const profileUrl = await getSignedUrl(s3, cmdUrl, { expiresIn: 3600 })
 
         const result = await prisma.users.update({
             where: { email: body.email },
@@ -245,9 +273,21 @@ userRouter.post("/update", upload.single("resume"), auth, async function (req: R
                 skills: body.skills,
                 github: body.github,
                 portfolio: body.portfolio,
-                resumelink: fileUrl
+                resumelink: fileUrl,
+                profilelink: profileUrl
+            },
+            select: {
+                firstname: true,
+                lastname: true,
+                bio: true,
+                skills: true,
+                github: true,
+                portfolio: true,
+                resumelink: true,
+                profilelink: true
             }
         })
+        console.log(result.profilelink)
         return res.status(200).json({
             success: true,
             msg: "Updated sucessfully",
@@ -299,7 +339,8 @@ userRouter.get("/fetchinfo", auth, async (req: meget, res: Response): Promise<an
             skills: result.skills,
             github: result.github,
             portfolio: result.portfolio,
-            resumelink: result.resumelink
+            resumelink: result.resumelink,
+            profilelink:result.profilelink
 
         }
     })
@@ -313,7 +354,8 @@ userRouter.get("/fetchuser", auth, async (req: meget, res: Response): Promise<an
                 firstname: true,
                 lastname: true,
                 email: true,
-                skills: true
+                skills: true,
+                profilelink:true
             }
         })
         if (!users) {
@@ -358,7 +400,8 @@ userRouter.get("/searchuser", auth, async (req: meget, res: Response): Promise<a
                 firstname: true,
                 lastname: true,
                 email: true,
-                skills: true
+                skills: true,
+                profilelink:true
             }
         })
         if (!users) {
@@ -412,7 +455,8 @@ userRouter.get("/fetchone", auth, async (req: meget, res: Response): Promise<any
             skills: result.skills,
             github: result.github,
             portfolio: result.portfolio,
-            resumelink: result.resumelink
+            resumelink: result.resumelink,
+            profilelink:result.profilelink
 
         }
     })
@@ -495,22 +539,22 @@ userRouter.post("/postjob", auth, async (req: meget, res: Response): Promise<any
 
     }
 })
-userRouter.get("/seekjobs",auth,async (req:meget,res:Response):Promise<any>=>{
-     try{
-       let jobs =await prisma.jobs.findMany({
-        take:10,
-       })
-       return res.json({
-        success:true,
-        jobs:jobs
-       })
-     }
-     catch(e){
+userRouter.get("/seekjobs", auth, async (req: meget, res: Response): Promise<any> => {
+    try {
+        let jobs = await prisma.jobs.findMany({
+            take: 10,
+        })
+        return res.json({
+            success: true,
+            jobs: jobs
+        })
+    }
+    catch (e) {
         console.error(e)
         return res.status(500).json({
-            success:false,
-            msg:"Server error"
+            success: false,
+            msg: "Server error"
         })
-     }
+    }
 })
 

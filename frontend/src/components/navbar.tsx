@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context";
 
 type NavbarProps = {
   isLoggedIn: boolean;
@@ -8,6 +10,7 @@ type NavbarProps = {
 
 export default function Navbar({ isLoggedIn, onLogin, onLogout }: NavbarProps) {
   const navigate = useNavigate();
+  const {setislogin}= useContext(UserContext)
 
   return (
     <nav className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white fixed top-0 w-full z-50 shadow-md border-b border-zinc-200 dark:border-zinc-700">

@@ -1,9 +1,17 @@
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 
 export function Postjob(){
+     useEffect(()=>{
+      
+       const token = localStorage.getItem("token");
+          if (!token) {
+            toast.error("Session Expired")
+            navigate("/signin")
+            return};
+    },[])
 const [title,settitle]=useState<string>("")
 const [company,setcompany]=useState<string>("")
 const [location,setlocation]=useState<string>("")
@@ -20,10 +28,7 @@ const navigate= useNavigate()
 async function fetch(){
 
     const token = localStorage.getItem("token")
-    if(!token){
-        console.log("login to post")
-        navigate("/signin")
-    }
+   
     try{
     let response = await axios.post("http://localhost:3000/user/postjob",{
          jobtitle: title,

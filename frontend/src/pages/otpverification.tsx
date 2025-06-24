@@ -8,7 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export function Otp() {
+
    const navigate= useNavigate();
+   const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Session Expired")
+        navigate("/signin")
+        return};
    const {setislogin}= useContext(UserContext)
     async function veri() {
         

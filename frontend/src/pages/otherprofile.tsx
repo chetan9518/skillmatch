@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { toast } from "sonner";
 
 
 type UserProfile = {
@@ -16,9 +17,15 @@ type UserProfile = {
 
 export function Profile(){
     const token = localStorage.getItem("token")
-    if (!token) {
-          console.log("Login to get users")
-        }
+    const navigate = useNavigate()
+     useEffect(()=>{
+  
+   const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Session Expired")
+        navigate("/signin")
+        return};
+},[])
     const [user,setresult]= useState<UserProfile|null>(null)
     const {email}= useParams();
     const skill = user?.skills?.split(",").map((e)=>e.trim())

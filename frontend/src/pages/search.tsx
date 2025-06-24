@@ -1,10 +1,25 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 
 
 export function Search() {
+
+  {/*login check*/}
+  const navigate = useNavigate()
+    useEffect(()=>{
+      
+       const token = localStorage.getItem("token");
+          if (!token) {
+            toast.error("Session Expired")
+            navigate("/signin")
+            return};
+    },[])
+
+
+
   const [users, setusers] = useState<user[]>([])
   const [searchuser, setsearchuser] = useState<user[]>([]);
   const [input, setinput] = useState("");
@@ -49,6 +64,7 @@ export function Search() {
   async function searchfetcher() {
 const token = localStorage.getItem("token")
         if (!token) {
+          toast.error("Session Expired")
           console.log("Login to get users")
         }
     const result = await axios.get(`http://localhost:3000/user/searchuser?${(input.includes("@")) ? "email" : "skill"}=${input}`,{

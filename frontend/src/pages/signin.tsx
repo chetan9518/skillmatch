@@ -6,6 +6,7 @@ import { PageWrapper } from "../components/pagewrapper";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context";
+import { toast } from "sonner";
 
 
 export function Signin() {
@@ -20,6 +21,7 @@ export function Signin() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
      setloading(true);
+     try{
     const response = await axios.post("http://localhost:3000/user/signin",{
       
         email:email,
@@ -35,9 +37,16 @@ export function Signin() {
     localStorage.setItem("token",response.data.token)
     setloading(false);
     setislogin(true)
+    toast.success("Signin Successfully")
     navigate("/dashboard")
     console.log("Form submitted");
-  };
+  }
+  catch(e){
+    console.error(e)
+    setloading(false);
+  }
+}
+
 
   return (
     <PageWrapper>

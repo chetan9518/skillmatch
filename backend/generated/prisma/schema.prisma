@@ -9,17 +9,18 @@ datasource db {
 }
 
 model users {
-  id         Int       @id @default(autoincrement())
-  firstname  String    @db.VarChar(50)
-  lastname   String    @db.VarChar(50)
-  email      String    @unique @db.VarChar(250)
-  password   String
-  bio        String?
-  skills     String?
-  github     String?
-  portfolio  String?
-  resumelink String?
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  id          Int       @id @default(autoincrement())
+  firstname   String    @db.VarChar(50)
+  lastname    String    @db.VarChar(50)
+  email       String    @unique @db.VarChar(250)
+  password    String
+  bio         String?
+  skills      String?
+  github      String?
+  portfolio   String?
+  resumelink  String?
+  profilelink String?
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
 }
 
 model jobs {
