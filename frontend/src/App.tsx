@@ -15,6 +15,8 @@ import { Postjob } from "./pages/postjob"
 import { Toaster } from "sonner"
 import { Seekjobs } from "./pages/seekjobs"
 import { JobDetails } from "./pages/jobdetail"
+import { Chat } from "./pages/message"
+import { ChatWrapper } from "./pages/Chatwrraper"
 
 console.log("in app")
 
@@ -63,6 +65,7 @@ function App2() {
         <Route path="update" element={<Update/>}/>
         <Route path="search" element={<Search/>}></Route>
         <Route path= "profile/:email" element={<Profile/>}/>
+        <Route path="chat" element={<ChatWrapper/>}/>
         
         </Route>
        
