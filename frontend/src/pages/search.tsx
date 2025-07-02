@@ -127,7 +127,7 @@ type user = {
   firstname: string,
   lastname: string,
   email: string,
-  skills: string
+  skills?: string
 }
 //usercard
 function UserCard({ user }: { user: user }) {
@@ -135,7 +135,7 @@ function UserCard({ user }: { user: user }) {
 navigate(`/dashboard/profile/${user.email}`);
 
   }
-  const userskill = user.skills.split(",").map((e) => e.trim());
+  const userskill = user.skills?.split(",").map((e) => e.trim());
 const navigate = useNavigate();
   return (
     <button onClick={nav}className="p-4 bg-white border-zinc-200 dark:border-zinc-700 rounded-lg shadow hover:shadow-md transition">
@@ -149,7 +149,7 @@ const navigate = useNavigate();
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
-        {userskill.map((e) => (
+        {userskill?.map((e) => (
           <SkillBadge name={e} key={e} color={getRandomColorName()} />
         ))}
 

@@ -1,67 +1,96 @@
 import { useEffect, useRef, useState } from "react";
+
 interface Props {
   currentUser: { email: string };
   receiverEmail: string;
 }
 
-export function Chat({ currentUser, receiverEmail }: Props){
-    const [input,setinput]= useState("")
-    const [message ,setmessage]= useState<{message:string,from:string}[]>([])
-    const socket= useRef<WebSocket|null>(null)
-    
-useEffect(()=>{
-    const token = localStorage.getItem("token")
-    socket.current= new WebSocket(`ws://localhost:3000?token=${token}`)
-    
-    socket.current.onmessage= (event)=>{
-        const data = JSON.parse(event.data)
-        setmessage((pre)=>[...pre,data])
-    }
-    return ()=>{
-        socket.current?.close()
-    }
+export function Chat({ currentUser, receiverEmail }: Props) {
+  const [input, setInput] = useState("");
+  const [message, setMessage] = useState<{ message: string; from: string }[]>([]);
+  const socket = useRef<WebSocket | null>(null);
+  const messageBoxRef = useRef<HTMLDivElement | null>(null);
 
-},[]
-)
-const sendmessage= ()=>{
-    if(!input.trim()){
-        return 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    socket.current = new WebSocket(`ws://localhost:3000?token=${token}`);
+
+    socket.current.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setMessage((prev) => [...prev, data]);
+    };
+
+    return () => {
+      socket.current?.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    messageBoxRef.current?.scrollTo({
+      top: messageBoxRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [message]);
+
+  const sendMessage = () => {
+    if (!input.trim()) return;
+
+    if (socket.current?.readyState === WebSocket.OPEN) {
+      const msgObj = { to: receiverEmail, message: input };
+      socket.current.send(JSON.stringify(msgObj));
+      setMessage((prev) => [...prev, { from: currentUser.email, message: input }]);
+      setInput("");
     }
-    if(socket.current?.readyState===WebSocket.OPEN){
-        const msgObj = {to:receiverEmail,message:input}
-        socket.current.send(JSON.stringify(msgObj))
-        setmessage((prev) => [...prev, { from: currentUser.email, message: input }]);
-        setinput("")
-    }
-}
-return (
-    <div className="p-4 rounded bg-white shadow-md max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-2">
-        Chat with <span className="text-blue-600">{receiverEmail}</span>
-      </h2>
-      <div className="border p-2 h-64 overflow-y-scroll bg-gray-100 rounded mb-2">
-        {message.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`mb-1 ${
-              msg.from === currentUser.email ? "text-right text-blue-700" : "text-left text-green-700"
-            }`}
-          >
-            <span className="inline-block bg-white p-1 px-2 rounded shadow-sm">
-              <b>{msg.from === currentUser.email ? "You" : msg.from}:</b> {msg.message}
-            </span>
-          </div>
-        ))}
+  };
+
+  return (
+    <div className="max-w-lg mx-auto my-8 border border-gray-300 rounded-xl shadow-lg flex flex-col h-[80vh] bg-white">
+      {/* Header */}
+      <div className="p-4 border-b border-gray-200 bg-blue-600 text-white rounded-t-xl">
+        <h2 className="text-lg font-semibold">
+          Chat with <span className="font-bold">{receiverEmail}</span>
+        </h2>
       </div>
-      <div className="flex gap-2">
+
+      {/* Message Box */}
+      <div
+        ref={messageBoxRef}
+        className="flex-1 p-4 overflow-y-auto bg-gray-50 space-y-2"
+      >
+        {message.map((msg, idx) => {
+          const isOwnMessage = msg.from === currentUser.email;
+          return (
+            <div
+              key={idx}
+              className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
+            >
+              <div
+                className={`max-w-[70%] px-4 py-2 rounded-xl shadow text-sm ${
+                  isOwnMessage
+                    ? "bg-blue-600 text-white rounded-br-none"
+                    : "bg-gray-200 text-gray-800 rounded-bl-none"
+                }`}
+              >
+                <strong>{isOwnMessage ? "You" : msg.from}</strong>: {msg.message}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Input Area */}
+      <div className="p-4 border-t border-gray-200 bg-white flex gap-2 items-center">
         <input
           value={input}
-          onChange={(e) => setinput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendmessage()}
-          className="flex-1 p-2 border rounded"
-          placeholder="Type a message"
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          className="flex-1 px-4 py-2 border rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Type a message..."
         />
-        <button onClick={sendmessage} className="bg-blue-600 text-white px-4 py-2 rounded">
+        <button
+          onClick={sendMessage}
+          className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition"
+        >
           Send
         </button>
       </div>

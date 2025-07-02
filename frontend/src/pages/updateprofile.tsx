@@ -40,6 +40,32 @@ export function Update() {
 
   // ftch user details to show and prefill form
   useEffect(() => {
+    const fetchSignedUrls = async (resumeKey: string, profileKey: string) => {
+      if (profileKey) {
+        const profile = await axios.get("http://localhost:3000/user/profileurl",
+          {
+            params: { profilelink: profileKey },
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+
+        if (profile.data.success) {
+          setprofile(profile.data.profileUrl)
+        }
+      }
+      if (resumeKey) {
+        const resume = await axios.get("http://localhost:3000/user/resumeurl",
+          {
+            params: { resumelink: resumeKey },
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        if (resume.data.success) {
+          setresumelink(resume.data.resumeUrl)
+        }
+
+      }
+    }
     async function fetchData() {
       try {
         const res = await axios.get("http://localhost:3000/user/fetchinfo", {
@@ -56,8 +82,10 @@ export function Update() {
             github: data.github || "",
             portfolio: data.portfolio || "",
           });
-          setresumelink(data.resumelink || "")
-          setprofile(data.profilelink || "")
+          const { resumelink, profilelink } = data
+          await fetchSignedUrls(resumelink, profilelink)
+
+
           setProfileLoaded(true); ``
         }
       } catch (e) {
@@ -149,20 +177,20 @@ export function Update() {
         <div className="mb-8 grid grid-col gap-y-4 bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
           <h3 className="text-lg font-semibold mb-2">Current Profile Info</h3>
 
-          <div className="flex justify-center mb-4">
-            <div className="relative w-28 h-28">
+          <div className="flex justify-center mb-2">
+            <div className="relative w-30 h-30">
               <img
                 src={profile instanceof File
                   ? URL.createObjectURL(profile)
                   : profile || `https://ui-avatars.com/api/?name=${firstname}+${lastname}&background=random`}
                 alt="Avatar"
-                className="w-28 h-28 object-cover rounded-full border-2 border-white"
+                className="w-30 h-30 object-cover rounded-full border-2 border-white"
               />
               <input
                 type="file"
                 accept="image/*"
                 onChange={userprofile}
-                className="absolute top-0 left-0 w-28 h-28 opacity-0 cursor-pointer"
+                className="absolute top-0 left-0 w-30 h-30 opacity-0 cursor-pointer"
               />
             </div>
           </div>

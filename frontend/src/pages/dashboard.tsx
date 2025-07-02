@@ -11,45 +11,81 @@ type UserProfile = {
   github?: string;
   portfolio?: string;
   email: string;
-  profilelink? : string
+  profilelink?: string;
+  resumelink?: string;
 };
 
 export default function Dashboard() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  useEffect(()=>{
-  
-   const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Session Expired")
-        navigate("/signin")
-        return};
-},[])
+
   const [loading, setLoading] = useState(true);
-  const [profile,setProfile] = useState<UserProfile | null>(null);
-  
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profileUrl, setProfileUrl] = useState<string | null>(null);
+  const [resumeUrl, setResumeUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-     
+    if (!token) {
+      toast.error("Session Expired");
+      navigate("/signin");
+      return;
+    }
+  }, [navigate, token]);
 
+  useEffect(() => {
+    const fetchSignedUrls = async (profileKey: string, resumeKey: string) => {
+      try {
+        const profileRes = await axios.get(
+          "http://localhost:3000/user/profileurl",
+          {
+            params: { profilelink: profileKey },
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (profileRes.data.success) {
+          setProfileUrl(profileRes.data.profileUrl);
+        }
+
+        const resumeRes = await axios.get(
+          "http://localhost:3000/user/resumeurl",
+          {
+            params: { resumelink: resumeKey },
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (resumeRes.data.success) {
+          setResumeUrl(resumeRes.data.resumeUrl);
+        }
+      } catch (error) {
+        console.error("Failed to fetch signed URLs", error);
+      }
+    };
+
+    const fetchUserData = async () => {
+      setLoading(true);
       try {
         const res = await axios.get("http://localhost:3000/user/fetchinfo", {
           headers: { Authorization: `Bearer ${token}` },
         });
+
         if (res.data.success) {
           setProfile(res.data.details);
-          
+          const { profilelink, resumelink } = res.data.details;
+          if (profilelink && resumelink) {
+            await fetchSignedUrls(profilelink, resumelink);
+          }
         }
-      } catch (err) {
-        console.error("Failed to fetch user data", err);
+      } catch (error) {
+        console.error("Failed to fetch user data", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUser();
-  }, []);
+    if (token) {
+      fetchUserData();
+    }
+  }, [token]);
 
   if (loading) {
     return (
@@ -62,27 +98,28 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-zinc-900 text-gray-900 dark:text-white p-4">
       <div className="max-w-3xl mx-auto space-y-6">
-
-        {/* Welcome Section */}
-        <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-2xl font-bold">
-                Hi {profile?.firstname || "there"} 👋
-              </h2>
-              <p className="text-sm text-gray-500 dark:text-zinc-300">
-                {profile?.bio || "Start setting up your profile to get better matches!"}
-              </p>
-            </div>
+        <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold">Hi {profile?.firstname || "there"} 👋</h2>
+            <p className="text-sm text-gray-500 dark:text-zinc-300">
+              {profile?.bio || "Start setting up your profile to get better matches!"}
+            </p>
+          </div>
+          {profileUrl ? (
             <img
-              src={profile?.profilelink ? profile?.profilelink:`https://ui-avatars.com/api/?name=${profile?.firstname}&background=random`}
-              className="w-16 h-16 rounded-full border-2 border-white"
+              src={profileUrl}
+              className="w-24 h-24 rounded-full border-2 border-blue-500"
+              alt="Profile"
+            />
+          ) : (
+            <img
+              src={`https://ui-avatars.com/api/?name=${profile?.firstname}&background=random`}
+              className="w-24 h-24 rounded-full border-2 border-white"
               alt="Avatar"
             />
-          </div>
+          )}
         </div>
 
-        {/* Profile Overview */}
         <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow">
           <h3 className="text-lg font-semibold mb-4">Quick Profile Overview</h3>
           <div className="space-y-2 text-sm">
@@ -119,35 +156,14 @@ export default function Dashboard() {
                 "Not shared"
               )}
             </p>
-          </div>
-        </div>
-
-        {/* Edit Profile Button */}
-        
-
-        {/* Preview Cards */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-
-          {/* Skill Match Preview */}
-          <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow">
-            <h3 className="text-lg font-semibold">Suggested Matches (Preview)</h3>
-            <p className="text-sm text-gray-500 dark:text-zinc-300 mt-2">
-              This is just a quick look. Go to the "Opportunities" page to explore more.
-            </p>
-            <button
-              className="mt-4 px-3 py-1.5 bg-white border border-gray-300 text-sm rounded hover:bg-gray-50 dark:bg-zinc-900 dark:border-zinc-600 dark:hover:bg-zinc-700"
-              onClick={() => window.location.href = "/opportunities"}
-            >
-              Explore Opportunities
-            </button>
-          </div>
-
-          {/* Activity Summary */}
-          <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow">
-            <h3 className="text-lg font-semibold">Your Recent Activity</h3>
-            <p className="text-sm text-gray-500 dark:text-zinc-300 mt-2">
-              Any recent changes or updates you’ve made will appear here.
-            </p>
+            {resumeUrl && (
+              <p>
+                <strong>Resume:</strong>{" "}
+                <a href={resumeUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">
+                  Download Resume
+                </a>
+              </p>
+            )}
           </div>
         </div>
       </div>

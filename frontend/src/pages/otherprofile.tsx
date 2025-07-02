@@ -27,9 +27,22 @@ export function Profile(){
         return};
 },[])
     const [user,setresult]= useState<UserProfile|null>(null)
+    const [profile,setprofile]=useState(null)
     const {email}= useParams();
     const skill = user?.skills?.split(",").map((e)=>e.trim())
     useEffect(()=>{
+       const fetchprofile = async (profileKey:string)=>{
+         const profileRes = await axios.get(
+          "http://localhost:3000/user/profileurl",
+          {
+            params: { profilelink: profileKey },
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (profileRes.data.success) {
+          setprofile(profileRes.data.profileUrl);
+        }
+       }
         async function fetch(){
             const result = await axios.get(`http://localhost:3000/user/fetchone?email=${email}`,{
                 headers:{
@@ -42,6 +55,10 @@ export function Profile(){
 
             }
             setresult(result.data.details)
+            const {profilelink}= result.data.details
+            if (profilelink){
+              await fetchprofile(profilelink)
+            }
 
         }
         fetch()
@@ -51,11 +68,17 @@ export function Profile(){
     <div className="max-w-2xl mx-auto p-6 bg-white dark:bg-zinc-900 rounded-2xl shadow-lg mt-8">
       {/* Profile image */}
       <div className="flex justify-center">
-        <img
+        {profile ? <img
+          className="w-24 h-24 rounded-full border-2 border-blue-500"
+          src= {profile}
+          alt={user?.firstname}
+        />
+
+        :(<img
           className="w-24 h-24 rounded-full border-2 border-blue-500"
           src= "/images/default-avatar.png"
           alt={user?.firstname}
-        />
+        />)}
       </div>
 
       {/* Name */}
@@ -120,7 +143,10 @@ export function Profile(){
         </div>
         
       )}
-      <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+      <button onClick={()=>{
+        console.log(user?.email)
+        navigate("/dashboard/chat",{state:{receiverEmail:user?.email}})
+      }} className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
 <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
 Message
 </span>

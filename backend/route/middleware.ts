@@ -4,6 +4,9 @@ import { secret_key } from "../key";
 
  export function auth(req:any,res:any,next:any){
     const token = req.headers["authorization"]
+    
+
+
     if(!token||!token.startsWith("Bearer")){
         return res.json({
             msg:"Invalid token format"
@@ -21,6 +24,7 @@ const payload = jwt.verify(updateToken,secret_key) as {
     next();
     }
     catch(err){
+        console.log(err)
         return res.json({
             msg:"Invalid token"
         })

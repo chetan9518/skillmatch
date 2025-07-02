@@ -39,7 +39,7 @@ function App2() {
   function logout() {
      localStorage.setItem("token","")
       setislogin(false)
-    navigate("/home")
+    navigate("/")
   }
   return <div>
 <UserContext.Provider value ={{islogin,setislogin}}>

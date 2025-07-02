@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken"
 import { secret_key } from "../key";
 import bcrypt from "bcrypt"
 import { auth } from "./middleware";
+
 import { PrismaClient } from "../generated/prisma"
 import { Request, Response } from "express";
 import multer from "multer"
@@ -23,6 +24,7 @@ const upload = multer({ storage: storage })
 const prisma = new PrismaClient();
 const salt: number = 10
 export const userRouter = express.Router();
+
 const signupschema = z.object({
     firstName: z.string(),
     lastName: z.string(),
@@ -32,7 +34,6 @@ const signupschema = z.object({
 const signinSchema = z.object({
     email: z.string().email(),
     password: z.string()
-
 })
 type signupbody = {
     firstName: string,
@@ -69,6 +70,8 @@ function otp(): number {
 }
 
 const Client = client;
+
+
 userRouter.post("/signup", async (req, res): Promise<any> => {
     const body: signupbody = req.body;
     const re = signupschema.safeParse(body);
@@ -157,6 +160,7 @@ userRouter.post("/signin", async (req: any, res: any): Promise<any> => {
     let result = signinSchema.safeParse(body)
     if (!result.success) {
         return res.json({
+            success:false,
             msg: "Invalid input"
         })
     }
@@ -164,12 +168,14 @@ userRouter.post("/signin", async (req: any, res: any): Promise<any> => {
         SELECT * FROM users WHERE email=$1`, [body.email])
     if (payload.rows.length === 0) {
         return res.status(404).json({
+            success:false,
             msg: "User not found"
         })
     }
     let isValid = await bcrypt.compare(body.password, payload.rows[0].password)
     if (!isValid) {
         return res.json({
+            success:false,
             msg: "Invalid password"
         })
     }
@@ -179,6 +185,7 @@ userRouter.post("/signin", async (req: any, res: any): Promise<any> => {
 
     return res.json({
         token: token,
+        success:true,
         msg: "login sucessfully"
     })
 
@@ -193,6 +200,7 @@ userRouter.get("/me", auth, async function (req: meget, res: any) {
         SELECT * FROM users WHERE email = $1`, [req.email])
         if (payload.rows.length === 0) {
             return res.status(404).json({
+                success:false,
                 msg: "User not found"
             })
         }
@@ -205,6 +213,7 @@ userRouter.get("/me", auth, async function (req: meget, res: any) {
     catch (err) {
         console.log(err);
         return res.status(500).json({
+            success:false,
             msg: "Server error"
         })
     }
@@ -248,21 +257,10 @@ userRouter.post("/update", upload.fields([{ name: "resume", maxCount: 1 }, { nam
 
         const data = await s3.send(command);
         const data2 = await s3.send(command2);
-        const commandurl = new GetObjectCommand({
-            Bucket: bucketname,
-            Key: `resume/${body.email}.pdf`
-
-        })
-
-        const fileUrl = await getSignedUrl(s3, commandurl, { expiresIn: 3600 })
+        
 
 
-
-        const cmdUrl = new GetObjectCommand({
-            Bucket: bucketname,
-            Key: `profile/${body.email}.${extension}`
-        })
-        const profileUrl = await getSignedUrl(s3, cmdUrl, { expiresIn: 3600 })
+       
 
         const result = await prisma.users.update({
             where: { email: body.email },
@@ -273,8 +271,8 @@ userRouter.post("/update", upload.fields([{ name: "resume", maxCount: 1 }, { nam
                 skills: body.skills,
                 github: body.github,
                 portfolio: body.portfolio,
-                resumelink: fileUrl,
-                profilelink: profileUrl
+                resumelink: `resume/${body.email}.pdf`,
+                profilelink: `profile/${body.email}.${extension}`
             },
             select: {
                 firstname: true,
@@ -287,7 +285,7 @@ userRouter.post("/update", upload.fields([{ name: "resume", maxCount: 1 }, { nam
                 profilelink: true
             }
         })
-        console.log(result.profilelink)
+      
         return res.status(200).json({
             success: true,
             msg: "Updated sucessfully",
@@ -305,6 +303,48 @@ userRouter.post("/update", upload.fields([{ name: "resume", maxCount: 1 }, { nam
 
 
 })
+
+
+userRouter.get("/profileurl", auth, async (req: Request, res: Response):Promise<any>=> {
+    console.log("        in profile         ")
+    const profilekey = req.query.profilelink as string;
+
+   
+    if (!profilekey) {
+        return res.status(404).json({ success: false, msg: "Profile not found" });
+    }
+
+    const cmd = new GetObjectCommand({
+        Bucket: process.env.AWS_BUCKET_NAME!,
+        Key: profilekey
+    });
+
+    const profileUrl = await getSignedUrl(s3, cmd, { expiresIn: 86400 }); 
+  console.log("      url    ===="+profileUrl)
+    return res.status(200).json({ success: true, profileUrl });
+});
+
+
+userRouter.get("/resumeurl", auth, async (req: Request, res: Response):Promise<any> => {
+    console.log("        in dashboard         ")
+    
+
+    const resumekey= req.query.resumelink as string
+
+    if (!resumekey) {
+        return res.status(404).json({ success: false, msg: "Resume not found" });
+    }
+
+    const cmd = new GetObjectCommand({
+        Bucket: process.env.AWS_BUCKET_NAME!,
+        Key: resumekey
+    });
+
+    const resumeUrl = await getSignedUrl(s3, cmd, { expiresIn: 3600 }); 
+  console.log("      url    ===="+resumeUrl)
+    return res.status(200).json({ success: true, resumeUrl });
+});
+
 
 
 userRouter.get("/fetchinfo", auth, async (req: meget, res: Response): Promise<any> => {
@@ -329,6 +369,7 @@ userRouter.get("/fetchinfo", auth, async (req: meget, res: Response): Promise<an
             msg: "User not found"
         })
     }
+    console.log(result.profilelink)
     return res.status(200).json({
         success: true,
         details: {
@@ -557,4 +598,5 @@ userRouter.get("/seekjobs", auth, async (req: meget, res: Response): Promise<any
         })
     }
 })
+
 
