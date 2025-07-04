@@ -138,7 +138,7 @@ navigate(`/dashboard/profile/${user.email}`);
   const userskill = user.skills?.split(",").map((e) => e.trim());
 const navigate = useNavigate();
   return (
-    <button onClick={nav}className="p-4 bg-white border-zinc-200 dark:border-zinc-700 rounded-lg shadow hover:shadow-md transition">
+    <button onClick={nav}className="p-4 bg-white border-zinc-200 dark:border-zinc-700 rounded-lg shadow-md hover:shadow-lg  transition-transform duration-300 hover:scale-105 hover:bg-blue-50">
       <div className="flex items-center gap-3 mb-3">
         <div className="w-12 h-12 rounded-full bg-zinc-300" />
         <div>

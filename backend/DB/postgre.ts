@@ -8,14 +8,5 @@ ssl:{
     rejectUnauthorized:false
 }})
 
-async function ab(){
-    try{
- await client.connect();
- console.log(" neon connected ")
-    }
-    catch(error:any)
-    {
-console.log("error " ,error.message)
-    }
-}
-ab();
+
+

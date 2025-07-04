@@ -22,7 +22,7 @@ export function JobDetails() {
   const skills = job.skills.split(",").map((s: string) => s.trim());
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-10 bg-white dark:bg-zinc-900 rounded-xl shadow-md">
+    <div className="max-w-3xl mx-auto px-6 py-10 bg-white dark:bg-zinc-900 rounded-xl shadow-md hover:shadow-lg  transition-transform ">
       <h1 className="text-3xl font-bold text-zinc-800 dark:text-white mb-4">{job.jobtitle}</h1>
       <p className="text-zinc-600 dark:text-zinc-400 mb-2"><strong>Company:</strong> {job.companyname}</p>
       <p className="text-zinc-600 dark:text-zinc-400 mb-2"><strong>Location:</strong> {job.location}</p>

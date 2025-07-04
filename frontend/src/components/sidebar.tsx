@@ -1,10 +1,13 @@
 // components/Sidebar.tsx
-import { NavLink } from "react-router-dom";
-import { ChevronRight, ChevronLeft } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
+
+import { Menu, X, User, Briefcase, MessageSquare, ClipboardList, PlusCircle, Megaphone } from "lucide-react";
 import { useState } from "react";
 
 export function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate()
 
   return (
     <>
@@ -22,9 +25,9 @@ export function Sidebar() {
           aria-label="Toggle sidebar"
         >
           {isSidebarOpen ? (
-            <ChevronLeft className="w-6 h-6" />
+            <X size={24} />
           ) : (
-            <ChevronRight className="w-6 h-6" />
+            <Menu size={24} />
           )}
         </button>
       </div>
@@ -42,48 +45,96 @@ export function Sidebar() {
         <nav className="space-y-3 mt-6">
           <NavLink
             to="update"
-            className="block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition"
+            className={({ isActive }) =>
+              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
+                ? "bg-blue-100 text-blue-700"
+                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              }`
+            }
             onClick={() => setIsSidebarOpen(false)}
-          >
-            Profile
+          >{<User size={18} />} Profile
           </NavLink>
           <NavLink
             to="skill-tracker"
-            className="block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition"
+            className={({ isActive }) =>
+              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
+                ? "bg-blue-100 text-blue-700"
+                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              }`
+            }
             onClick={() => setIsSidebarOpen(false)}
-          >
+          >{<Briefcase size={18} />}
             Skill Tracker
           </NavLink>
           <NavLink
             to="seekjob"
-            className="block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition"
+            className={({ isActive }) =>
+              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
+                ? "bg-blue-100 text-blue-700"
+                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              }`
+            }
             onClick={() => setIsSidebarOpen(false)}
-          >
+          >{<ClipboardList size={18} />}
             Find Job
           </NavLink>
           <NavLink
             to="msg"
-            className="block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition"
+            className={({ isActive }) =>
+              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
+                ? "bg-blue-100 text-blue-700"
+                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              }`
+            }
             onClick={() => setIsSidebarOpen(false)}
-          >
+          >{<MessageSquare size={18} />}
             Messages
           </NavLink>
           <NavLink
             to="search"
-            className="block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition"
+            className={({ isActive }) =>
+              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
+                ? "bg-blue-100 text-blue-700"
+                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              }`
+            }
             onClick={() => setIsSidebarOpen(false)}
-          >
+          >{<PlusCircle size={18} />}
             Find SkillMatch
           </NavLink>
           <NavLink
             to="postjob"
-            className="block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition"
+            className={({ isActive }) =>
+              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
+                ? "bg-blue-100 text-blue-700"
+                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              }`
+            }
             onClick={() => setIsSidebarOpen(false)}
-          >
+          >{<Megaphone size={18} />}
             Post Job
           </NavLink>
+
+
         </nav>
+ <div className="border-t pt-4">
+        <button
+          onClick={() => {
+            localStorage.setItem("token", "")
+
+            navigate("/")
+          }}
+          className="flex items-center gap-2 text-red-600 border border-red-300 px-4 py-1.5 rounded-md hover:bg-red-50 transition"
+        >
+          <LogOut size={16} />
+          Logout
+        </button>
+      </div>
+
       </aside>
+
+
+     
     </>
   );
 }

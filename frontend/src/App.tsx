@@ -44,7 +44,7 @@ const [islogin, setislogin] = useState(() => {
   }
   function logout() {
      localStorage.setItem("token","")
-      setislogin(false)
+      
     navigate("/")
   }
   return <div>

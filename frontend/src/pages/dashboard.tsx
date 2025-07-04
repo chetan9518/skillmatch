@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
+
 type UserProfile = {
   firstname: string;
   lastname?: string;
@@ -23,11 +24,11 @@ export default function Dashboard() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [profileUrl, setProfileUrl] = useState<string | null>(null);
   const [resumeUrl, setResumeUrl] = useState<string | null>(null);
-const [jobs, setJobs] = useState<Job[]>([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
 
-type Job = {
-  id:number,
-  jobtitle: string,
+  type Job = {
+    id: number,
+    jobtitle: string,
     companyname: string,
     jobtype: string,
     location: string,
@@ -39,27 +40,27 @@ type Job = {
     aboutjob: string,
     link: string,
     email: string
-};
-
-
-
-useEffect(() => {
-  const fetchJobs = async () => {
-    try {
-      const res = await axios.get("http://localhost:3000/user/prepost", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.data.success) {
-        console.log(res.data.prepost)
-        setJobs(res.data.prepost);
-      }
-    } catch (err) {
-      console.error("Failed to fetch jobs", err);
-    }
   };
 
-  if (token) fetchJobs();
-}, [token]);
+
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/user/prepost", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.data.success) {
+          console.log(res.data.prepost)
+          setJobs(res.data.prepost);
+        }
+      } catch (err) {
+        console.error("Failed to fetch jobs", err);
+      }
+    };
+
+    if (token) fetchJobs();
+  }, [token]);
 
 
 
@@ -110,6 +111,10 @@ useEffect(() => {
 
         if (res.data.success) {
           setProfile(res.data.details);
+
+
+
+
           const { profilelink, resumelink } = res.data.details;
           if (profilelink && resumelink) {
             await fetchSignedUrls(profilelink, resumelink);
@@ -134,16 +139,26 @@ useEffect(() => {
       </div>
     );
   }
+  const current = new Date().toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  })
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-zinc-900 text-gray-900 dark:text-white p-4">
       <div className="max-w-3xl mx-auto space-y-6">
-        <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow flex justify-between items-center">
-          <div>
-            <h2 className="text-2xl font-bold">Hi {profile?.firstname || "there"} 👋</h2>
-            <p className="text-sm text-gray-500 dark:text-zinc-300">
+
+
+        <div className=" relative bg-white dark:bg-zinc-800 rounded-xl p-6  pt-10 shadow-md flex justify-between items-center transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:bg-blue-50">
+          <p className="absolute top-4 left-6 text-sm text-zinc-500">{current}</p>
+          <div className="mb-2 space-y-1">
+            <h2 className="text-xl font-semibold">Hi {profile?.firstname || "there"} 👋</h2>
+            <p className=" text-zinc-600 dark:text-zinc-400">
               {profile?.bio || "Start setting up your profile to get better matches!"}
             </p>
+
           </div>
           {profileUrl ? (
             <img
@@ -154,18 +169,38 @@ useEffect(() => {
           ) : (
             <img
               src={`https://ui-avatars.com/api/?name=${profile?.firstname}&background=random`}
-              className="w-24 h-24 rounded-full border-2 border-white"
+              className="w-24 h-24 z-10 rounded-full border-2 border-white"
               alt="Avatar"
             />
           )}
         </div>
 
-        <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow">
+        <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:bg-blue-50">
           <h3 className="text-lg font-semibold mb-4">Quick Profile Overview</h3>
-          <div className="space-y-2 text-sm">
+          <div className="space-y-4 text-sm">
             <p><strong>Name:</strong> {profile?.firstname} {profile?.lastname}</p>
             <p><strong>Email:</strong> {profile?.email}</p>
-            <p><strong>Skills:</strong> {profile?.skills || "No skills added yet"}</p>
+            <div className="flex items-center">
+              <strong>Skills: </strong>
+              {profile?.skills ? (
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {profile.skills
+                    .split(",")
+                    .map((skill) => skill.trim())
+                    .map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full hover:bg-blue-100 transition-all duration-200"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                </div>
+              ) : (
+                <p className="text-sm text-zinc-500"> No skills added yet</p>
+              )}
+            </div>
+
             <p>
               <strong>GitHub:</strong>{" "}
               {profile?.github ? (
@@ -206,47 +241,47 @@ useEffect(() => {
             )}
           </div>
         </div>
-   {jobs.length > 0 && (
-  <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow">
-    <h3 className="text-lg font-semibold mb-4">Your Posted Jobs</h3>
-    <ul className="space-y-4">
-      {jobs.map((job) => (
-        <li key={job.id} className="border-b pb-4">
-          <h4 className="text-blue-600 font-semibold">{job.jobtitle}</h4>
-          <p className="text-sm">Company: {job.companyname}</p>
-          <p className="text-sm">Location: {job.location}</p>
-          <p className="text-sm">Salary: ₹{job.salary}</p>
-          <p className="text-sm">Deadline: {new Date(job.deadline).toLocaleDateString()}</p>
-          <div className="mt-2 space-x-2">
-            <button
-              className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-              onClick={() => navigate(`/dashboard/edit-job/${job.id}`)}
-            >
-              Edit
-            </button>
-            <button
-              className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-              onClick={async () => {
-                try {
-                  await axios.delete(`http://localhost:3000/user/deletejob/${job.id}`, {
-                    headers: { Authorization: `Bearer ${token}` },
-                  });
-                  toast.success("Job deleted");
-                  setJobs(jobs.filter((j) => j.id !== job.id)); 
-                } catch (err) {
-                  console.log(err)
-                  toast.error("Failed to delete");
-                }
-              }}
-            >
-              Delete
-            </button>
+        {jobs.length > 0 && (
+          <div className=" space-y-2 bg-white px-3 py-4 dark:bg-zinc-800 rounded-xl p-6 shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:bg-blue-50">
+            <h3 className="text-lg font-semibold mb-4">Your Posted Jobs</h3>
+            <ul className="space-y-4">
+              {jobs.map((job) => (
+                <li key={job.id} className="border-b space-y-2 pb-4">
+                  <h4 className="text-blue-600 font-semibold">{job.jobtitle}</h4>
+                  <p className="text-sm">Company: {job.companyname}</p>
+                  <p className="text-sm">Location: {job.location}</p>
+                  <p className="text-sm">Salary: ₹{job.salary}</p>
+                  <p className="text-sm">Deadline: {new Date(job.deadline).toLocaleDateString()}</p>
+                  <div className="mt-2 space-x-2">
+                    <button
+                      className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                      onClick={() => navigate(`/dashboard/edit-job/${job.id}`)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                      onClick={async () => {
+                        try {
+                          await axios.delete(`http://localhost:3000/user/deletejob/${job.id}`, {
+                            headers: { Authorization: `Bearer ${token}` },
+                          });
+                          toast.success("Job deleted");
+                          setJobs(jobs.filter((j) => j.id !== job.id));
+                        } catch (err) {
+                          console.log(err)
+                          toast.error("Failed to delete");
+                        }
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
+        )}
 
 
 

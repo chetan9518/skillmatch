@@ -77,7 +77,7 @@ function Jobcard({user}:{user:user}){
     navigate("/dashboard/jobdetail",{state:job})
 }
 
-return <div className="bg-white dark:bg-zinc-900 shadow-md rounded-xl p-5 w-full max-w-md border border-zinc-200 dark:border-zinc-700">
+return <div className="bg-white dark:bg-zinc-900 shadow-md rounded-xl p-5  px-3 py-4w-full max-w-md border border-zinc-200 dark:border-zinc-700 transition-transform duration-300 hover:shadow-lg hover:scale-105">
   <div className="flex items-center justify-between mb-3">
     <h2 className="text-xl font-semibold text-zinc-800 dark:text-white">
       {user.jobtitle}
