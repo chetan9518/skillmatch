@@ -15,8 +15,10 @@ import { Postjob } from "./pages/postjob"
 import { Toaster } from "sonner"
 import { Seekjobs } from "./pages/seekjobs"
 import { JobDetails } from "./pages/jobdetail"
-import { Chat } from "./pages/message"
+
 import { ChatWrapper } from "./pages/Chatwrraper"
+import { MessageDashboard } from "./pages/messagehome"
+import { EditJob } from "./pages/jobedit"
 
 console.log("in app")
 
@@ -29,8 +31,12 @@ function App() {
 
 function App2() {
   const navigate = useNavigate()
+  
+const [islogin, setislogin] = useState(() => {
+  return !!localStorage.getItem("token");
+});
 
-  const [islogin,setislogin]= useState(false);
+  
 
   const login = () => {
     navigate("/signin")
@@ -66,7 +72,8 @@ function App2() {
         <Route path="search" element={<Search/>}></Route>
         <Route path= "profile/:email" element={<Profile/>}/>
         <Route path="chat" element={<ChatWrapper/>}/>
-        
+        <Route path ="msg" element={<MessageDashboard/>}/>
+        <Route path ="edit-job/:id" element={<EditJob/>}/>
         </Route>
        
       </Routes>

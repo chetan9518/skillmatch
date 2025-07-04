@@ -23,6 +23,46 @@ export default function Dashboard() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [profileUrl, setProfileUrl] = useState<string | null>(null);
   const [resumeUrl, setResumeUrl] = useState<string | null>(null);
+const [jobs, setJobs] = useState<Job[]>([]);
+
+type Job = {
+  id:number,
+  jobtitle: string,
+    companyname: string,
+    jobtype: string,
+    location: string,
+    salary: number,
+    eligibility: string,
+    duration: string,
+    deadline: Date,
+    skills: string,
+    aboutjob: string,
+    link: string,
+    email: string
+};
+
+
+
+useEffect(() => {
+  const fetchJobs = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/user/prepost", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.data.success) {
+        console.log(res.data.prepost)
+        setJobs(res.data.prepost);
+      }
+    } catch (err) {
+      console.error("Failed to fetch jobs", err);
+    }
+  };
+
+  if (token) fetchJobs();
+}, [token]);
+
+
+
 
   useEffect(() => {
     if (!token) {
@@ -166,6 +206,51 @@ export default function Dashboard() {
             )}
           </div>
         </div>
+   {jobs.length > 0 && (
+  <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow">
+    <h3 className="text-lg font-semibold mb-4">Your Posted Jobs</h3>
+    <ul className="space-y-4">
+      {jobs.map((job) => (
+        <li key={job.id} className="border-b pb-4">
+          <h4 className="text-blue-600 font-semibold">{job.jobtitle}</h4>
+          <p className="text-sm">Company: {job.companyname}</p>
+          <p className="text-sm">Location: {job.location}</p>
+          <p className="text-sm">Salary: ₹{job.salary}</p>
+          <p className="text-sm">Deadline: {new Date(job.deadline).toLocaleDateString()}</p>
+          <div className="mt-2 space-x-2">
+            <button
+              className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+              onClick={() => navigate(`/dashboard/edit-job/${job.id}`)}
+            >
+              Edit
+            </button>
+            <button
+              className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              onClick={async () => {
+                try {
+                  await axios.delete(`http://localhost:3000/user/deletejob/${job.id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                  });
+                  toast.success("Job deleted");
+                  setJobs(jobs.filter((j) => j.id !== job.id)); 
+                } catch (err) {
+                  console.log(err)
+                  toast.error("Failed to delete");
+                }
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+
+
+
       </div>
     </div>
   );

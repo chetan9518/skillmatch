@@ -35,6 +35,7 @@ export function Signin() {
 
     }
     localStorage.setItem("token",response.data.token)
+    localStorage.setItem("email",response.data.email)
     setloading(false);
     setislogin(true)
     toast.success("Signin Successfully")

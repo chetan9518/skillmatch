@@ -1,4 +1,5 @@
 import { WebSocket,WebSocketServer } from "ws"
+import { PrismaClient } from "./generated/prisma"
 import jwt from "jsonwebtoken"
 import { secret_key } from "./key"
 interface user {
@@ -7,7 +8,8 @@ interface user {
 interface Usermap {
     [email:string]:WebSocket
 }
-export function websocket(server:import("http").Server){
+const prisma = new PrismaClient();
+export  function websocket(server:import("http").Server){
 
     const Users :Usermap= {}
     const wss = new WebSocketServer({server});
@@ -44,13 +46,26 @@ if (!user) {
         }
         Users[user.email]= ws;
         console.log("connected:", user.email);
-        ws.on("message",(data)=>{
+        ws.on("message",async (data)=>{
             const {to ,message}= JSON.parse(data.toString())
-            const recieverSocket = Users[to] ;
+            console.log(to)
+            const receiverSocket = Users[to] ;
             const msgPayload= {from:user.email,message:message}
-            if(recieverSocket){
-                recieverSocket.send(JSON.stringify(msgPayload))
+           
+
+            if(receiverSocket){
+                receiverSocket.send(JSON.stringify(msgPayload))
             }
+            await prisma.messages.create(
+                {
+                    data:{
+                        sender:user.email,
+                        receiver:to ,
+                        content:message
+                    }
+                }
+            )
+
         })
         ws.on("close",()=>{
             console.log("connection break",user.email)

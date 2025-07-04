@@ -143,7 +143,7 @@ const navigate = useNavigate();
         <div className="w-12 h-12 rounded-full bg-zinc-300" />
         <div>
           <h2 className="text-lg font-semibold text-zinc-800 ">
-            {user.firstname}{user.lastname}
+            {user.firstname} {user.lastname}
           </h2>
           <p className="text-sm text-zinc-500">Email:{user.email}</p>
         </div>

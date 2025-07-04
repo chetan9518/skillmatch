@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.10.0
- * Query Engine version: aee10d5a411e4360c6d3445ce4810ca65adbf3e8
+ * Prisma Client JS version: 6.11.0
+ * Query Engine version: 9c30299f5a0ea26a96790e13f796dc6094db3173
  */
 Prisma.prismaVersion = {
-  client: "6.10.0",
-  engine: "aee10d5a411e4360c6d3445ce4810ca65adbf3e8"
+  client: "6.11.0",
+  engine: "9c30299f5a0ea26a96790e13f796dc6094db3173"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -152,6 +152,15 @@ exports.Prisma.JobsScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.MessagesScalarFieldEnum = {
+  id: 'id',
+  sender: 'sender',
+  receiver: 'receiver',
+  content: 'content',
+  created_at: 'created_at',
+  isread: 'isread'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -170,7 +179,8 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   users: 'users',
-  jobs: 'jobs'
+  jobs: 'jobs',
+  messages: 'messages'
 };
 
 /**

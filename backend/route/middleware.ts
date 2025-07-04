@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken"
 import { secret_key } from "../key";
 
  export function auth(req:any,res:any,next:any){
+    console.log("     in auth    ")
     const token = req.headers["authorization"]
     
 

@@ -26,10 +26,13 @@ export function Profile(){
         navigate("/signin")
         return};
 },[])
+
     const [user,setresult]= useState<UserProfile|null>(null)
     const [profile,setprofile]=useState(null)
     const {email}= useParams();
     const skill = user?.skills?.split(",").map((e)=>e.trim())
+
+
     useEffect(()=>{
        const fetchprofile = async (profileKey:string)=>{
          const profileRes = await axios.get(
@@ -52,6 +55,7 @@ export function Profile(){
             )
             if(!result.data.success){
                 console.error("Unable to fetch",result.data.msg)
+                return;
 
             }
             setresult(result.data.details)
@@ -64,39 +68,43 @@ export function Profile(){
         fetch()
     },[])
     
-    return   (
-    <div className="max-w-2xl mx-auto p-6 bg-white dark:bg-zinc-900 rounded-2xl shadow-lg mt-8">
-      {/* Profile image */}
-      <div className="flex justify-center">
-        {profile ? <img
-          className="w-24 h-24 rounded-full border-2 border-blue-500"
-          src= {profile}
-          alt={user?.firstname}
-        />
+   return (
+  <div className="w-full max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-zinc-800 dark:border-gray-700 mt-10">
+    
+    {/* Top-right menu trigger */}
+    <div className="flex justify-end px-4 pt-4">
+      <button
+        id="dropdownButton"
+        className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
+        type="button"
+      >
+        <span className="sr-only">Open dropdown</span>
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 16 3">
+          <path d="M2 0a1.5 1.5 0 1 1 0 3A1.5 1.5 0 0 1 2 0Zm6.041 0a1.5 1.5 0 1 1 0 3A1.5 1.5 0 0 1 8.041 0ZM14 0a1.5 1.5 0 1 1 0 3A1.5 1.5 0 0 1 14 0Z" />
+        </svg>
+      </button>
+    </div>
 
-        :(<img
-          className="w-24 h-24 rounded-full border-2 border-blue-500"
-          src= "/images/default-avatar.png"
-          alt={user?.firstname}
-        />)}
-      </div>
-
-      {/* Name */}
-      <h2 className="text-2xl font-bold text-center mt-4 text-zinc-800 dark:text-white">
+    {/* Profile Content */}
+    <div className="flex flex-col items-center pb-10 px-4">
+      <img
+        className="w-24 h-24 mb-3 rounded-full shadow-lg object-cover"
+        src={profile || "/images/default-avatar.png"}
+        alt={user?.firstname}
+      />
+      <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
         {user?.firstname} {user?.lastname}
-      </h2>
-
-      {/* Bio */}
-      <p className="text-center text-sm text-zinc-600 dark:text-zinc-300 mt-1">
-        {user?.bio || "No bio provided."}
-      </p>
+      </h5>
+      <span className="text-sm text-gray-500 dark:text-gray-400">
+        {user?.bio || "No bio provided"}
+      </span>
 
       {/* Skills */}
-      {skill && (
+      {skill && skill.length > 0 && (
         <div className="flex flex-wrap justify-center gap-2 mt-4">
-          {skill.map((skill: string,index:number) => (
+          {skill.map((skill, index) => (
             <span
-              key={skill+index}
+              key={skill + index}
               className="px-3 py-1 text-sm bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-white rounded-full"
             >
               {skill}
@@ -106,13 +114,13 @@ export function Profile(){
       )}
 
       {/* Links */}
-      <div className="mt-4 text-center space-x-4">
+      <div className="flex gap-4 mt-4">
         {user?.github && (
           <a
             href={user.github}
             target="_blank"
             rel="noreferrer"
-            className="text-blue-600 dark:text-blue-400 underline"
+            className="text-blue-600 dark:text-blue-400 underline text-sm"
           >
             GitHub
           </a>
@@ -122,37 +130,38 @@ export function Profile(){
             href={user.portfolio}
             target="_blank"
             rel="noreferrer"
-            className="text-blue-600 dark:text-blue-400 underline"
+            className="text-blue-600 dark:text-blue-400 underline text-sm"
           >
             Portfolio
           </a>
         )}
       </div>
-
-      {/* Resume */}
+      <div className="flex items-center justify-center mt-4">
+      {/* Resume Button */}
       {user?.resumelink && (
-        <div className="mt-4 text-center">
-          <a
-            href={user.resumelink}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-          >
-            View Resume
-          </a>
-        </div>
-        
+        <a
+          href={user.resumelink}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Resume
+        </a>
       )}
-      <button onClick={()=>{
-        console.log(user?.email)
-        navigate("/dashboard/chat",{state:{receiverEmail:user?.email}})
-      }} className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-<span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-Message
-</span>
-</button>
-    </div>)
-  
-    }
-    
-    
+
+      {/* Message Button */}
+      <button
+        onClick={() =>
+          navigate("/dashboard/chat", {
+            state: { receiverEmail: user?.email },
+          })
+        }
+        className="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+      >
+        Message
+      </button>
+      </div>
+    </div>
+  </div>
+)
+}
