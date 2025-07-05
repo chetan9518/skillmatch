@@ -11,9 +11,11 @@ datasource db {
 model users {
   id         Int       @id @default(autoincrement())
   firstname  String    @db.VarChar(50)
-  lastname   String    @db.VarChar(50)
+  lastname   String?   @db.VarChar(50)
   email      String    @unique @db.VarChar(250)
-  password   String
+  password   String?
+  googleid   String?   @unique
+  authprovider String  @default("credentials")
   bio        String?
   skills     String?
   github     String?

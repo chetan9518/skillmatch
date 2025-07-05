@@ -7,16 +7,17 @@ import { toast } from "sonner";
 
 export function Search() {
 
-  {/*login check*/}
+  {/*login check*/ }
   const navigate = useNavigate()
-    useEffect(()=>{
-      
-       const token = localStorage.getItem("token");
-          if (!token) {
-            toast.error("Session Expired")
-            navigate("/signin")
-            return};
-    },[])
+  useEffect(() => {
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Session Expired")
+      navigate("/signin")
+      return
+    };
+  }, [])
 
 
 
@@ -24,7 +25,7 @@ export function Search() {
   const [searchuser, setsearchuser] = useState<user[]>([]);
   const [input, setinput] = useState("");
   const [flip, setflip] = useState(false);
-  
+
 
   useEffect(() => {
     async function fetch() {
@@ -50,7 +51,7 @@ export function Search() {
 
     }
     fetch()
-  },[])
+  }, [])
 
   useEffect(() => {
 
@@ -62,14 +63,14 @@ export function Search() {
   }, [input])
 
   async function searchfetcher() {
-const token = localStorage.getItem("token")
-        if (!token) {
-          toast.error("Session Expired")
-          console.log("Login to get users")
-        }
-    const result = await axios.get(`http://localhost:3000/user/searchuser?${(input.includes("@")) ? "email" : "skill"}=${input}`,{
-      headers:{
-        Authorization:`Bearer ${token}`
+    const token = localStorage.getItem("token")
+    if (!token) {
+      toast.error("Session Expired")
+      console.log("Login to get users")
+    }
+    const result = await axios.get(`http://localhost:3000/user/searchuser?${(input.includes("@")) ? "email" : "skill"}=${input}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
     })
     if (!result.data.success) {
@@ -77,10 +78,10 @@ const token = localStorage.getItem("token")
       return
     }
     setsearchuser(result.data.users);
-   
+    console.log(users)
   }
-  
-  
+
+
 
   return (
     <div className="flex flex-col gap-6 px-6 py-4">
@@ -127,25 +128,32 @@ type user = {
   firstname: string,
   lastname: string,
   email: string,
-  skills?: string
+  skills?: string,
+  profilelink?:string,
+  profileurl:string|null
 }
 //usercard
 function UserCard({ user }: { user: user }) {
-  function nav(){
-navigate(`/dashboard/profile/${user.email}`);
+  function nav() {
+    navigate(`/dashboard/profile/${user.email}`);
 
   }
   const userskill = user.skills?.split(",").map((e) => e.trim());
-const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
-    <button onClick={nav}className="p-4 bg-white border-zinc-200 dark:border-zinc-700 rounded-lg shadow-md hover:shadow-lg  transition-transform duration-300 hover:scale-105 hover:bg-blue-50">
+    <button onClick={nav} className="p-4 bg-white border-zinc-200 dark:border-zinc-700 rounded-lg shadow-md hover:shadow-lg  transition-transform duration-300 hover:scale-105 hover:bg-blue-50">
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-12 h-12 rounded-full bg-zinc-300" />
+        
+        <img className="w-12 h-12 rounded-full bg-zinc-300"
+          alt={user.email}
+           src={user.profileurl||"https://www.gravatar.com/avatar/?d=mp"}>
+        </img>
+         
         <div>
           <h2 className="text-lg font-semibold text-zinc-800 ">
             {user.firstname} {user.lastname}
           </h2>
-          <p className="text-sm text-zinc-500">Email:{user.email}</p>
+          <p className="text-sm text-zinc-500 truncate max-w-[200px]">Email:{user.email}</p>
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
@@ -156,7 +164,7 @@ const navigate = useNavigate();
 
       </div>
     </button>
-    
+
   );
 }
 function getRandomColorName() {

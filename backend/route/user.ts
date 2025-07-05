@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken"
 import { secret_key } from "../key";
 import bcrypt from "bcrypt"
 import { auth } from "./middleware";
-
+import { OAuth2Client } from "google-auth-library";
 import { PrismaClient } from "../generated/prisma"
 import { Request, Response } from "express";
 import multer from "multer"
@@ -24,7 +24,7 @@ const upload = multer({ storage: storage })
 const prisma = new PrismaClient();
 const salt: number = 10
 export const userRouter = express.Router();
-
+const googleclient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 const signupschema = z.object({
     firstName: z.string(),
     lastName: z.string(),
@@ -253,6 +253,81 @@ userRouter.get("/me", auth, async function (req: Request, res: Response): Promis
     }
 });
 
+
+userRouter.post("/googleauth", async (req: Request, res: Response): Promise<any> => {
+  const { credentials } = req.body;
+
+  try {
+    const ticket = await googleclient.verifyIdToken({
+      idToken: credentials,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    if (!payload) return res.status(400).json({ success: false, msg: "Invalid token" });
+    
+
+    const { sub, email, name, picture, given_name, family_name } = payload;
+    if (!email) {
+  return res.status(400).json({ success: false, msg: "Google account has no email" });
+}
+
+
+    const existingUser = await prisma.users.findUnique({
+      where: { email },
+    });
+
+    if (!existingUser) {
+      const firstname = given_name || name?.trim().split(" ")[0] || "User";
+      const lastname = family_name || name?.trim().split(" ").slice(1).join(" ") || null;
+
+      let key: string | null = null;
+
+      if (picture) {
+        
+        const response = await fetch(picture);
+        const buffer = await response.arrayBuffer();
+        const contentType = response.headers.get("content-type");
+
+        
+        key = `profile/${email}.${contentType}`;
+
+        const cmd = new PutObjectCommand({
+          Key: key,
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Body: Buffer.from(buffer),
+          ContentType: `image/${contentType}`,
+          
+        });
+
+        await s3.send(cmd);
+      }
+
+      await prisma.users.create({
+        data: {
+          firstname,
+          lastname,
+           email:email,
+          googleid: sub,
+          profilelink: key,
+        },
+      });
+    }
+
+    const token = jwt.sign({ email }, secret_key);
+
+    return res.status(200).json({
+      success: true,
+      token,
+    });
+
+  } catch (err) {
+    console.error("Google Auth Error:", err);
+    return res.status(500).json({ success: false, msg: "Google login failed" });
+  }
+});
+
+
 userRouter.post("/signup", async (req, res): Promise<any> => {
     const body: signupbody = req.body;
     const re = signupschema.safeParse(body);
@@ -374,7 +449,7 @@ userRouter.post("/signin", async (req: Request, res: Response): Promise<any> => 
         });
     }
 
-    const isValid = await bcrypt.compare(body.password, user.password);
+    const isValid = await bcrypt.compare(body.password, user.password!);
 
     if (!isValid) {
         return res.json({
@@ -561,7 +636,13 @@ userRouter.get("/fetchinfo", auth, async (req: meget, res: Response): Promise<an
         }
     })
 })
-
+type userpay = {
+    firstname: string,
+    lastname: string,
+    email: string,
+    skills?: string,
+    profileurl?: string
+}
 userRouter.get("/fetchuser", auth, async (req: meget, res: Response): Promise<any> => {
     try {
         const users = await prisma.users.findMany({
@@ -580,9 +661,28 @@ userRouter.get("/fetchuser", auth, async (req: meget, res: Response): Promise<an
                 msg: "User not found"
             })
         }
+        const updated = await Promise.all(users.map(async (user) => {
+            const profilekey = user.profilelink
+
+
+            if (profilekey) {
+                const cmd = new GetObjectCommand({
+                    Bucket: process.env.AWS_BUCKET_NAME,
+                    Key: profilekey
+                })
+                const profileurl = await getSignedUrl(s3, cmd, { expiresIn: 86400 })
+                return { ...user, profileurl: profileurl }
+
+
+            }
+            else return { ...user, profileurl: null }
+
+
+        }))
+
         return res.status(200).json({
             success: true,
-            users: users
+            users: updated
         })
     }
     catch (e) {
@@ -708,14 +808,14 @@ const uploadjobi = z.object({
 
 userRouter.post("/postjob", auth, async (req: meget, res: Response): Promise<any> => {
     const payload: job = req.body;
-    const email:string|null = req.email!
-     if (!email) {
+    const email: string | null = req.email!
+    if (!email) {
         return res.status(401).json({
             success: false,
             msg: "Unauthorized fetch"
         })
     }
-    payload.email= email
+    payload.email = email
     const re = uploadjobi.safeParse(payload)
 
     if (!re.success) {
@@ -780,36 +880,36 @@ userRouter.get("/seekjobs", auth, async (req: meget, res: Response): Promise<any
     }
 })
 
-userRouter.get("/jobinfo/:id",auth,async (req:meget,res:Response):Promise<any>=>{
-    try{
-    const email:string|null = req.email!
-    const jobId = req.params.id;
-    if (!email) {
-        return res.status(401).json({
-            success: false,
-            msg: "Unauthorized fetch"
+userRouter.get("/jobinfo/:id", auth, async (req: meget, res: Response): Promise<any> => {
+    try {
+        const email: string | null = req.email!
+        const jobId = req.params.id;
+        if (!email) {
+            return res.status(401).json({
+                success: false,
+                msg: "Unauthorized fetch"
+            })
+        }
+        const info = await prisma.jobs.findUnique({
+            where: {
+                id: Number(jobId)
+            }
+
+        })
+
+        return res.status(200).json({
+            success: true,
+            job: info
         })
     }
-    const info = await prisma.jobs.findUnique({
-        where:{
-            id:Number(jobId)
-        }
+    catch (e) {
+        console.log(e)
+        return res.status(500).json({
+            success: false,
+            msg: "Server error"
 
-    })
-    
-    return res.status(200).json({
-        success:true,
-        job:info
-    })
-}
-catch(e){
-    console.log(e)
-    return res.status(500).json({
-        success:false,
-        msg:"Server error"
-        
-    })
-}
+        })
+    }
 
 })
 
@@ -882,7 +982,7 @@ userRouter.get("/userchatlist", auth, async (req: meget, res: Response): Promise
                 chatuser.push({
                     receiveremail: email,
                     firstname: details.firstname,
-                    lastname: details.lastname,
+                    lastname: details.lastname || ".",
                     profilelink: profileUrl!,
                     lastmessage: message
                 });
@@ -946,7 +1046,7 @@ userRouter.get("/getmessage", auth, async (req: meget, res: Response): Promise<v
 
 })
 interface prepost {
-    id:number,
+    id: number,
     jobtitle: string
     companyname: string
     jobtype: string
@@ -959,57 +1059,57 @@ interface prepost {
     aboutjob: string
     link: string
     email: string
-   
+
 }
 userRouter.get("/prepost", auth, async (req: meget, res: Response): Promise<any> => {
-    try{
-    const email: string | null = req.email!
-    if (!email) {
-        return res.status(401).json({
-            success: false,
-            msg: "Unauthorized fetch"
-        })
+    try {
+        const email: string | null = req.email!
+        if (!email) {
+            return res.status(401).json({
+                success: false,
+                msg: "Unauthorized fetch"
+            })
 
-    }
-    const jobs = await prisma.jobs.findMany({
-        where: {
-            email: email
-        },
-        orderBy: {
-            created_at: "desc"
         }
-    })
-    const prejobs:prepost[]=jobs.map((job)=>({
-    id:job.id,
-    jobtitle: job.jobtitle,
-    companyname: job.companyname,
-    jobtype: job.jobtype,
-    location: job.location,
-    salary: job.salary,
-    eligibility: job.eligibility,
-    duration: job.duration,
-    deadline: job.deadline,
-    skills: job.skills,
-    aboutjob: job.aboutjob,
-    link: job.link,
-    email: job.email,
-    
- } ))
- return res.status(200).json({
-    success:true,
-    prepost:prejobs
- })
+        const jobs = await prisma.jobs.findMany({
+            where: {
+                email: email
+            },
+            orderBy: {
+                created_at: "desc"
+            }
+        })
+        const prejobs: prepost[] = jobs.map((job) => ({
+            id: job.id,
+            jobtitle: job.jobtitle,
+            companyname: job.companyname,
+            jobtype: job.jobtype,
+            location: job.location,
+            salary: job.salary,
+            eligibility: job.eligibility,
+            duration: job.duration,
+            deadline: job.deadline,
+            skills: job.skills,
+            aboutjob: job.aboutjob,
+            link: job.link,
+            email: job.email,
+
+        }))
+        return res.status(200).json({
+            success: true,
+            prepost: prejobs
+        })
     }
-    catch(e){
+    catch (e) {
         return res.status(500).json({
-            success:false,
-            msg:"Server error"
+            success: false,
+            msg: "Server error"
         })
     }
 
 })
 interface jobupdate {
-    id:number,
+    id: number,
     jobtitle: string,
     companyname: string,
     jobtype: string,
@@ -1021,83 +1121,83 @@ interface jobupdate {
     skills: string,
     aboutjob: string,
     link: string,
-    email:string
+    email: string
 }
 
-userRouter.put("/editjob",auth,async (req:meget,res:Response):Promise<any>=>{
-    try{
-     const email: string | null = req.email!
-    if (!email) {
-        return res.status(401).json({
-            success: false,
-            msg: "Unauthorized fetch"
-        })
-    }
-    const updatepack:jobupdate= req.body
-    updatepack.email = email
-    const result = await prisma.jobs.update({
-        data:{
-    jobtitle: updatepack.jobtitle,
-    companyname: updatepack.companyname,
-    jobtype: updatepack.jobtype,
-    location: updatepack.location,
-    salary: updatepack.salary,
-    eligibility: updatepack.eligibility,
-    duration: updatepack.duration,
-    deadline: updatepack.deadline,
-    skills: updatepack.skills,
-    aboutjob: updatepack.aboutjob,
-    link: updatepack.link,
-        },
-        where:{
-            id:updatepack.id
+userRouter.put("/editjob", auth, async (req: meget, res: Response): Promise<any> => {
+    try {
+        const email: string | null = req.email!
+        if (!email) {
+            return res.status(401).json({
+                success: false,
+                msg: "Unauthorized fetch"
+            })
         }
-    })
-    return res.status(200).json({
-        success:true,
-        msg:"Updated"
-    })
+        const updatepack: jobupdate = req.body
+        updatepack.email = email
+        const result = await prisma.jobs.update({
+            data: {
+                jobtitle: updatepack.jobtitle,
+                companyname: updatepack.companyname,
+                jobtype: updatepack.jobtype,
+                location: updatepack.location,
+                salary: updatepack.salary,
+                eligibility: updatepack.eligibility,
+                duration: updatepack.duration,
+                deadline: updatepack.deadline,
+                skills: updatepack.skills,
+                aboutjob: updatepack.aboutjob,
+                link: updatepack.link,
+            },
+            where: {
+                id: updatepack.id
+            }
+        })
+        return res.status(200).json({
+            success: true,
+            msg: "Updated"
+        })
 
     }
-    catch(e){
+    catch (e) {
         console.log(e)
         return res.status(500).json({
-            success:false,
-            msg:"Server error"
+            success: false,
+            msg: "Server error"
         })
     }
 
 })
-userRouter.delete("/deletejob/:id",auth, async (req:meget, res:Response):Promise<any> => {
-     console.log("   in delete  ")
-  const jobId = req.params.id;
-  const userEmail = req.email; 
+userRouter.delete("/deletejob/:id", auth, async (req: meget, res: Response): Promise<any> => {
+    console.log("   in delete  ")
+    const jobId = req.params.id;
+    const userEmail = req.email;
 
-  try {
-   
-    const job = await prisma.jobs.findUnique({
-      where: { id: Number(jobId)},
-    });
+    try {
 
-    if (!job) {
-      return res.status(404).json({ success: false, msg: "Job not found" });
+        const job = await prisma.jobs.findUnique({
+            where: { id: Number(jobId) },
+        });
+
+        if (!job) {
+            return res.status(404).json({ success: false, msg: "Job not found" });
+        }
+
+        if (job.email !== userEmail) {
+            return res.status(403).json({ success: false, msg: "You are not allowed to delete this job" });
+        }
+
+
+        await prisma.jobs.delete({
+            where: { id: Number(jobId) },
+        });
+
+        return res.json({ success: true, msg: "Job deleted successfully" });
+
+    } catch (error) {
+        console.error("Error deleting job:", error);
+        return res.status(500).json({ success: false, msg: "Server error" });
     }
-
-    if (job.email!== userEmail) {
-      return res.status(403).json({ success: false, msg: "You are not allowed to delete this job" });
-    }
-
-   
-    await prisma.jobs.delete({
-      where: { id: Number(jobId) },
-    });
-
-    return res.json({ success: true, msg: "Job deleted successfully" });
-
-  } catch (error) {
-    console.error("Error deleting job:", error);
-    return res.status(500).json({ success: false, msg: "Server error" });
-  }
 });
 
 

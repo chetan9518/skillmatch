@@ -34,7 +34,7 @@ export function Sidebar() {
 
       <aside
         className={`
-          w-64 bg-white dark:bg-zinc-800 p-4 shadow-lg
+          w-64 bg-white dark:bg-zinc-700   border-r border-zinc-200 dark:border-zinc-700 p-4 shadow-lg
           fixed top-16 left-0 h-screen z-40
           transform transition-transform duration-300
           ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
@@ -46,9 +46,11 @@ export function Sidebar() {
           <NavLink
             to="update"
             className={({ isActive }) =>
-              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
-                ? "bg-blue-100 text-blue-700"
-                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              ` 
+               
+               duration-300 hover:scale-105 flex items-center gap-2 py-2 px-4 rounded transition-transform shadow ${isActive
+                ? "bg-blue-100 text-blue-700 scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                : " hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
               }`
             }
             onClick={() => setIsSidebarOpen(false)}
@@ -57,9 +59,10 @@ export function Sidebar() {
           <NavLink
             to="skill-tracker"
             className={({ isActive }) =>
-              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
-                ? "bg-blue-100 text-blue-700"
-                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              `
+flex items-center gap-2 py-2 px-4 rounded transition-transform  hover:scale-105 shadow ${isActive
+                ? "scale-105 bg-blue-100 text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                : "  hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
               }`
             }
             onClick={() => setIsSidebarOpen(false)}
@@ -69,9 +72,9 @@ export function Sidebar() {
           <NavLink
             to="seekjob"
             className={({ isActive }) =>
-              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
-                ? "bg-blue-100 text-blue-700"
-                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              ` flex items-center gap-2 py-2 px-4 rounded transition-transform  hover:scale-105 shadow ${isActive
+                ? "bg-blue-100 text-blue-700 scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                : " hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
               }`
             }
             onClick={() => setIsSidebarOpen(false)}
@@ -81,9 +84,9 @@ export function Sidebar() {
           <NavLink
             to="msg"
             className={({ isActive }) =>
-              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
-                ? "bg-blue-100 text-blue-700"
-                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              `  flex items-center gap-2 py-2 px-4 rounded transition-transform  hover:scale-105 shadow ${isActive
+                ? "bg-blue-100 text-blue-700 scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                : "  hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
               }`
             }
             onClick={() => setIsSidebarOpen(false)}
@@ -93,9 +96,9 @@ export function Sidebar() {
           <NavLink
             to="search"
             className={({ isActive }) =>
-              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
-                ? "bg-blue-100 text-blue-700"
-                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              ` flex items-center gap-2 py-2 px-4 rounded transition-transform  hover:scale-105 shadow ${isActive
+                ? "bg-blue-100 text-blue-700 scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                : " hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
               }`
             }
             onClick={() => setIsSidebarOpen(false)}
@@ -105,9 +108,9 @@ export function Sidebar() {
           <NavLink
             to="postjob"
             className={({ isActive }) =>
-              `flex items-center gap-2 py-2 px-4 rounded transition shadow ${isActive
-                ? "bg-blue-100 text-blue-700"
-                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+              `  flex items-center gap-2 py-2 px-4 rounded transition-transform  hover:scale-105 shadow ${isActive
+                ? "bg-blue-100 text-blue-700 scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                : "  hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
               }`
             }
             onClick={() => setIsSidebarOpen(false)}
@@ -117,24 +120,25 @@ export function Sidebar() {
 
 
         </nav>
- <div className="border-t pt-4">
-        <button
-          onClick={() => {
-            localStorage.setItem("token", "")
+        <div className="border-t pt-4">
+          <button
+            onClick={() => {
+              localStorage.setItem("token", "")
 
-            navigate("/")
-          }}
-          className="flex items-center gap-2 text-red-600 border border-red-300 px-4 py-1.5 rounded-md hover:bg-red-50 transition"
-        >
-          <LogOut size={16} />
-          Logout
-        </button>
-      </div>
+              navigate("/")
+            }}
+            className=" text-red-600 border-red-500 hover:bg-red-500 hover:text-white
+ flex items-center gap-2 border  px-4 py-1.5 rounded-md  transition"
+          >
+            <LogOut size={16} />
+            Logout
+          </button>
+        </div>
 
       </aside>
 
 
-     
+
     </>
   );
 }

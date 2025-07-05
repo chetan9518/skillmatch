@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom"
+ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Signin } from "./pages/signin"
 import { Signup } from "./pages/signup"
 import { Home } from "./pages/home"
@@ -15,16 +16,18 @@ import { Postjob } from "./pages/postjob"
 import { Toaster } from "sonner"
 import { Seekjobs } from "./pages/seekjobs"
 import { JobDetails } from "./pages/jobdetail"
-
 import { ChatWrapper } from "./pages/Chatwrraper"
 import { MessageDashboard } from "./pages/messagehome"
 import { EditJob } from "./pages/jobedit"
+  const id = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
-console.log("in app")
 
 function App() {
+
   return <BrowserRouter>
+    <GoogleOAuthProvider clientId={id}>
     <App2 />
+ </GoogleOAuthProvider>
   </BrowserRouter>
 }
 

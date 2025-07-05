@@ -74,7 +74,7 @@ export default function Dashboard() {
   }, [navigate, token]);
 
   useEffect(() => {
-    const fetchSignedUrls = async (profileKey: string, resumeKey: string) => {
+    const fetchSignedUrls = async (profileKey: string) => {
       try {
         const profileRes = await axios.get(
           "http://localhost:3000/user/profileurl",
@@ -87,16 +87,6 @@ export default function Dashboard() {
           setProfileUrl(profileRes.data.profileUrl);
         }
 
-        const resumeRes = await axios.get(
-          "http://localhost:3000/user/resumeurl",
-          {
-            params: { resumelink: resumeKey },
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (resumeRes.data.success) {
-          setResumeUrl(resumeRes.data.resumeUrl);
-        }
       } catch (error) {
         console.error("Failed to fetch signed URLs", error);
       }
@@ -112,12 +102,9 @@ export default function Dashboard() {
         if (res.data.success) {
           setProfile(res.data.details);
 
-
-
-
-          const { profilelink, resumelink } = res.data.details;
-          if (profilelink && resumelink) {
-            await fetchSignedUrls(profilelink, resumelink);
+          const { profilelink} = res.data.details;
+          if (profilelink) {
+            await fetchSignedUrls(profilelink);
           }
         }
       } catch (error) {
@@ -151,7 +138,7 @@ export default function Dashboard() {
       <div className="max-w-3xl mx-auto space-y-6">
 
 
-        <div className=" relative bg-white dark:bg-zinc-800 rounded-xl p-6  pt-10 shadow-md flex justify-between items-center transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:bg-blue-50">
+        <div className=" relative bg-white border border-zinc-200 dark:border-zinc-700 dark:shadow-md dark:shadow-black/10 dark:bg-zinc-800 rounded-xl p-6  pt-10 shadow-md flex justify-between items-center transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:bg-blue-50 dark:hover:bg-zinc-700">
           <p className="absolute top-4 left-6 text-sm text-zinc-500">{current}</p>
           <div className="mb-2 space-y-1">
             <h2 className="text-xl font-semibold">Hi {profile?.firstname || "there"} 👋</h2>
@@ -169,13 +156,13 @@ export default function Dashboard() {
           ) : (
             <img
               src={`https://ui-avatars.com/api/?name=${profile?.firstname}&background=random`}
-              className="w-24 h-24 z-10 rounded-full border-2 border-white"
+              className="w-24 h-24 z-10  shadow-md object-cover rounded-full border-2 border-white flex-shrink-0"
               alt="Avatar"
             />
           )}
         </div>
 
-        <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:bg-blue-50">
+        <div className="dark:shadow-md dark:shadow-black/10 bg-white  dark:hover:bg-zinc-700 dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6 shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:bg-blue-50">
           <h3 className="text-lg font-semibold mb-4">Quick Profile Overview</h3>
           <div className="space-y-4 text-sm">
             <p><strong>Name:</strong> {profile?.firstname} {profile?.lastname}</p>
@@ -190,7 +177,7 @@ export default function Dashboard() {
                     .map((skill) => (
                       <span
                         key={skill}
-                        className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full hover:bg-blue-100 transition-all duration-200"
+                        className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full hover:bg-blue-100 hover:scale-105 transition-transform "
                       >
                         {skill}
                       </span>
@@ -242,7 +229,7 @@ export default function Dashboard() {
           </div>
         </div>
         {jobs.length > 0 && (
-          <div className=" space-y-2 bg-white px-3 py-4 dark:bg-zinc-800 rounded-xl p-6 shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:bg-blue-50">
+          <div className=" dark:shadow-md dark:shadow-black/10 space-y-2 bg-white  dark:hover:bg-zinc-700  border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-800 rounded-xl p-6 shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:bg-blue-50">
             <h3 className="text-lg font-semibold mb-4">Your Posted Jobs</h3>
             <ul className="space-y-4">
               {jobs.map((job) => (

@@ -174,7 +174,7 @@ export function Update() {
 
       {/* Show  profile infomatioon*/}
       {profileLoaded && (
-        <div className="mb-8 grid grid-col gap-y-4 bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
+        <div className="mb-8 grid grid-col gap-y-4 bg-zinc-100 dark:bg-zinc-800 p-4 rounded ">
           <h3 className="text-lg font-semibold mb-2">Current Profile Info</h3>
 
           <div className="flex justify-center mb-2">
@@ -184,7 +184,7 @@ export function Update() {
                   ? URL.createObjectURL(profile)
                   : profile || `https://ui-avatars.com/api/?name=${firstname}+${lastname}&background=random`}
                 alt="Avatar"
-                className="w-30 h-30 object-cover rounded-full border-2 border-white"
+                className="w-30 h-30 object-cover border-2 border-blue-500 shadow-md rounded-full "
               />
               <input
                 type="file"
@@ -194,18 +194,18 @@ export function Update() {
               />
             </div>
           </div>
-
+         <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
           <p>
-            <strong>Full Name:</strong> {firstname} {lastname}
+            <span className="font-semibold text-zinc-600 dark:text-zinc-400">Full Name:</span> {firstname} {lastname}
           </p>
           <p>
-            <strong>Bio:</strong> {bio || "Not added"}
+            <span className="font-semibold text-zinc-600 dark:text-zinc-400">Bio:</span> {bio || "Not added"}
           </p>
           <p>
-            <strong>Skills:</strong> {skills || "Not added"}
+           <span className="font-semibold text-zinc-600 dark:text-zinc-400">Skills:</span> {skills || "Not added"}
           </p>
           <p>
-            <strong>GitHub:</strong>{" "}
+            <span className="font-semibold text-zinc-600 dark:text-zinc-400">Github:</span> {" "}
             {link.github ? (
               <a
                 href={link.github}
@@ -219,7 +219,7 @@ export function Update() {
             )}
           </p>
           <p>
-            <strong>Portfolio:</strong>{" "}
+            <span className="font-semibold text-zinc-600 dark:text-zinc-400">Portfolio:</span> {" "}
             {link.portfolio ? (
               <a
                 href={link.portfolio}
@@ -233,7 +233,7 @@ export function Update() {
             )}
           </p>
           <p>
-            <strong>Resume:</strong>{" "}
+            <span className="font-semibold text-zinc-600 dark:text-zinc-400">Resume:</span> {" "}
             {resumlink ? (
               <a href={resumlink} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
                 Download Resume
@@ -243,9 +243,10 @@ export function Update() {
               "Not added"
             )}
           </p>
+          </div>
           <button
             onClick={() => setEditBut(pre => !pre)}
-            className="mt-4 px-4 py-2 w-auto shadow-lg bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="mt-4  w-auto     bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition shadow-md"
           >
             {showEditBut ? "Hide" : "Update profile"}
           </button>

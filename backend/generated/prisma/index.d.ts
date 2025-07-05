@@ -1077,6 +1077,8 @@ export namespace Prisma {
     lastname: string | null
     email: string | null
     password: string | null
+    googleid: string | null
+    authprovider: string | null
     bio: string | null
     skills: string | null
     github: string | null
@@ -1092,6 +1094,8 @@ export namespace Prisma {
     lastname: string | null
     email: string | null
     password: string | null
+    googleid: string | null
+    authprovider: string | null
     bio: string | null
     skills: string | null
     github: string | null
@@ -1107,6 +1111,8 @@ export namespace Prisma {
     lastname: number
     email: number
     password: number
+    googleid: number
+    authprovider: number
     bio: number
     skills: number
     github: number
@@ -1132,6 +1138,8 @@ export namespace Prisma {
     lastname?: true
     email?: true
     password?: true
+    googleid?: true
+    authprovider?: true
     bio?: true
     skills?: true
     github?: true
@@ -1147,6 +1155,8 @@ export namespace Prisma {
     lastname?: true
     email?: true
     password?: true
+    googleid?: true
+    authprovider?: true
     bio?: true
     skills?: true
     github?: true
@@ -1162,6 +1172,8 @@ export namespace Prisma {
     lastname?: true
     email?: true
     password?: true
+    googleid?: true
+    authprovider?: true
     bio?: true
     skills?: true
     github?: true
@@ -1261,9 +1273,11 @@ export namespace Prisma {
   export type UsersGroupByOutputType = {
     id: number
     firstname: string
-    lastname: string
+    lastname: string | null
     email: string
-    password: string
+    password: string | null
+    googleid: string | null
+    authprovider: string
     bio: string | null
     skills: string | null
     github: string | null
@@ -1298,6 +1312,8 @@ export namespace Prisma {
     lastname?: boolean
     email?: boolean
     password?: boolean
+    googleid?: boolean
+    authprovider?: boolean
     bio?: boolean
     skills?: boolean
     github?: boolean
@@ -1313,6 +1329,8 @@ export namespace Prisma {
     lastname?: boolean
     email?: boolean
     password?: boolean
+    googleid?: boolean
+    authprovider?: boolean
     bio?: boolean
     skills?: boolean
     github?: boolean
@@ -1328,6 +1346,8 @@ export namespace Prisma {
     lastname?: boolean
     email?: boolean
     password?: boolean
+    googleid?: boolean
+    authprovider?: boolean
     bio?: boolean
     skills?: boolean
     github?: boolean
@@ -1343,6 +1363,8 @@ export namespace Prisma {
     lastname?: boolean
     email?: boolean
     password?: boolean
+    googleid?: boolean
+    authprovider?: boolean
     bio?: boolean
     skills?: boolean
     github?: boolean
@@ -1352,7 +1374,7 @@ export namespace Prisma {
     created_at?: boolean
   }
 
-  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstname" | "lastname" | "email" | "password" | "bio" | "skills" | "github" | "portfolio" | "resumelink" | "profilelink" | "created_at", ExtArgs["result"]["users"]>
+  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstname" | "lastname" | "email" | "password" | "googleid" | "authprovider" | "bio" | "skills" | "github" | "portfolio" | "resumelink" | "profilelink" | "created_at", ExtArgs["result"]["users"]>
 
   export type $usersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "users"
@@ -1360,9 +1382,11 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       firstname: string
-      lastname: string
+      lastname: string | null
       email: string
-      password: string
+      password: string | null
+      googleid: string | null
+      authprovider: string
       bio: string | null
       skills: string | null
       github: string | null
@@ -1798,6 +1822,8 @@ export namespace Prisma {
     readonly lastname: FieldRef<"users", 'String'>
     readonly email: FieldRef<"users", 'String'>
     readonly password: FieldRef<"users", 'String'>
+    readonly googleid: FieldRef<"users", 'String'>
+    readonly authprovider: FieldRef<"users", 'String'>
     readonly bio: FieldRef<"users", 'String'>
     readonly skills: FieldRef<"users", 'String'>
     readonly github: FieldRef<"users", 'String'>
@@ -4383,6 +4409,8 @@ export namespace Prisma {
     lastname: 'lastname',
     email: 'email',
     password: 'password',
+    googleid: 'googleid',
+    authprovider: 'authprovider',
     bio: 'bio',
     skills: 'skills',
     github: 'github',
@@ -4528,9 +4556,11 @@ export namespace Prisma {
     NOT?: usersWhereInput | usersWhereInput[]
     id?: IntFilter<"users"> | number
     firstname?: StringFilter<"users"> | string
-    lastname?: StringFilter<"users"> | string
+    lastname?: StringNullableFilter<"users"> | string | null
     email?: StringFilter<"users"> | string
-    password?: StringFilter<"users"> | string
+    password?: StringNullableFilter<"users"> | string | null
+    googleid?: StringNullableFilter<"users"> | string | null
+    authprovider?: StringFilter<"users"> | string
     bio?: StringNullableFilter<"users"> | string | null
     skills?: StringNullableFilter<"users"> | string | null
     github?: StringNullableFilter<"users"> | string | null
@@ -4543,9 +4573,11 @@ export namespace Prisma {
   export type usersOrderByWithRelationInput = {
     id?: SortOrder
     firstname?: SortOrder
-    lastname?: SortOrder
+    lastname?: SortOrderInput | SortOrder
     email?: SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
+    googleid?: SortOrderInput | SortOrder
+    authprovider?: SortOrder
     bio?: SortOrderInput | SortOrder
     skills?: SortOrderInput | SortOrder
     github?: SortOrderInput | SortOrder
@@ -4558,12 +4590,14 @@ export namespace Prisma {
   export type usersWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     email?: string
+    googleid?: string
     AND?: usersWhereInput | usersWhereInput[]
     OR?: usersWhereInput[]
     NOT?: usersWhereInput | usersWhereInput[]
     firstname?: StringFilter<"users"> | string
-    lastname?: StringFilter<"users"> | string
-    password?: StringFilter<"users"> | string
+    lastname?: StringNullableFilter<"users"> | string | null
+    password?: StringNullableFilter<"users"> | string | null
+    authprovider?: StringFilter<"users"> | string
     bio?: StringNullableFilter<"users"> | string | null
     skills?: StringNullableFilter<"users"> | string | null
     github?: StringNullableFilter<"users"> | string | null
@@ -4571,14 +4605,16 @@ export namespace Prisma {
     resumelink?: StringNullableFilter<"users"> | string | null
     profilelink?: StringNullableFilter<"users"> | string | null
     created_at?: DateTimeNullableFilter<"users"> | Date | string | null
-  }, "id" | "email">
+  }, "id" | "email" | "googleid">
 
   export type usersOrderByWithAggregationInput = {
     id?: SortOrder
     firstname?: SortOrder
-    lastname?: SortOrder
+    lastname?: SortOrderInput | SortOrder
     email?: SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
+    googleid?: SortOrderInput | SortOrder
+    authprovider?: SortOrder
     bio?: SortOrderInput | SortOrder
     skills?: SortOrderInput | SortOrder
     github?: SortOrderInput | SortOrder
@@ -4599,9 +4635,11 @@ export namespace Prisma {
     NOT?: usersScalarWhereWithAggregatesInput | usersScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"users"> | number
     firstname?: StringWithAggregatesFilter<"users"> | string
-    lastname?: StringWithAggregatesFilter<"users"> | string
+    lastname?: StringNullableWithAggregatesFilter<"users"> | string | null
     email?: StringWithAggregatesFilter<"users"> | string
-    password?: StringWithAggregatesFilter<"users"> | string
+    password?: StringNullableWithAggregatesFilter<"users"> | string | null
+    googleid?: StringNullableWithAggregatesFilter<"users"> | string | null
+    authprovider?: StringWithAggregatesFilter<"users"> | string
     bio?: StringNullableWithAggregatesFilter<"users"> | string | null
     skills?: StringNullableWithAggregatesFilter<"users"> | string | null
     github?: StringNullableWithAggregatesFilter<"users"> | string | null
@@ -4771,9 +4809,11 @@ export namespace Prisma {
 
   export type usersCreateInput = {
     firstname: string
-    lastname: string
+    lastname?: string | null
     email: string
-    password: string
+    password?: string | null
+    googleid?: string | null
+    authprovider?: string
     bio?: string | null
     skills?: string | null
     github?: string | null
@@ -4786,9 +4826,11 @@ export namespace Prisma {
   export type usersUncheckedCreateInput = {
     id?: number
     firstname: string
-    lastname: string
+    lastname?: string | null
     email: string
-    password: string
+    password?: string | null
+    googleid?: string | null
+    authprovider?: string
     bio?: string | null
     skills?: string | null
     github?: string | null
@@ -4800,9 +4842,11 @@ export namespace Prisma {
 
   export type usersUpdateInput = {
     firstname?: StringFieldUpdateOperationsInput | string
-    lastname?: StringFieldUpdateOperationsInput | string
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    googleid?: NullableStringFieldUpdateOperationsInput | string | null
+    authprovider?: StringFieldUpdateOperationsInput | string
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     skills?: NullableStringFieldUpdateOperationsInput | string | null
     github?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4815,9 +4859,11 @@ export namespace Prisma {
   export type usersUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     firstname?: StringFieldUpdateOperationsInput | string
-    lastname?: StringFieldUpdateOperationsInput | string
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    googleid?: NullableStringFieldUpdateOperationsInput | string | null
+    authprovider?: StringFieldUpdateOperationsInput | string
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     skills?: NullableStringFieldUpdateOperationsInput | string | null
     github?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4830,9 +4876,11 @@ export namespace Prisma {
   export type usersCreateManyInput = {
     id?: number
     firstname: string
-    lastname: string
+    lastname?: string | null
     email: string
-    password: string
+    password?: string | null
+    googleid?: string | null
+    authprovider?: string
     bio?: string | null
     skills?: string | null
     github?: string | null
@@ -4844,9 +4892,11 @@ export namespace Prisma {
 
   export type usersUpdateManyMutationInput = {
     firstname?: StringFieldUpdateOperationsInput | string
-    lastname?: StringFieldUpdateOperationsInput | string
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    googleid?: NullableStringFieldUpdateOperationsInput | string | null
+    authprovider?: StringFieldUpdateOperationsInput | string
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     skills?: NullableStringFieldUpdateOperationsInput | string | null
     github?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4859,9 +4909,11 @@ export namespace Prisma {
   export type usersUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     firstname?: StringFieldUpdateOperationsInput | string
-    lastname?: StringFieldUpdateOperationsInput | string
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    googleid?: NullableStringFieldUpdateOperationsInput | string | null
+    authprovider?: StringFieldUpdateOperationsInput | string
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     skills?: NullableStringFieldUpdateOperationsInput | string | null
     github?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5110,6 +5162,8 @@ export namespace Prisma {
     lastname?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    googleid?: SortOrder
+    authprovider?: SortOrder
     bio?: SortOrder
     skills?: SortOrder
     github?: SortOrder
@@ -5129,6 +5183,8 @@ export namespace Prisma {
     lastname?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    googleid?: SortOrder
+    authprovider?: SortOrder
     bio?: SortOrder
     skills?: SortOrder
     github?: SortOrder
@@ -5144,6 +5200,8 @@ export namespace Prisma {
     lastname?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    googleid?: SortOrder
+    authprovider?: SortOrder
     bio?: SortOrder
     skills?: SortOrder
     github?: SortOrder
