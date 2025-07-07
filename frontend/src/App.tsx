@@ -19,6 +19,7 @@ import { JobDetails } from "./pages/jobdetail"
 import { ChatWrapper } from "./pages/Chatwrraper"
 import { MessageDashboard } from "./pages/messagehome"
 import { EditJob } from "./pages/jobedit"
+import { SkillTracker } from "./pages/skilltracker";
   const id = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
 
@@ -77,6 +78,7 @@ const [islogin, setislogin] = useState(() => {
         <Route path="chat" element={<ChatWrapper/>}/>
         <Route path ="msg" element={<MessageDashboard/>}/>
         <Route path ="edit-job/:id" element={<EditJob/>}/>
+        <Route path= "skilltracker" element={<SkillTracker/>}/>
         </Route>
        
       </Routes>

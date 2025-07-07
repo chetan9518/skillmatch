@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 
@@ -12,156 +12,136 @@ type UserProfile = {
   github?: string;
   portfolio?: string;
   email: string;
-  resumelink?:string
+  resumelink?: string;
+  profilelink?: string;
 };
 
-export function Profile(){
-    const token = localStorage.getItem("token")
-    const navigate = useNavigate()
-     useEffect(()=>{
-  
-   const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Session Expired")
-        navigate("/signin")
-        return};
-},[])
+export function Profile() {
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const { email } = useParams();
 
-    const [user,setresult]= useState<UserProfile|null>(null)
-    const [profile,setprofile]=useState(null)
-    const {email}= useParams();
-    const skill = user?.skills?.split(",").map((e)=>e.trim())
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<string | null>(null);
 
-
-    useEffect(()=>{
-       const fetchprofile = async (profileKey:string)=>{
-         const profileRes = await axios.get(
-          "http://localhost:3000/user/profileurl",
-          {
-            params: { profilelink: profileKey },
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (profileRes.data.success) {
-          setprofile(profileRes.data.profileUrl);
-        }
-       }
-        async function fetch(){
-            const result = await axios.get(`http://localhost:3000/user/fetchone?email=${email}`,{
-                headers:{
-        Authorization:`Bearer ${token}`
-      }
+  useEffect(() => {
+    if (!token) {
+      toast.error("Session Expired");
+      navigate("/signin");
+      return;
     }
-            )
-            if(!result.data.success){
-                console.error("Unable to fetch",result.data.msg)
-                return;
 
-            }
-            setresult(result.data.details)
-            const {profilelink}= result.data.details
-            if (profilelink){
-              await fetchprofile(profilelink)
-            }
+    const fetchProfileImage = async (profileKey: string) => {
+      try {
+        const response = await axios.get("http://localhost:3000/user/profileurl", {
+          params: { profilelink: profileKey },
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
+        if (response.data.success) {
+          setProfile(response.data.profileUrl);
         }
-        fetch()
-    },[])
-    
-   return (
-  <div className="w-full max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-zinc-800 dark:border-gray-700 mt-10">
-    
-    {/* Top-right menu trigger */}
-    <div className="flex justify-end px-4 pt-4">
-      <button
-        id="dropdownButton"
-        className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
-        type="button"
-      >
-        <span className="sr-only">Open dropdown</span>
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 16 3">
-          <path d="M2 0a1.5 1.5 0 1 1 0 3A1.5 1.5 0 0 1 2 0Zm6.041 0a1.5 1.5 0 1 1 0 3A1.5 1.5 0 0 1 8.041 0ZM14 0a1.5 1.5 0 1 1 0 3A1.5 1.5 0 0 1 14 0Z" />
-        </svg>
-      </button>
-    </div>
+      } catch (error) {
+        console.error("Failed to fetch profile image", error);
+      }
+    };
 
-    {/* Profile Content */}
-    <div className="flex flex-col items-center pb-10 px-4">
-      <img
-        className="w-24 h-24 mb-3 rounded-full shadow-lg object-cover"
-        src={profile || "/images/default-avatar.png"}
-        alt={user?.firstname}
-      />
-      <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-        {user?.firstname} {user?.lastname}
-      </h5>
-      <span className="text-sm text-gray-500 dark:text-gray-400">
-        {user?.bio || "No bio provided"}
-      </span>
+    const fetchUserData = async () => {
+      try {
+        const result = await axios.get(`http://localhost:3000/user/fetchone?email=${email}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-      {/* Skills */}
-      {skill && skill.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-2 mt-4">
-          {skill.map((skill, index) => (
-            <span
-              key={skill + index}
-              className="px-3 py-1 text-sm bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-white rounded-full"
+        if (!result.data.success) {
+          toast.error("Unable to fetch user data");
+          return;
+        }
+
+        setUser(result.data.details);
+        const { profilelink } = result.data.details;
+        if (profilelink) await fetchProfileImage(profilelink);
+      } catch (error) {
+        toast.error("Server error while fetching profile");
+      }
+    };
+
+    fetchUserData();
+  }, [email, navigate, token]);
+
+  const skills = user?.skills?.split(",").map(skill => skill.trim()) || [];
+
+  return (
+    <div className="max-w-md w-full mx-auto mt-10 bg-white dark:bg-zinc-900 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-zinc-700">
+      <div className="relative h-56 w-full bg-gray-100 dark:bg-zinc-800">
+        <img
+          src={profile || "/images/default-avatar.png"}
+          alt={user?.firstname}
+          className="object-cover w-full h-full"
+        />
+      </div>
+      <div className="p-6 text-center">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
+          {user?.firstname} {user?.lastname}
+        </h2>
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          {user?.bio || "No bio provided"}
+        </p>
+
+        {skills.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-2 mt-4">
+            {skills.map((skill, idx) => (
+              <span
+                key={`${skill}-${idx}`}
+                className="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-white rounded-full"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div className="flex justify-center gap-6 mt-6">
+          {user?.github && (
+            <a
+              href={user.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-blue-600 dark:text-blue-400 underline hover:text-blue-800"
             >
-              {skill}
-            </span>
-          ))}
+              GitHub
+            </a>
+          )}
+          {user?.portfolio && (
+            <a
+              href={user.portfolio}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-blue-600 dark:text-blue-400 underline hover:text-blue-800"
+            >
+              Portfolio
+            </a>
+          )}
         </div>
-      )}
 
-      {/* Links */}
-      <div className="flex gap-4 mt-4">
-        {user?.github && (
-          <a
-            href={user.github}
-            target="_blank"
-            rel="noreferrer"
-            className="text-blue-600 dark:text-blue-400 underline text-sm"
+        <div className="mt-6 flex justify-center gap-4">
+          {user?.resumelink && (
+            <a
+              href={user.resumelink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+            >
+              View Resume
+            </a>
+          )}
+          <button
+            onClick={() => navigate("/dashboard/chat", { state: { receiverEmail: user?.email } })}
+            className="inline-block px-5 py-2 bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm"
           >
-            GitHub
-          </a>
-        )}
-        {user?.portfolio && (
-          <a
-            href={user.portfolio}
-            target="_blank"
-            rel="noreferrer"
-            className="text-blue-600 dark:text-blue-400 underline text-sm"
-          >
-            Portfolio
-          </a>
-        )}
-      </div>
-      <div className="flex items-center justify-center mt-4">
-      {/* Resume Button */}
-      {user?.resumelink && (
-        <a
-          href={user.resumelink}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Resume
-        </a>
-      )}
-
-      {/* Message Button */}
-      <button
-        onClick={() =>
-          navigate("/dashboard/chat", {
-            state: { receiverEmail: user?.email },
-          })
-        }
-        className="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-      >
-        Message
-      </button>
+            Message
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-)
+  );
 }

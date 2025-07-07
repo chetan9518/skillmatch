@@ -57,7 +57,7 @@ export function Sidebar() {
           >{<User size={18} />} Profile
           </NavLink>
           <NavLink
-            to="skill-tracker"
+            to="skilltracker"
             className={({ isActive }) =>
               `
 flex items-center gap-2 py-2 px-4 rounded transition-transform  hover:scale-105 shadow ${isActive

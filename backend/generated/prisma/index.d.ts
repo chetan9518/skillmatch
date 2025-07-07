@@ -28,6 +28,16 @@ export type jobs = $Result.DefaultSelection<Prisma.$jobsPayload>
  * 
  */
 export type messages = $Result.DefaultSelection<Prisma.$messagesPayload>
+/**
+ * Model codeforce
+ * 
+ */
+export type codeforce = $Result.DefaultSelection<Prisma.$codeforcePayload>
+/**
+ * Model leetcode
+ * 
+ */
+export type leetcode = $Result.DefaultSelection<Prisma.$leetcodePayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -183,6 +193,26 @@ export class PrismaClient<
     * ```
     */
   get messages(): Prisma.messagesDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.codeforce`: Exposes CRUD operations for the **codeforce** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Codeforces
+    * const codeforces = await prisma.codeforce.findMany()
+    * ```
+    */
+  get codeforce(): Prisma.codeforceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.leetcode`: Exposes CRUD operations for the **leetcode** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Leetcodes
+    * const leetcodes = await prisma.leetcode.findMany()
+    * ```
+    */
+  get leetcode(): Prisma.leetcodeDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -625,7 +655,9 @@ export namespace Prisma {
   export const ModelName: {
     users: 'users',
     jobs: 'jobs',
-    messages: 'messages'
+    messages: 'messages',
+    codeforce: 'codeforce',
+    leetcode: 'leetcode'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -644,7 +676,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "users" | "jobs" | "messages"
+      modelProps: "users" | "jobs" | "messages" | "codeforce" | "leetcode"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -870,6 +902,154 @@ export namespace Prisma {
           }
         }
       }
+      codeforce: {
+        payload: Prisma.$codeforcePayload<ExtArgs>
+        fields: Prisma.codeforceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.codeforceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$codeforcePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.codeforceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$codeforcePayload>
+          }
+          findFirst: {
+            args: Prisma.codeforceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$codeforcePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.codeforceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$codeforcePayload>
+          }
+          findMany: {
+            args: Prisma.codeforceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$codeforcePayload>[]
+          }
+          create: {
+            args: Prisma.codeforceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$codeforcePayload>
+          }
+          createMany: {
+            args: Prisma.codeforceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.codeforceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$codeforcePayload>[]
+          }
+          delete: {
+            args: Prisma.codeforceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$codeforcePayload>
+          }
+          update: {
+            args: Prisma.codeforceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$codeforcePayload>
+          }
+          deleteMany: {
+            args: Prisma.codeforceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.codeforceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.codeforceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$codeforcePayload>[]
+          }
+          upsert: {
+            args: Prisma.codeforceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$codeforcePayload>
+          }
+          aggregate: {
+            args: Prisma.CodeforceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCodeforce>
+          }
+          groupBy: {
+            args: Prisma.codeforceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CodeforceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.codeforceCountArgs<ExtArgs>
+            result: $Utils.Optional<CodeforceCountAggregateOutputType> | number
+          }
+        }
+      }
+      leetcode: {
+        payload: Prisma.$leetcodePayload<ExtArgs>
+        fields: Prisma.leetcodeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.leetcodeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$leetcodePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.leetcodeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$leetcodePayload>
+          }
+          findFirst: {
+            args: Prisma.leetcodeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$leetcodePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.leetcodeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$leetcodePayload>
+          }
+          findMany: {
+            args: Prisma.leetcodeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$leetcodePayload>[]
+          }
+          create: {
+            args: Prisma.leetcodeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$leetcodePayload>
+          }
+          createMany: {
+            args: Prisma.leetcodeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.leetcodeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$leetcodePayload>[]
+          }
+          delete: {
+            args: Prisma.leetcodeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$leetcodePayload>
+          }
+          update: {
+            args: Prisma.leetcodeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$leetcodePayload>
+          }
+          deleteMany: {
+            args: Prisma.leetcodeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.leetcodeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.leetcodeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$leetcodePayload>[]
+          }
+          upsert: {
+            args: Prisma.leetcodeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$leetcodePayload>
+          }
+          aggregate: {
+            args: Prisma.LeetcodeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLeetcode>
+          }
+          groupBy: {
+            args: Prisma.leetcodeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LeetcodeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.leetcodeCountArgs<ExtArgs>
+            result: $Utils.Optional<LeetcodeCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -957,6 +1137,8 @@ export namespace Prisma {
     users?: usersOmit
     jobs?: jobsOmit
     messages?: messagesOmit
+    codeforce?: codeforceOmit
+    leetcode?: leetcodeOmit
   }
 
   /* Types for Logging */
@@ -1321,6 +1503,8 @@ export namespace Prisma {
     resumelink?: boolean
     profilelink?: boolean
     created_at?: boolean
+    codeforce?: boolean | users$codeforceArgs<ExtArgs>
+    leetcode?: boolean | users$leetcodeArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
 
   export type usersSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1375,10 +1559,19 @@ export namespace Prisma {
   }
 
   export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstname" | "lastname" | "email" | "password" | "googleid" | "authprovider" | "bio" | "skills" | "github" | "portfolio" | "resumelink" | "profilelink" | "created_at", ExtArgs["result"]["users"]>
+  export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    codeforce?: boolean | users$codeforceArgs<ExtArgs>
+    leetcode?: boolean | users$leetcodeArgs<ExtArgs>
+  }
+  export type usersIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type usersIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $usersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "users"
-    objects: {}
+    objects: {
+      codeforce: Prisma.$codeforcePayload<ExtArgs> | null
+      leetcode: Prisma.$leetcodePayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       firstname: string
@@ -1788,6 +1981,8 @@ export namespace Prisma {
    */
   export interface Prisma__usersClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    codeforce<T extends users$codeforceArgs<ExtArgs> = {}>(args?: Subset<T, users$codeforceArgs<ExtArgs>>): Prisma__codeforceClient<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    leetcode<T extends users$leetcodeArgs<ExtArgs> = {}>(args?: Subset<T, users$leetcodeArgs<ExtArgs>>): Prisma__leetcodeClient<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1848,6 +2043,10 @@ export namespace Prisma {
      */
     omit?: usersOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: usersInclude<ExtArgs> | null
+    /**
      * Filter, which users to fetch.
      */
     where: usersWhereUniqueInput
@@ -1866,6 +2065,10 @@ export namespace Prisma {
      */
     omit?: usersOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: usersInclude<ExtArgs> | null
+    /**
      * Filter, which users to fetch.
      */
     where: usersWhereUniqueInput
@@ -1883,6 +2086,10 @@ export namespace Prisma {
      * Omit specific fields from the users
      */
     omit?: usersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: usersInclude<ExtArgs> | null
     /**
      * Filter, which users to fetch.
      */
@@ -1932,6 +2139,10 @@ export namespace Prisma {
      */
     omit?: usersOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: usersInclude<ExtArgs> | null
+    /**
      * Filter, which users to fetch.
      */
     where?: usersWhereInput
@@ -1980,6 +2191,10 @@ export namespace Prisma {
      */
     omit?: usersOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: usersInclude<ExtArgs> | null
+    /**
      * Filter, which users to fetch.
      */
     where?: usersWhereInput
@@ -2022,6 +2237,10 @@ export namespace Prisma {
      * Omit specific fields from the users
      */
     omit?: usersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: usersInclude<ExtArgs> | null
     /**
      * The data needed to create a users.
      */
@@ -2070,6 +2289,10 @@ export namespace Prisma {
      * Omit specific fields from the users
      */
     omit?: usersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: usersInclude<ExtArgs> | null
     /**
      * The data needed to update a users.
      */
@@ -2137,6 +2360,10 @@ export namespace Prisma {
      */
     omit?: usersOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: usersInclude<ExtArgs> | null
+    /**
      * The filter to search for the users to update in case it exists.
      */
     where: usersWhereUniqueInput
@@ -2163,6 +2390,10 @@ export namespace Prisma {
      */
     omit?: usersOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: usersInclude<ExtArgs> | null
+    /**
      * Filter which users to delete.
      */
     where: usersWhereUniqueInput
@@ -2183,6 +2414,44 @@ export namespace Prisma {
   }
 
   /**
+   * users.codeforce
+   */
+  export type users$codeforceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceInclude<ExtArgs> | null
+    where?: codeforceWhereInput
+  }
+
+  /**
+   * users.leetcode
+   */
+  export type users$leetcodeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeInclude<ExtArgs> | null
+    where?: leetcodeWhereInput
+  }
+
+  /**
    * users without action
    */
   export type usersDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2194,6 +2463,10 @@ export namespace Prisma {
      * Omit specific fields from the users
      */
     omit?: usersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: usersInclude<ExtArgs> | null
   }
 
 
@@ -4390,6 +4663,2291 @@ export namespace Prisma {
 
 
   /**
+   * Model codeforce
+   */
+
+  export type AggregateCodeforce = {
+    _count: CodeforceCountAggregateOutputType | null
+    _avg: CodeforceAvgAggregateOutputType | null
+    _sum: CodeforceSumAggregateOutputType | null
+    _min: CodeforceMinAggregateOutputType | null
+    _max: CodeforceMaxAggregateOutputType | null
+  }
+
+  export type CodeforceAvgAggregateOutputType = {
+    id: number | null
+    rating: number | null
+    maxRating: number | null
+    contests: number | null
+    userid: number | null
+  }
+
+  export type CodeforceSumAggregateOutputType = {
+    id: number | null
+    rating: number | null
+    maxRating: number | null
+    contests: number | null
+    userid: number | null
+  }
+
+  export type CodeforceMinAggregateOutputType = {
+    id: number | null
+    handle: string | null
+    rating: number | null
+    maxRating: number | null
+    rank: string | null
+    contests: number | null
+    lastSynced: Date | null
+    userid: number | null
+  }
+
+  export type CodeforceMaxAggregateOutputType = {
+    id: number | null
+    handle: string | null
+    rating: number | null
+    maxRating: number | null
+    rank: string | null
+    contests: number | null
+    lastSynced: Date | null
+    userid: number | null
+  }
+
+  export type CodeforceCountAggregateOutputType = {
+    id: number
+    handle: number
+    rating: number
+    maxRating: number
+    rank: number
+    contests: number
+    lastSynced: number
+    userid: number
+    _all: number
+  }
+
+
+  export type CodeforceAvgAggregateInputType = {
+    id?: true
+    rating?: true
+    maxRating?: true
+    contests?: true
+    userid?: true
+  }
+
+  export type CodeforceSumAggregateInputType = {
+    id?: true
+    rating?: true
+    maxRating?: true
+    contests?: true
+    userid?: true
+  }
+
+  export type CodeforceMinAggregateInputType = {
+    id?: true
+    handle?: true
+    rating?: true
+    maxRating?: true
+    rank?: true
+    contests?: true
+    lastSynced?: true
+    userid?: true
+  }
+
+  export type CodeforceMaxAggregateInputType = {
+    id?: true
+    handle?: true
+    rating?: true
+    maxRating?: true
+    rank?: true
+    contests?: true
+    lastSynced?: true
+    userid?: true
+  }
+
+  export type CodeforceCountAggregateInputType = {
+    id?: true
+    handle?: true
+    rating?: true
+    maxRating?: true
+    rank?: true
+    contests?: true
+    lastSynced?: true
+    userid?: true
+    _all?: true
+  }
+
+  export type CodeforceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which codeforce to aggregate.
+     */
+    where?: codeforceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of codeforces to fetch.
+     */
+    orderBy?: codeforceOrderByWithRelationInput | codeforceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: codeforceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` codeforces from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` codeforces.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned codeforces
+    **/
+    _count?: true | CodeforceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CodeforceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CodeforceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CodeforceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CodeforceMaxAggregateInputType
+  }
+
+  export type GetCodeforceAggregateType<T extends CodeforceAggregateArgs> = {
+        [P in keyof T & keyof AggregateCodeforce]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCodeforce[P]>
+      : GetScalarType<T[P], AggregateCodeforce[P]>
+  }
+
+
+
+
+  export type codeforceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: codeforceWhereInput
+    orderBy?: codeforceOrderByWithAggregationInput | codeforceOrderByWithAggregationInput[]
+    by: CodeforceScalarFieldEnum[] | CodeforceScalarFieldEnum
+    having?: codeforceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CodeforceCountAggregateInputType | true
+    _avg?: CodeforceAvgAggregateInputType
+    _sum?: CodeforceSumAggregateInputType
+    _min?: CodeforceMinAggregateInputType
+    _max?: CodeforceMaxAggregateInputType
+  }
+
+  export type CodeforceGroupByOutputType = {
+    id: number
+    handle: string
+    rating: number | null
+    maxRating: number | null
+    rank: string | null
+    contests: number | null
+    lastSynced: Date
+    userid: number
+    _count: CodeforceCountAggregateOutputType | null
+    _avg: CodeforceAvgAggregateOutputType | null
+    _sum: CodeforceSumAggregateOutputType | null
+    _min: CodeforceMinAggregateOutputType | null
+    _max: CodeforceMaxAggregateOutputType | null
+  }
+
+  type GetCodeforceGroupByPayload<T extends codeforceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CodeforceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CodeforceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CodeforceGroupByOutputType[P]>
+            : GetScalarType<T[P], CodeforceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type codeforceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    handle?: boolean
+    rating?: boolean
+    maxRating?: boolean
+    rank?: boolean
+    contests?: boolean
+    lastSynced?: boolean
+    userid?: boolean
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["codeforce"]>
+
+  export type codeforceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    handle?: boolean
+    rating?: boolean
+    maxRating?: boolean
+    rank?: boolean
+    contests?: boolean
+    lastSynced?: boolean
+    userid?: boolean
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["codeforce"]>
+
+  export type codeforceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    handle?: boolean
+    rating?: boolean
+    maxRating?: boolean
+    rank?: boolean
+    contests?: boolean
+    lastSynced?: boolean
+    userid?: boolean
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["codeforce"]>
+
+  export type codeforceSelectScalar = {
+    id?: boolean
+    handle?: boolean
+    rating?: boolean
+    maxRating?: boolean
+    rank?: boolean
+    contests?: boolean
+    lastSynced?: boolean
+    userid?: boolean
+  }
+
+  export type codeforceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "handle" | "rating" | "maxRating" | "rank" | "contests" | "lastSynced" | "userid", ExtArgs["result"]["codeforce"]>
+  export type codeforceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }
+  export type codeforceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }
+  export type codeforceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }
+
+  export type $codeforcePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "codeforce"
+    objects: {
+      user: Prisma.$usersPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      handle: string
+      rating: number | null
+      maxRating: number | null
+      rank: string | null
+      contests: number | null
+      lastSynced: Date
+      userid: number
+    }, ExtArgs["result"]["codeforce"]>
+    composites: {}
+  }
+
+  type codeforceGetPayload<S extends boolean | null | undefined | codeforceDefaultArgs> = $Result.GetResult<Prisma.$codeforcePayload, S>
+
+  type codeforceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<codeforceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CodeforceCountAggregateInputType | true
+    }
+
+  export interface codeforceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['codeforce'], meta: { name: 'codeforce' } }
+    /**
+     * Find zero or one Codeforce that matches the filter.
+     * @param {codeforceFindUniqueArgs} args - Arguments to find a Codeforce
+     * @example
+     * // Get one Codeforce
+     * const codeforce = await prisma.codeforce.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends codeforceFindUniqueArgs>(args: SelectSubset<T, codeforceFindUniqueArgs<ExtArgs>>): Prisma__codeforceClient<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Codeforce that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {codeforceFindUniqueOrThrowArgs} args - Arguments to find a Codeforce
+     * @example
+     * // Get one Codeforce
+     * const codeforce = await prisma.codeforce.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends codeforceFindUniqueOrThrowArgs>(args: SelectSubset<T, codeforceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__codeforceClient<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Codeforce that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {codeforceFindFirstArgs} args - Arguments to find a Codeforce
+     * @example
+     * // Get one Codeforce
+     * const codeforce = await prisma.codeforce.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends codeforceFindFirstArgs>(args?: SelectSubset<T, codeforceFindFirstArgs<ExtArgs>>): Prisma__codeforceClient<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Codeforce that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {codeforceFindFirstOrThrowArgs} args - Arguments to find a Codeforce
+     * @example
+     * // Get one Codeforce
+     * const codeforce = await prisma.codeforce.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends codeforceFindFirstOrThrowArgs>(args?: SelectSubset<T, codeforceFindFirstOrThrowArgs<ExtArgs>>): Prisma__codeforceClient<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Codeforces that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {codeforceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Codeforces
+     * const codeforces = await prisma.codeforce.findMany()
+     * 
+     * // Get first 10 Codeforces
+     * const codeforces = await prisma.codeforce.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const codeforceWithIdOnly = await prisma.codeforce.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends codeforceFindManyArgs>(args?: SelectSubset<T, codeforceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Codeforce.
+     * @param {codeforceCreateArgs} args - Arguments to create a Codeforce.
+     * @example
+     * // Create one Codeforce
+     * const Codeforce = await prisma.codeforce.create({
+     *   data: {
+     *     // ... data to create a Codeforce
+     *   }
+     * })
+     * 
+     */
+    create<T extends codeforceCreateArgs>(args: SelectSubset<T, codeforceCreateArgs<ExtArgs>>): Prisma__codeforceClient<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Codeforces.
+     * @param {codeforceCreateManyArgs} args - Arguments to create many Codeforces.
+     * @example
+     * // Create many Codeforces
+     * const codeforce = await prisma.codeforce.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends codeforceCreateManyArgs>(args?: SelectSubset<T, codeforceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Codeforces and returns the data saved in the database.
+     * @param {codeforceCreateManyAndReturnArgs} args - Arguments to create many Codeforces.
+     * @example
+     * // Create many Codeforces
+     * const codeforce = await prisma.codeforce.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Codeforces and only return the `id`
+     * const codeforceWithIdOnly = await prisma.codeforce.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends codeforceCreateManyAndReturnArgs>(args?: SelectSubset<T, codeforceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Codeforce.
+     * @param {codeforceDeleteArgs} args - Arguments to delete one Codeforce.
+     * @example
+     * // Delete one Codeforce
+     * const Codeforce = await prisma.codeforce.delete({
+     *   where: {
+     *     // ... filter to delete one Codeforce
+     *   }
+     * })
+     * 
+     */
+    delete<T extends codeforceDeleteArgs>(args: SelectSubset<T, codeforceDeleteArgs<ExtArgs>>): Prisma__codeforceClient<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Codeforce.
+     * @param {codeforceUpdateArgs} args - Arguments to update one Codeforce.
+     * @example
+     * // Update one Codeforce
+     * const codeforce = await prisma.codeforce.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends codeforceUpdateArgs>(args: SelectSubset<T, codeforceUpdateArgs<ExtArgs>>): Prisma__codeforceClient<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Codeforces.
+     * @param {codeforceDeleteManyArgs} args - Arguments to filter Codeforces to delete.
+     * @example
+     * // Delete a few Codeforces
+     * const { count } = await prisma.codeforce.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends codeforceDeleteManyArgs>(args?: SelectSubset<T, codeforceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Codeforces.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {codeforceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Codeforces
+     * const codeforce = await prisma.codeforce.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends codeforceUpdateManyArgs>(args: SelectSubset<T, codeforceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Codeforces and returns the data updated in the database.
+     * @param {codeforceUpdateManyAndReturnArgs} args - Arguments to update many Codeforces.
+     * @example
+     * // Update many Codeforces
+     * const codeforce = await prisma.codeforce.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Codeforces and only return the `id`
+     * const codeforceWithIdOnly = await prisma.codeforce.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends codeforceUpdateManyAndReturnArgs>(args: SelectSubset<T, codeforceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Codeforce.
+     * @param {codeforceUpsertArgs} args - Arguments to update or create a Codeforce.
+     * @example
+     * // Update or create a Codeforce
+     * const codeforce = await prisma.codeforce.upsert({
+     *   create: {
+     *     // ... data to create a Codeforce
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Codeforce we want to update
+     *   }
+     * })
+     */
+    upsert<T extends codeforceUpsertArgs>(args: SelectSubset<T, codeforceUpsertArgs<ExtArgs>>): Prisma__codeforceClient<$Result.GetResult<Prisma.$codeforcePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Codeforces.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {codeforceCountArgs} args - Arguments to filter Codeforces to count.
+     * @example
+     * // Count the number of Codeforces
+     * const count = await prisma.codeforce.count({
+     *   where: {
+     *     // ... the filter for the Codeforces we want to count
+     *   }
+     * })
+    **/
+    count<T extends codeforceCountArgs>(
+      args?: Subset<T, codeforceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CodeforceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Codeforce.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CodeforceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CodeforceAggregateArgs>(args: Subset<T, CodeforceAggregateArgs>): Prisma.PrismaPromise<GetCodeforceAggregateType<T>>
+
+    /**
+     * Group by Codeforce.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {codeforceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends codeforceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: codeforceGroupByArgs['orderBy'] }
+        : { orderBy?: codeforceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, codeforceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCodeforceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the codeforce model
+   */
+  readonly fields: codeforceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for codeforce.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__codeforceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends usersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, usersDefaultArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the codeforce model
+   */
+  interface codeforceFieldRefs {
+    readonly id: FieldRef<"codeforce", 'Int'>
+    readonly handle: FieldRef<"codeforce", 'String'>
+    readonly rating: FieldRef<"codeforce", 'Int'>
+    readonly maxRating: FieldRef<"codeforce", 'Int'>
+    readonly rank: FieldRef<"codeforce", 'String'>
+    readonly contests: FieldRef<"codeforce", 'Int'>
+    readonly lastSynced: FieldRef<"codeforce", 'DateTime'>
+    readonly userid: FieldRef<"codeforce", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * codeforce findUnique
+   */
+  export type codeforceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceInclude<ExtArgs> | null
+    /**
+     * Filter, which codeforce to fetch.
+     */
+    where: codeforceWhereUniqueInput
+  }
+
+  /**
+   * codeforce findUniqueOrThrow
+   */
+  export type codeforceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceInclude<ExtArgs> | null
+    /**
+     * Filter, which codeforce to fetch.
+     */
+    where: codeforceWhereUniqueInput
+  }
+
+  /**
+   * codeforce findFirst
+   */
+  export type codeforceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceInclude<ExtArgs> | null
+    /**
+     * Filter, which codeforce to fetch.
+     */
+    where?: codeforceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of codeforces to fetch.
+     */
+    orderBy?: codeforceOrderByWithRelationInput | codeforceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for codeforces.
+     */
+    cursor?: codeforceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` codeforces from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` codeforces.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of codeforces.
+     */
+    distinct?: CodeforceScalarFieldEnum | CodeforceScalarFieldEnum[]
+  }
+
+  /**
+   * codeforce findFirstOrThrow
+   */
+  export type codeforceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceInclude<ExtArgs> | null
+    /**
+     * Filter, which codeforce to fetch.
+     */
+    where?: codeforceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of codeforces to fetch.
+     */
+    orderBy?: codeforceOrderByWithRelationInput | codeforceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for codeforces.
+     */
+    cursor?: codeforceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` codeforces from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` codeforces.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of codeforces.
+     */
+    distinct?: CodeforceScalarFieldEnum | CodeforceScalarFieldEnum[]
+  }
+
+  /**
+   * codeforce findMany
+   */
+  export type codeforceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceInclude<ExtArgs> | null
+    /**
+     * Filter, which codeforces to fetch.
+     */
+    where?: codeforceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of codeforces to fetch.
+     */
+    orderBy?: codeforceOrderByWithRelationInput | codeforceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing codeforces.
+     */
+    cursor?: codeforceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` codeforces from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` codeforces.
+     */
+    skip?: number
+    distinct?: CodeforceScalarFieldEnum | CodeforceScalarFieldEnum[]
+  }
+
+  /**
+   * codeforce create
+   */
+  export type codeforceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a codeforce.
+     */
+    data: XOR<codeforceCreateInput, codeforceUncheckedCreateInput>
+  }
+
+  /**
+   * codeforce createMany
+   */
+  export type codeforceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many codeforces.
+     */
+    data: codeforceCreateManyInput | codeforceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * codeforce createManyAndReturn
+   */
+  export type codeforceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * The data used to create many codeforces.
+     */
+    data: codeforceCreateManyInput | codeforceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * codeforce update
+   */
+  export type codeforceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a codeforce.
+     */
+    data: XOR<codeforceUpdateInput, codeforceUncheckedUpdateInput>
+    /**
+     * Choose, which codeforce to update.
+     */
+    where: codeforceWhereUniqueInput
+  }
+
+  /**
+   * codeforce updateMany
+   */
+  export type codeforceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update codeforces.
+     */
+    data: XOR<codeforceUpdateManyMutationInput, codeforceUncheckedUpdateManyInput>
+    /**
+     * Filter which codeforces to update
+     */
+    where?: codeforceWhereInput
+    /**
+     * Limit how many codeforces to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * codeforce updateManyAndReturn
+   */
+  export type codeforceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * The data used to update codeforces.
+     */
+    data: XOR<codeforceUpdateManyMutationInput, codeforceUncheckedUpdateManyInput>
+    /**
+     * Filter which codeforces to update
+     */
+    where?: codeforceWhereInput
+    /**
+     * Limit how many codeforces to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * codeforce upsert
+   */
+  export type codeforceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the codeforce to update in case it exists.
+     */
+    where: codeforceWhereUniqueInput
+    /**
+     * In case the codeforce found by the `where` argument doesn't exist, create a new codeforce with this data.
+     */
+    create: XOR<codeforceCreateInput, codeforceUncheckedCreateInput>
+    /**
+     * In case the codeforce was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<codeforceUpdateInput, codeforceUncheckedUpdateInput>
+  }
+
+  /**
+   * codeforce delete
+   */
+  export type codeforceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceInclude<ExtArgs> | null
+    /**
+     * Filter which codeforce to delete.
+     */
+    where: codeforceWhereUniqueInput
+  }
+
+  /**
+   * codeforce deleteMany
+   */
+  export type codeforceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which codeforces to delete
+     */
+    where?: codeforceWhereInput
+    /**
+     * Limit how many codeforces to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * codeforce without action
+   */
+  export type codeforceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the codeforce
+     */
+    select?: codeforceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the codeforce
+     */
+    omit?: codeforceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: codeforceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model leetcode
+   */
+
+  export type AggregateLeetcode = {
+    _count: LeetcodeCountAggregateOutputType | null
+    _avg: LeetcodeAvgAggregateOutputType | null
+    _sum: LeetcodeSumAggregateOutputType | null
+    _min: LeetcodeMinAggregateOutputType | null
+    _max: LeetcodeMaxAggregateOutputType | null
+  }
+
+  export type LeetcodeAvgAggregateOutputType = {
+    id: number | null
+    easy: number | null
+    medium: number | null
+    hard: number | null
+    total: number | null
+    userid: number | null
+  }
+
+  export type LeetcodeSumAggregateOutputType = {
+    id: number | null
+    easy: number | null
+    medium: number | null
+    hard: number | null
+    total: number | null
+    userid: number | null
+  }
+
+  export type LeetcodeMinAggregateOutputType = {
+    id: number | null
+    easy: number | null
+    medium: number | null
+    hard: number | null
+    total: number | null
+    lastSynced: Date | null
+    userid: number | null
+  }
+
+  export type LeetcodeMaxAggregateOutputType = {
+    id: number | null
+    easy: number | null
+    medium: number | null
+    hard: number | null
+    total: number | null
+    lastSynced: Date | null
+    userid: number | null
+  }
+
+  export type LeetcodeCountAggregateOutputType = {
+    id: number
+    easy: number
+    medium: number
+    hard: number
+    total: number
+    lastSynced: number
+    userid: number
+    _all: number
+  }
+
+
+  export type LeetcodeAvgAggregateInputType = {
+    id?: true
+    easy?: true
+    medium?: true
+    hard?: true
+    total?: true
+    userid?: true
+  }
+
+  export type LeetcodeSumAggregateInputType = {
+    id?: true
+    easy?: true
+    medium?: true
+    hard?: true
+    total?: true
+    userid?: true
+  }
+
+  export type LeetcodeMinAggregateInputType = {
+    id?: true
+    easy?: true
+    medium?: true
+    hard?: true
+    total?: true
+    lastSynced?: true
+    userid?: true
+  }
+
+  export type LeetcodeMaxAggregateInputType = {
+    id?: true
+    easy?: true
+    medium?: true
+    hard?: true
+    total?: true
+    lastSynced?: true
+    userid?: true
+  }
+
+  export type LeetcodeCountAggregateInputType = {
+    id?: true
+    easy?: true
+    medium?: true
+    hard?: true
+    total?: true
+    lastSynced?: true
+    userid?: true
+    _all?: true
+  }
+
+  export type LeetcodeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which leetcode to aggregate.
+     */
+    where?: leetcodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of leetcodes to fetch.
+     */
+    orderBy?: leetcodeOrderByWithRelationInput | leetcodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: leetcodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` leetcodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` leetcodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned leetcodes
+    **/
+    _count?: true | LeetcodeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LeetcodeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LeetcodeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LeetcodeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LeetcodeMaxAggregateInputType
+  }
+
+  export type GetLeetcodeAggregateType<T extends LeetcodeAggregateArgs> = {
+        [P in keyof T & keyof AggregateLeetcode]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLeetcode[P]>
+      : GetScalarType<T[P], AggregateLeetcode[P]>
+  }
+
+
+
+
+  export type leetcodeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: leetcodeWhereInput
+    orderBy?: leetcodeOrderByWithAggregationInput | leetcodeOrderByWithAggregationInput[]
+    by: LeetcodeScalarFieldEnum[] | LeetcodeScalarFieldEnum
+    having?: leetcodeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LeetcodeCountAggregateInputType | true
+    _avg?: LeetcodeAvgAggregateInputType
+    _sum?: LeetcodeSumAggregateInputType
+    _min?: LeetcodeMinAggregateInputType
+    _max?: LeetcodeMaxAggregateInputType
+  }
+
+  export type LeetcodeGroupByOutputType = {
+    id: number
+    easy: number
+    medium: number
+    hard: number
+    total: number
+    lastSynced: Date
+    userid: number
+    _count: LeetcodeCountAggregateOutputType | null
+    _avg: LeetcodeAvgAggregateOutputType | null
+    _sum: LeetcodeSumAggregateOutputType | null
+    _min: LeetcodeMinAggregateOutputType | null
+    _max: LeetcodeMaxAggregateOutputType | null
+  }
+
+  type GetLeetcodeGroupByPayload<T extends leetcodeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LeetcodeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LeetcodeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LeetcodeGroupByOutputType[P]>
+            : GetScalarType<T[P], LeetcodeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type leetcodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    easy?: boolean
+    medium?: boolean
+    hard?: boolean
+    total?: boolean
+    lastSynced?: boolean
+    userid?: boolean
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leetcode"]>
+
+  export type leetcodeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    easy?: boolean
+    medium?: boolean
+    hard?: boolean
+    total?: boolean
+    lastSynced?: boolean
+    userid?: boolean
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leetcode"]>
+
+  export type leetcodeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    easy?: boolean
+    medium?: boolean
+    hard?: boolean
+    total?: boolean
+    lastSynced?: boolean
+    userid?: boolean
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leetcode"]>
+
+  export type leetcodeSelectScalar = {
+    id?: boolean
+    easy?: boolean
+    medium?: boolean
+    hard?: boolean
+    total?: boolean
+    lastSynced?: boolean
+    userid?: boolean
+  }
+
+  export type leetcodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "easy" | "medium" | "hard" | "total" | "lastSynced" | "userid", ExtArgs["result"]["leetcode"]>
+  export type leetcodeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }
+  export type leetcodeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }
+  export type leetcodeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | usersDefaultArgs<ExtArgs>
+  }
+
+  export type $leetcodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "leetcode"
+    objects: {
+      user: Prisma.$usersPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      easy: number
+      medium: number
+      hard: number
+      total: number
+      lastSynced: Date
+      userid: number
+    }, ExtArgs["result"]["leetcode"]>
+    composites: {}
+  }
+
+  type leetcodeGetPayload<S extends boolean | null | undefined | leetcodeDefaultArgs> = $Result.GetResult<Prisma.$leetcodePayload, S>
+
+  type leetcodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<leetcodeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LeetcodeCountAggregateInputType | true
+    }
+
+  export interface leetcodeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['leetcode'], meta: { name: 'leetcode' } }
+    /**
+     * Find zero or one Leetcode that matches the filter.
+     * @param {leetcodeFindUniqueArgs} args - Arguments to find a Leetcode
+     * @example
+     * // Get one Leetcode
+     * const leetcode = await prisma.leetcode.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends leetcodeFindUniqueArgs>(args: SelectSubset<T, leetcodeFindUniqueArgs<ExtArgs>>): Prisma__leetcodeClient<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Leetcode that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {leetcodeFindUniqueOrThrowArgs} args - Arguments to find a Leetcode
+     * @example
+     * // Get one Leetcode
+     * const leetcode = await prisma.leetcode.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends leetcodeFindUniqueOrThrowArgs>(args: SelectSubset<T, leetcodeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__leetcodeClient<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Leetcode that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {leetcodeFindFirstArgs} args - Arguments to find a Leetcode
+     * @example
+     * // Get one Leetcode
+     * const leetcode = await prisma.leetcode.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends leetcodeFindFirstArgs>(args?: SelectSubset<T, leetcodeFindFirstArgs<ExtArgs>>): Prisma__leetcodeClient<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Leetcode that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {leetcodeFindFirstOrThrowArgs} args - Arguments to find a Leetcode
+     * @example
+     * // Get one Leetcode
+     * const leetcode = await prisma.leetcode.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends leetcodeFindFirstOrThrowArgs>(args?: SelectSubset<T, leetcodeFindFirstOrThrowArgs<ExtArgs>>): Prisma__leetcodeClient<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Leetcodes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {leetcodeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Leetcodes
+     * const leetcodes = await prisma.leetcode.findMany()
+     * 
+     * // Get first 10 Leetcodes
+     * const leetcodes = await prisma.leetcode.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const leetcodeWithIdOnly = await prisma.leetcode.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends leetcodeFindManyArgs>(args?: SelectSubset<T, leetcodeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Leetcode.
+     * @param {leetcodeCreateArgs} args - Arguments to create a Leetcode.
+     * @example
+     * // Create one Leetcode
+     * const Leetcode = await prisma.leetcode.create({
+     *   data: {
+     *     // ... data to create a Leetcode
+     *   }
+     * })
+     * 
+     */
+    create<T extends leetcodeCreateArgs>(args: SelectSubset<T, leetcodeCreateArgs<ExtArgs>>): Prisma__leetcodeClient<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Leetcodes.
+     * @param {leetcodeCreateManyArgs} args - Arguments to create many Leetcodes.
+     * @example
+     * // Create many Leetcodes
+     * const leetcode = await prisma.leetcode.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends leetcodeCreateManyArgs>(args?: SelectSubset<T, leetcodeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Leetcodes and returns the data saved in the database.
+     * @param {leetcodeCreateManyAndReturnArgs} args - Arguments to create many Leetcodes.
+     * @example
+     * // Create many Leetcodes
+     * const leetcode = await prisma.leetcode.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Leetcodes and only return the `id`
+     * const leetcodeWithIdOnly = await prisma.leetcode.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends leetcodeCreateManyAndReturnArgs>(args?: SelectSubset<T, leetcodeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Leetcode.
+     * @param {leetcodeDeleteArgs} args - Arguments to delete one Leetcode.
+     * @example
+     * // Delete one Leetcode
+     * const Leetcode = await prisma.leetcode.delete({
+     *   where: {
+     *     // ... filter to delete one Leetcode
+     *   }
+     * })
+     * 
+     */
+    delete<T extends leetcodeDeleteArgs>(args: SelectSubset<T, leetcodeDeleteArgs<ExtArgs>>): Prisma__leetcodeClient<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Leetcode.
+     * @param {leetcodeUpdateArgs} args - Arguments to update one Leetcode.
+     * @example
+     * // Update one Leetcode
+     * const leetcode = await prisma.leetcode.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends leetcodeUpdateArgs>(args: SelectSubset<T, leetcodeUpdateArgs<ExtArgs>>): Prisma__leetcodeClient<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Leetcodes.
+     * @param {leetcodeDeleteManyArgs} args - Arguments to filter Leetcodes to delete.
+     * @example
+     * // Delete a few Leetcodes
+     * const { count } = await prisma.leetcode.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends leetcodeDeleteManyArgs>(args?: SelectSubset<T, leetcodeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Leetcodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {leetcodeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Leetcodes
+     * const leetcode = await prisma.leetcode.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends leetcodeUpdateManyArgs>(args: SelectSubset<T, leetcodeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Leetcodes and returns the data updated in the database.
+     * @param {leetcodeUpdateManyAndReturnArgs} args - Arguments to update many Leetcodes.
+     * @example
+     * // Update many Leetcodes
+     * const leetcode = await prisma.leetcode.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Leetcodes and only return the `id`
+     * const leetcodeWithIdOnly = await prisma.leetcode.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends leetcodeUpdateManyAndReturnArgs>(args: SelectSubset<T, leetcodeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Leetcode.
+     * @param {leetcodeUpsertArgs} args - Arguments to update or create a Leetcode.
+     * @example
+     * // Update or create a Leetcode
+     * const leetcode = await prisma.leetcode.upsert({
+     *   create: {
+     *     // ... data to create a Leetcode
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Leetcode we want to update
+     *   }
+     * })
+     */
+    upsert<T extends leetcodeUpsertArgs>(args: SelectSubset<T, leetcodeUpsertArgs<ExtArgs>>): Prisma__leetcodeClient<$Result.GetResult<Prisma.$leetcodePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Leetcodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {leetcodeCountArgs} args - Arguments to filter Leetcodes to count.
+     * @example
+     * // Count the number of Leetcodes
+     * const count = await prisma.leetcode.count({
+     *   where: {
+     *     // ... the filter for the Leetcodes we want to count
+     *   }
+     * })
+    **/
+    count<T extends leetcodeCountArgs>(
+      args?: Subset<T, leetcodeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LeetcodeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Leetcode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeetcodeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LeetcodeAggregateArgs>(args: Subset<T, LeetcodeAggregateArgs>): Prisma.PrismaPromise<GetLeetcodeAggregateType<T>>
+
+    /**
+     * Group by Leetcode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {leetcodeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends leetcodeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: leetcodeGroupByArgs['orderBy'] }
+        : { orderBy?: leetcodeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, leetcodeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLeetcodeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the leetcode model
+   */
+  readonly fields: leetcodeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for leetcode.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__leetcodeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends usersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, usersDefaultArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the leetcode model
+   */
+  interface leetcodeFieldRefs {
+    readonly id: FieldRef<"leetcode", 'Int'>
+    readonly easy: FieldRef<"leetcode", 'Int'>
+    readonly medium: FieldRef<"leetcode", 'Int'>
+    readonly hard: FieldRef<"leetcode", 'Int'>
+    readonly total: FieldRef<"leetcode", 'Int'>
+    readonly lastSynced: FieldRef<"leetcode", 'DateTime'>
+    readonly userid: FieldRef<"leetcode", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * leetcode findUnique
+   */
+  export type leetcodeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeInclude<ExtArgs> | null
+    /**
+     * Filter, which leetcode to fetch.
+     */
+    where: leetcodeWhereUniqueInput
+  }
+
+  /**
+   * leetcode findUniqueOrThrow
+   */
+  export type leetcodeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeInclude<ExtArgs> | null
+    /**
+     * Filter, which leetcode to fetch.
+     */
+    where: leetcodeWhereUniqueInput
+  }
+
+  /**
+   * leetcode findFirst
+   */
+  export type leetcodeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeInclude<ExtArgs> | null
+    /**
+     * Filter, which leetcode to fetch.
+     */
+    where?: leetcodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of leetcodes to fetch.
+     */
+    orderBy?: leetcodeOrderByWithRelationInput | leetcodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for leetcodes.
+     */
+    cursor?: leetcodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` leetcodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` leetcodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of leetcodes.
+     */
+    distinct?: LeetcodeScalarFieldEnum | LeetcodeScalarFieldEnum[]
+  }
+
+  /**
+   * leetcode findFirstOrThrow
+   */
+  export type leetcodeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeInclude<ExtArgs> | null
+    /**
+     * Filter, which leetcode to fetch.
+     */
+    where?: leetcodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of leetcodes to fetch.
+     */
+    orderBy?: leetcodeOrderByWithRelationInput | leetcodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for leetcodes.
+     */
+    cursor?: leetcodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` leetcodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` leetcodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of leetcodes.
+     */
+    distinct?: LeetcodeScalarFieldEnum | LeetcodeScalarFieldEnum[]
+  }
+
+  /**
+   * leetcode findMany
+   */
+  export type leetcodeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeInclude<ExtArgs> | null
+    /**
+     * Filter, which leetcodes to fetch.
+     */
+    where?: leetcodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of leetcodes to fetch.
+     */
+    orderBy?: leetcodeOrderByWithRelationInput | leetcodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing leetcodes.
+     */
+    cursor?: leetcodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` leetcodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` leetcodes.
+     */
+    skip?: number
+    distinct?: LeetcodeScalarFieldEnum | LeetcodeScalarFieldEnum[]
+  }
+
+  /**
+   * leetcode create
+   */
+  export type leetcodeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a leetcode.
+     */
+    data: XOR<leetcodeCreateInput, leetcodeUncheckedCreateInput>
+  }
+
+  /**
+   * leetcode createMany
+   */
+  export type leetcodeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many leetcodes.
+     */
+    data: leetcodeCreateManyInput | leetcodeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * leetcode createManyAndReturn
+   */
+  export type leetcodeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * The data used to create many leetcodes.
+     */
+    data: leetcodeCreateManyInput | leetcodeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * leetcode update
+   */
+  export type leetcodeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a leetcode.
+     */
+    data: XOR<leetcodeUpdateInput, leetcodeUncheckedUpdateInput>
+    /**
+     * Choose, which leetcode to update.
+     */
+    where: leetcodeWhereUniqueInput
+  }
+
+  /**
+   * leetcode updateMany
+   */
+  export type leetcodeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update leetcodes.
+     */
+    data: XOR<leetcodeUpdateManyMutationInput, leetcodeUncheckedUpdateManyInput>
+    /**
+     * Filter which leetcodes to update
+     */
+    where?: leetcodeWhereInput
+    /**
+     * Limit how many leetcodes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * leetcode updateManyAndReturn
+   */
+  export type leetcodeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * The data used to update leetcodes.
+     */
+    data: XOR<leetcodeUpdateManyMutationInput, leetcodeUncheckedUpdateManyInput>
+    /**
+     * Filter which leetcodes to update
+     */
+    where?: leetcodeWhereInput
+    /**
+     * Limit how many leetcodes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * leetcode upsert
+   */
+  export type leetcodeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the leetcode to update in case it exists.
+     */
+    where: leetcodeWhereUniqueInput
+    /**
+     * In case the leetcode found by the `where` argument doesn't exist, create a new leetcode with this data.
+     */
+    create: XOR<leetcodeCreateInput, leetcodeUncheckedCreateInput>
+    /**
+     * In case the leetcode was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<leetcodeUpdateInput, leetcodeUncheckedUpdateInput>
+  }
+
+  /**
+   * leetcode delete
+   */
+  export type leetcodeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeInclude<ExtArgs> | null
+    /**
+     * Filter which leetcode to delete.
+     */
+    where: leetcodeWhereUniqueInput
+  }
+
+  /**
+   * leetcode deleteMany
+   */
+  export type leetcodeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which leetcodes to delete
+     */
+    where?: leetcodeWhereInput
+    /**
+     * Limit how many leetcodes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * leetcode without action
+   */
+  export type leetcodeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the leetcode
+     */
+    select?: leetcodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the leetcode
+     */
+    omit?: leetcodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: leetcodeInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -4453,6 +7011,33 @@ export namespace Prisma {
   };
 
   export type MessagesScalarFieldEnum = (typeof MessagesScalarFieldEnum)[keyof typeof MessagesScalarFieldEnum]
+
+
+  export const CodeforceScalarFieldEnum: {
+    id: 'id',
+    handle: 'handle',
+    rating: 'rating',
+    maxRating: 'maxRating',
+    rank: 'rank',
+    contests: 'contests',
+    lastSynced: 'lastSynced',
+    userid: 'userid'
+  };
+
+  export type CodeforceScalarFieldEnum = (typeof CodeforceScalarFieldEnum)[keyof typeof CodeforceScalarFieldEnum]
+
+
+  export const LeetcodeScalarFieldEnum: {
+    id: 'id',
+    easy: 'easy',
+    medium: 'medium',
+    hard: 'hard',
+    total: 'total',
+    lastSynced: 'lastSynced',
+    userid: 'userid'
+  };
+
+  export type LeetcodeScalarFieldEnum = (typeof LeetcodeScalarFieldEnum)[keyof typeof LeetcodeScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4568,6 +7153,8 @@ export namespace Prisma {
     resumelink?: StringNullableFilter<"users"> | string | null
     profilelink?: StringNullableFilter<"users"> | string | null
     created_at?: DateTimeNullableFilter<"users"> | Date | string | null
+    codeforce?: XOR<CodeforceNullableScalarRelationFilter, codeforceWhereInput> | null
+    leetcode?: XOR<LeetcodeNullableScalarRelationFilter, leetcodeWhereInput> | null
   }
 
   export type usersOrderByWithRelationInput = {
@@ -4585,6 +7172,8 @@ export namespace Prisma {
     resumelink?: SortOrderInput | SortOrder
     profilelink?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
+    codeforce?: codeforceOrderByWithRelationInput
+    leetcode?: leetcodeOrderByWithRelationInput
   }
 
   export type usersWhereUniqueInput = Prisma.AtLeast<{
@@ -4605,6 +7194,8 @@ export namespace Prisma {
     resumelink?: StringNullableFilter<"users"> | string | null
     profilelink?: StringNullableFilter<"users"> | string | null
     created_at?: DateTimeNullableFilter<"users"> | Date | string | null
+    codeforce?: XOR<CodeforceNullableScalarRelationFilter, codeforceWhereInput> | null
+    leetcode?: XOR<LeetcodeNullableScalarRelationFilter, leetcodeWhereInput> | null
   }, "id" | "email" | "googleid">
 
   export type usersOrderByWithAggregationInput = {
@@ -4807,6 +7398,145 @@ export namespace Prisma {
     isread?: BoolWithAggregatesFilter<"messages"> | boolean
   }
 
+  export type codeforceWhereInput = {
+    AND?: codeforceWhereInput | codeforceWhereInput[]
+    OR?: codeforceWhereInput[]
+    NOT?: codeforceWhereInput | codeforceWhereInput[]
+    id?: IntFilter<"codeforce"> | number
+    handle?: StringFilter<"codeforce"> | string
+    rating?: IntNullableFilter<"codeforce"> | number | null
+    maxRating?: IntNullableFilter<"codeforce"> | number | null
+    rank?: StringNullableFilter<"codeforce"> | string | null
+    contests?: IntNullableFilter<"codeforce"> | number | null
+    lastSynced?: DateTimeFilter<"codeforce"> | Date | string
+    userid?: IntFilter<"codeforce"> | number
+    user?: XOR<UsersScalarRelationFilter, usersWhereInput>
+  }
+
+  export type codeforceOrderByWithRelationInput = {
+    id?: SortOrder
+    handle?: SortOrder
+    rating?: SortOrderInput | SortOrder
+    maxRating?: SortOrderInput | SortOrder
+    rank?: SortOrderInput | SortOrder
+    contests?: SortOrderInput | SortOrder
+    lastSynced?: SortOrder
+    userid?: SortOrder
+    user?: usersOrderByWithRelationInput
+  }
+
+  export type codeforceWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    handle?: string
+    userid?: number
+    AND?: codeforceWhereInput | codeforceWhereInput[]
+    OR?: codeforceWhereInput[]
+    NOT?: codeforceWhereInput | codeforceWhereInput[]
+    rating?: IntNullableFilter<"codeforce"> | number | null
+    maxRating?: IntNullableFilter<"codeforce"> | number | null
+    rank?: StringNullableFilter<"codeforce"> | string | null
+    contests?: IntNullableFilter<"codeforce"> | number | null
+    lastSynced?: DateTimeFilter<"codeforce"> | Date | string
+    user?: XOR<UsersScalarRelationFilter, usersWhereInput>
+  }, "id" | "handle" | "userid">
+
+  export type codeforceOrderByWithAggregationInput = {
+    id?: SortOrder
+    handle?: SortOrder
+    rating?: SortOrderInput | SortOrder
+    maxRating?: SortOrderInput | SortOrder
+    rank?: SortOrderInput | SortOrder
+    contests?: SortOrderInput | SortOrder
+    lastSynced?: SortOrder
+    userid?: SortOrder
+    _count?: codeforceCountOrderByAggregateInput
+    _avg?: codeforceAvgOrderByAggregateInput
+    _max?: codeforceMaxOrderByAggregateInput
+    _min?: codeforceMinOrderByAggregateInput
+    _sum?: codeforceSumOrderByAggregateInput
+  }
+
+  export type codeforceScalarWhereWithAggregatesInput = {
+    AND?: codeforceScalarWhereWithAggregatesInput | codeforceScalarWhereWithAggregatesInput[]
+    OR?: codeforceScalarWhereWithAggregatesInput[]
+    NOT?: codeforceScalarWhereWithAggregatesInput | codeforceScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"codeforce"> | number
+    handle?: StringWithAggregatesFilter<"codeforce"> | string
+    rating?: IntNullableWithAggregatesFilter<"codeforce"> | number | null
+    maxRating?: IntNullableWithAggregatesFilter<"codeforce"> | number | null
+    rank?: StringNullableWithAggregatesFilter<"codeforce"> | string | null
+    contests?: IntNullableWithAggregatesFilter<"codeforce"> | number | null
+    lastSynced?: DateTimeWithAggregatesFilter<"codeforce"> | Date | string
+    userid?: IntWithAggregatesFilter<"codeforce"> | number
+  }
+
+  export type leetcodeWhereInput = {
+    AND?: leetcodeWhereInput | leetcodeWhereInput[]
+    OR?: leetcodeWhereInput[]
+    NOT?: leetcodeWhereInput | leetcodeWhereInput[]
+    id?: IntFilter<"leetcode"> | number
+    easy?: IntFilter<"leetcode"> | number
+    medium?: IntFilter<"leetcode"> | number
+    hard?: IntFilter<"leetcode"> | number
+    total?: IntFilter<"leetcode"> | number
+    lastSynced?: DateTimeFilter<"leetcode"> | Date | string
+    userid?: IntFilter<"leetcode"> | number
+    user?: XOR<UsersScalarRelationFilter, usersWhereInput>
+  }
+
+  export type leetcodeOrderByWithRelationInput = {
+    id?: SortOrder
+    easy?: SortOrder
+    medium?: SortOrder
+    hard?: SortOrder
+    total?: SortOrder
+    lastSynced?: SortOrder
+    userid?: SortOrder
+    user?: usersOrderByWithRelationInput
+  }
+
+  export type leetcodeWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    userid?: number
+    AND?: leetcodeWhereInput | leetcodeWhereInput[]
+    OR?: leetcodeWhereInput[]
+    NOT?: leetcodeWhereInput | leetcodeWhereInput[]
+    easy?: IntFilter<"leetcode"> | number
+    medium?: IntFilter<"leetcode"> | number
+    hard?: IntFilter<"leetcode"> | number
+    total?: IntFilter<"leetcode"> | number
+    lastSynced?: DateTimeFilter<"leetcode"> | Date | string
+    user?: XOR<UsersScalarRelationFilter, usersWhereInput>
+  }, "id" | "userid">
+
+  export type leetcodeOrderByWithAggregationInput = {
+    id?: SortOrder
+    easy?: SortOrder
+    medium?: SortOrder
+    hard?: SortOrder
+    total?: SortOrder
+    lastSynced?: SortOrder
+    userid?: SortOrder
+    _count?: leetcodeCountOrderByAggregateInput
+    _avg?: leetcodeAvgOrderByAggregateInput
+    _max?: leetcodeMaxOrderByAggregateInput
+    _min?: leetcodeMinOrderByAggregateInput
+    _sum?: leetcodeSumOrderByAggregateInput
+  }
+
+  export type leetcodeScalarWhereWithAggregatesInput = {
+    AND?: leetcodeScalarWhereWithAggregatesInput | leetcodeScalarWhereWithAggregatesInput[]
+    OR?: leetcodeScalarWhereWithAggregatesInput[]
+    NOT?: leetcodeScalarWhereWithAggregatesInput | leetcodeScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"leetcode"> | number
+    easy?: IntWithAggregatesFilter<"leetcode"> | number
+    medium?: IntWithAggregatesFilter<"leetcode"> | number
+    hard?: IntWithAggregatesFilter<"leetcode"> | number
+    total?: IntWithAggregatesFilter<"leetcode"> | number
+    lastSynced?: DateTimeWithAggregatesFilter<"leetcode"> | Date | string
+    userid?: IntWithAggregatesFilter<"leetcode"> | number
+  }
+
   export type usersCreateInput = {
     firstname: string
     lastname?: string | null
@@ -4821,6 +7551,8 @@ export namespace Prisma {
     resumelink?: string | null
     profilelink?: string | null
     created_at?: Date | string | null
+    codeforce?: codeforceCreateNestedOneWithoutUserInput
+    leetcode?: leetcodeCreateNestedOneWithoutUserInput
   }
 
   export type usersUncheckedCreateInput = {
@@ -4838,6 +7570,8 @@ export namespace Prisma {
     resumelink?: string | null
     profilelink?: string | null
     created_at?: Date | string | null
+    codeforce?: codeforceUncheckedCreateNestedOneWithoutUserInput
+    leetcode?: leetcodeUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type usersUpdateInput = {
@@ -4854,6 +7588,8 @@ export namespace Prisma {
     resumelink?: NullableStringFieldUpdateOperationsInput | string | null
     profilelink?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codeforce?: codeforceUpdateOneWithoutUserNestedInput
+    leetcode?: leetcodeUpdateOneWithoutUserNestedInput
   }
 
   export type usersUncheckedUpdateInput = {
@@ -4871,6 +7607,8 @@ export namespace Prisma {
     resumelink?: NullableStringFieldUpdateOperationsInput | string | null
     profilelink?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codeforce?: codeforceUncheckedUpdateOneWithoutUserNestedInput
+    leetcode?: leetcodeUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type usersCreateManyInput = {
@@ -5099,6 +7837,145 @@ export namespace Prisma {
     isread?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type codeforceCreateInput = {
+    handle: string
+    rating?: number | null
+    maxRating?: number | null
+    rank?: string | null
+    contests?: number | null
+    lastSynced?: Date | string
+    user: usersCreateNestedOneWithoutCodeforceInput
+  }
+
+  export type codeforceUncheckedCreateInput = {
+    id?: number
+    handle: string
+    rating?: number | null
+    maxRating?: number | null
+    rank?: string | null
+    contests?: number | null
+    lastSynced?: Date | string
+    userid: number
+  }
+
+  export type codeforceUpdateInput = {
+    handle?: StringFieldUpdateOperationsInput | string
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRating?: NullableIntFieldUpdateOperationsInput | number | null
+    rank?: NullableStringFieldUpdateOperationsInput | string | null
+    contests?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: usersUpdateOneRequiredWithoutCodeforceNestedInput
+  }
+
+  export type codeforceUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    handle?: StringFieldUpdateOperationsInput | string
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRating?: NullableIntFieldUpdateOperationsInput | number | null
+    rank?: NullableStringFieldUpdateOperationsInput | string | null
+    contests?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+    userid?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type codeforceCreateManyInput = {
+    id?: number
+    handle: string
+    rating?: number | null
+    maxRating?: number | null
+    rank?: string | null
+    contests?: number | null
+    lastSynced?: Date | string
+    userid: number
+  }
+
+  export type codeforceUpdateManyMutationInput = {
+    handle?: StringFieldUpdateOperationsInput | string
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRating?: NullableIntFieldUpdateOperationsInput | number | null
+    rank?: NullableStringFieldUpdateOperationsInput | string | null
+    contests?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type codeforceUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    handle?: StringFieldUpdateOperationsInput | string
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRating?: NullableIntFieldUpdateOperationsInput | number | null
+    rank?: NullableStringFieldUpdateOperationsInput | string | null
+    contests?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+    userid?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type leetcodeCreateInput = {
+    easy: number
+    medium: number
+    hard: number
+    total: number
+    lastSynced?: Date | string
+    user: usersCreateNestedOneWithoutLeetcodeInput
+  }
+
+  export type leetcodeUncheckedCreateInput = {
+    id?: number
+    easy: number
+    medium: number
+    hard: number
+    total: number
+    lastSynced?: Date | string
+    userid: number
+  }
+
+  export type leetcodeUpdateInput = {
+    easy?: IntFieldUpdateOperationsInput | number
+    medium?: IntFieldUpdateOperationsInput | number
+    hard?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: usersUpdateOneRequiredWithoutLeetcodeNestedInput
+  }
+
+  export type leetcodeUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    easy?: IntFieldUpdateOperationsInput | number
+    medium?: IntFieldUpdateOperationsInput | number
+    hard?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+    userid?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type leetcodeCreateManyInput = {
+    id?: number
+    easy: number
+    medium: number
+    hard: number
+    total: number
+    lastSynced?: Date | string
+    userid: number
+  }
+
+  export type leetcodeUpdateManyMutationInput = {
+    easy?: IntFieldUpdateOperationsInput | number
+    medium?: IntFieldUpdateOperationsInput | number
+    hard?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type leetcodeUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    easy?: IntFieldUpdateOperationsInput | number
+    medium?: IntFieldUpdateOperationsInput | number
+    hard?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+    userid?: IntFieldUpdateOperationsInput | number
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -5149,6 +8026,16 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type CodeforceNullableScalarRelationFilter = {
+    is?: codeforceWhereInput | null
+    isNot?: codeforceWhereInput | null
+  }
+
+  export type LeetcodeNullableScalarRelationFilter = {
+    is?: leetcodeWhereInput | null
+    isNot?: leetcodeWhereInput | null
   }
 
   export type SortOrderInput = {
@@ -5415,6 +8302,159 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type UsersScalarRelationFilter = {
+    is?: usersWhereInput
+    isNot?: usersWhereInput
+  }
+
+  export type codeforceCountOrderByAggregateInput = {
+    id?: SortOrder
+    handle?: SortOrder
+    rating?: SortOrder
+    maxRating?: SortOrder
+    rank?: SortOrder
+    contests?: SortOrder
+    lastSynced?: SortOrder
+    userid?: SortOrder
+  }
+
+  export type codeforceAvgOrderByAggregateInput = {
+    id?: SortOrder
+    rating?: SortOrder
+    maxRating?: SortOrder
+    contests?: SortOrder
+    userid?: SortOrder
+  }
+
+  export type codeforceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    handle?: SortOrder
+    rating?: SortOrder
+    maxRating?: SortOrder
+    rank?: SortOrder
+    contests?: SortOrder
+    lastSynced?: SortOrder
+    userid?: SortOrder
+  }
+
+  export type codeforceMinOrderByAggregateInput = {
+    id?: SortOrder
+    handle?: SortOrder
+    rating?: SortOrder
+    maxRating?: SortOrder
+    rank?: SortOrder
+    contests?: SortOrder
+    lastSynced?: SortOrder
+    userid?: SortOrder
+  }
+
+  export type codeforceSumOrderByAggregateInput = {
+    id?: SortOrder
+    rating?: SortOrder
+    maxRating?: SortOrder
+    contests?: SortOrder
+    userid?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type leetcodeCountOrderByAggregateInput = {
+    id?: SortOrder
+    easy?: SortOrder
+    medium?: SortOrder
+    hard?: SortOrder
+    total?: SortOrder
+    lastSynced?: SortOrder
+    userid?: SortOrder
+  }
+
+  export type leetcodeAvgOrderByAggregateInput = {
+    id?: SortOrder
+    easy?: SortOrder
+    medium?: SortOrder
+    hard?: SortOrder
+    total?: SortOrder
+    userid?: SortOrder
+  }
+
+  export type leetcodeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    easy?: SortOrder
+    medium?: SortOrder
+    hard?: SortOrder
+    total?: SortOrder
+    lastSynced?: SortOrder
+    userid?: SortOrder
+  }
+
+  export type leetcodeMinOrderByAggregateInput = {
+    id?: SortOrder
+    easy?: SortOrder
+    medium?: SortOrder
+    hard?: SortOrder
+    total?: SortOrder
+    lastSynced?: SortOrder
+    userid?: SortOrder
+  }
+
+  export type leetcodeSumOrderByAggregateInput = {
+    id?: SortOrder
+    easy?: SortOrder
+    medium?: SortOrder
+    hard?: SortOrder
+    total?: SortOrder
+    userid?: SortOrder
+  }
+
+  export type codeforceCreateNestedOneWithoutUserInput = {
+    create?: XOR<codeforceCreateWithoutUserInput, codeforceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: codeforceCreateOrConnectWithoutUserInput
+    connect?: codeforceWhereUniqueInput
+  }
+
+  export type leetcodeCreateNestedOneWithoutUserInput = {
+    create?: XOR<leetcodeCreateWithoutUserInput, leetcodeUncheckedCreateWithoutUserInput>
+    connectOrCreate?: leetcodeCreateOrConnectWithoutUserInput
+    connect?: leetcodeWhereUniqueInput
+  }
+
+  export type codeforceUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<codeforceCreateWithoutUserInput, codeforceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: codeforceCreateOrConnectWithoutUserInput
+    connect?: codeforceWhereUniqueInput
+  }
+
+  export type leetcodeUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<leetcodeCreateWithoutUserInput, leetcodeUncheckedCreateWithoutUserInput>
+    connectOrCreate?: leetcodeCreateOrConnectWithoutUserInput
+    connect?: leetcodeWhereUniqueInput
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -5427,6 +8467,26 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
+  export type codeforceUpdateOneWithoutUserNestedInput = {
+    create?: XOR<codeforceCreateWithoutUserInput, codeforceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: codeforceCreateOrConnectWithoutUserInput
+    upsert?: codeforceUpsertWithoutUserInput
+    disconnect?: codeforceWhereInput | boolean
+    delete?: codeforceWhereInput | boolean
+    connect?: codeforceWhereUniqueInput
+    update?: XOR<XOR<codeforceUpdateToOneWithWhereWithoutUserInput, codeforceUpdateWithoutUserInput>, codeforceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type leetcodeUpdateOneWithoutUserNestedInput = {
+    create?: XOR<leetcodeCreateWithoutUserInput, leetcodeUncheckedCreateWithoutUserInput>
+    connectOrCreate?: leetcodeCreateOrConnectWithoutUserInput
+    upsert?: leetcodeUpsertWithoutUserInput
+    disconnect?: leetcodeWhereInput | boolean
+    delete?: leetcodeWhereInput | boolean
+    connect?: leetcodeWhereUniqueInput
+    update?: XOR<XOR<leetcodeUpdateToOneWithWhereWithoutUserInput, leetcodeUpdateWithoutUserInput>, leetcodeUncheckedUpdateWithoutUserInput>
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -5435,12 +8495,68 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type codeforceUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<codeforceCreateWithoutUserInput, codeforceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: codeforceCreateOrConnectWithoutUserInput
+    upsert?: codeforceUpsertWithoutUserInput
+    disconnect?: codeforceWhereInput | boolean
+    delete?: codeforceWhereInput | boolean
+    connect?: codeforceWhereUniqueInput
+    update?: XOR<XOR<codeforceUpdateToOneWithWhereWithoutUserInput, codeforceUpdateWithoutUserInput>, codeforceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type leetcodeUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<leetcodeCreateWithoutUserInput, leetcodeUncheckedCreateWithoutUserInput>
+    connectOrCreate?: leetcodeCreateOrConnectWithoutUserInput
+    upsert?: leetcodeUpsertWithoutUserInput
+    disconnect?: leetcodeWhereInput | boolean
+    delete?: leetcodeWhereInput | boolean
+    connect?: leetcodeWhereUniqueInput
+    update?: XOR<XOR<leetcodeUpdateToOneWithWhereWithoutUserInput, leetcodeUpdateWithoutUserInput>, leetcodeUncheckedUpdateWithoutUserInput>
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type usersCreateNestedOneWithoutCodeforceInput = {
+    create?: XOR<usersCreateWithoutCodeforceInput, usersUncheckedCreateWithoutCodeforceInput>
+    connectOrCreate?: usersCreateOrConnectWithoutCodeforceInput
+    connect?: usersWhereUniqueInput
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type usersUpdateOneRequiredWithoutCodeforceNestedInput = {
+    create?: XOR<usersCreateWithoutCodeforceInput, usersUncheckedCreateWithoutCodeforceInput>
+    connectOrCreate?: usersCreateOrConnectWithoutCodeforceInput
+    upsert?: usersUpsertWithoutCodeforceInput
+    connect?: usersWhereUniqueInput
+    update?: XOR<XOR<usersUpdateToOneWithWhereWithoutCodeforceInput, usersUpdateWithoutCodeforceInput>, usersUncheckedUpdateWithoutCodeforceInput>
+  }
+
+  export type usersCreateNestedOneWithoutLeetcodeInput = {
+    create?: XOR<usersCreateWithoutLeetcodeInput, usersUncheckedCreateWithoutLeetcodeInput>
+    connectOrCreate?: usersCreateOrConnectWithoutLeetcodeInput
+    connect?: usersWhereUniqueInput
+  }
+
+  export type usersUpdateOneRequiredWithoutLeetcodeNestedInput = {
+    create?: XOR<usersCreateWithoutLeetcodeInput, usersUncheckedCreateWithoutLeetcodeInput>
+    connectOrCreate?: usersCreateOrConnectWithoutLeetcodeInput
+    upsert?: usersUpsertWithoutLeetcodeInput
+    connect?: usersWhereUniqueInput
+    update?: XOR<XOR<usersUpdateToOneWithWhereWithoutLeetcodeInput, usersUpdateWithoutLeetcodeInput>, usersUncheckedUpdateWithoutLeetcodeInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -5615,6 +8731,309 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type codeforceCreateWithoutUserInput = {
+    handle: string
+    rating?: number | null
+    maxRating?: number | null
+    rank?: string | null
+    contests?: number | null
+    lastSynced?: Date | string
+  }
+
+  export type codeforceUncheckedCreateWithoutUserInput = {
+    id?: number
+    handle: string
+    rating?: number | null
+    maxRating?: number | null
+    rank?: string | null
+    contests?: number | null
+    lastSynced?: Date | string
+  }
+
+  export type codeforceCreateOrConnectWithoutUserInput = {
+    where: codeforceWhereUniqueInput
+    create: XOR<codeforceCreateWithoutUserInput, codeforceUncheckedCreateWithoutUserInput>
+  }
+
+  export type leetcodeCreateWithoutUserInput = {
+    easy: number
+    medium: number
+    hard: number
+    total: number
+    lastSynced?: Date | string
+  }
+
+  export type leetcodeUncheckedCreateWithoutUserInput = {
+    id?: number
+    easy: number
+    medium: number
+    hard: number
+    total: number
+    lastSynced?: Date | string
+  }
+
+  export type leetcodeCreateOrConnectWithoutUserInput = {
+    where: leetcodeWhereUniqueInput
+    create: XOR<leetcodeCreateWithoutUserInput, leetcodeUncheckedCreateWithoutUserInput>
+  }
+
+  export type codeforceUpsertWithoutUserInput = {
+    update: XOR<codeforceUpdateWithoutUserInput, codeforceUncheckedUpdateWithoutUserInput>
+    create: XOR<codeforceCreateWithoutUserInput, codeforceUncheckedCreateWithoutUserInput>
+    where?: codeforceWhereInput
+  }
+
+  export type codeforceUpdateToOneWithWhereWithoutUserInput = {
+    where?: codeforceWhereInput
+    data: XOR<codeforceUpdateWithoutUserInput, codeforceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type codeforceUpdateWithoutUserInput = {
+    handle?: StringFieldUpdateOperationsInput | string
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRating?: NullableIntFieldUpdateOperationsInput | number | null
+    rank?: NullableStringFieldUpdateOperationsInput | string | null
+    contests?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type codeforceUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    handle?: StringFieldUpdateOperationsInput | string
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRating?: NullableIntFieldUpdateOperationsInput | number | null
+    rank?: NullableStringFieldUpdateOperationsInput | string | null
+    contests?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type leetcodeUpsertWithoutUserInput = {
+    update: XOR<leetcodeUpdateWithoutUserInput, leetcodeUncheckedUpdateWithoutUserInput>
+    create: XOR<leetcodeCreateWithoutUserInput, leetcodeUncheckedCreateWithoutUserInput>
+    where?: leetcodeWhereInput
+  }
+
+  export type leetcodeUpdateToOneWithWhereWithoutUserInput = {
+    where?: leetcodeWhereInput
+    data: XOR<leetcodeUpdateWithoutUserInput, leetcodeUncheckedUpdateWithoutUserInput>
+  }
+
+  export type leetcodeUpdateWithoutUserInput = {
+    easy?: IntFieldUpdateOperationsInput | number
+    medium?: IntFieldUpdateOperationsInput | number
+    hard?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type leetcodeUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    easy?: IntFieldUpdateOperationsInput | number
+    medium?: IntFieldUpdateOperationsInput | number
+    hard?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    lastSynced?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type usersCreateWithoutCodeforceInput = {
+    firstname: string
+    lastname?: string | null
+    email: string
+    password?: string | null
+    googleid?: string | null
+    authprovider?: string
+    bio?: string | null
+    skills?: string | null
+    github?: string | null
+    portfolio?: string | null
+    resumelink?: string | null
+    profilelink?: string | null
+    created_at?: Date | string | null
+    leetcode?: leetcodeCreateNestedOneWithoutUserInput
+  }
+
+  export type usersUncheckedCreateWithoutCodeforceInput = {
+    id?: number
+    firstname: string
+    lastname?: string | null
+    email: string
+    password?: string | null
+    googleid?: string | null
+    authprovider?: string
+    bio?: string | null
+    skills?: string | null
+    github?: string | null
+    portfolio?: string | null
+    resumelink?: string | null
+    profilelink?: string | null
+    created_at?: Date | string | null
+    leetcode?: leetcodeUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type usersCreateOrConnectWithoutCodeforceInput = {
+    where: usersWhereUniqueInput
+    create: XOR<usersCreateWithoutCodeforceInput, usersUncheckedCreateWithoutCodeforceInput>
+  }
+
+  export type usersUpsertWithoutCodeforceInput = {
+    update: XOR<usersUpdateWithoutCodeforceInput, usersUncheckedUpdateWithoutCodeforceInput>
+    create: XOR<usersCreateWithoutCodeforceInput, usersUncheckedCreateWithoutCodeforceInput>
+    where?: usersWhereInput
+  }
+
+  export type usersUpdateToOneWithWhereWithoutCodeforceInput = {
+    where?: usersWhereInput
+    data: XOR<usersUpdateWithoutCodeforceInput, usersUncheckedUpdateWithoutCodeforceInput>
+  }
+
+  export type usersUpdateWithoutCodeforceInput = {
+    firstname?: StringFieldUpdateOperationsInput | string
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    googleid?: NullableStringFieldUpdateOperationsInput | string | null
+    authprovider?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    skills?: NullableStringFieldUpdateOperationsInput | string | null
+    github?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolio?: NullableStringFieldUpdateOperationsInput | string | null
+    resumelink?: NullableStringFieldUpdateOperationsInput | string | null
+    profilelink?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    leetcode?: leetcodeUpdateOneWithoutUserNestedInput
+  }
+
+  export type usersUncheckedUpdateWithoutCodeforceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstname?: StringFieldUpdateOperationsInput | string
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    googleid?: NullableStringFieldUpdateOperationsInput | string | null
+    authprovider?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    skills?: NullableStringFieldUpdateOperationsInput | string | null
+    github?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolio?: NullableStringFieldUpdateOperationsInput | string | null
+    resumelink?: NullableStringFieldUpdateOperationsInput | string | null
+    profilelink?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    leetcode?: leetcodeUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type usersCreateWithoutLeetcodeInput = {
+    firstname: string
+    lastname?: string | null
+    email: string
+    password?: string | null
+    googleid?: string | null
+    authprovider?: string
+    bio?: string | null
+    skills?: string | null
+    github?: string | null
+    portfolio?: string | null
+    resumelink?: string | null
+    profilelink?: string | null
+    created_at?: Date | string | null
+    codeforce?: codeforceCreateNestedOneWithoutUserInput
+  }
+
+  export type usersUncheckedCreateWithoutLeetcodeInput = {
+    id?: number
+    firstname: string
+    lastname?: string | null
+    email: string
+    password?: string | null
+    googleid?: string | null
+    authprovider?: string
+    bio?: string | null
+    skills?: string | null
+    github?: string | null
+    portfolio?: string | null
+    resumelink?: string | null
+    profilelink?: string | null
+    created_at?: Date | string | null
+    codeforce?: codeforceUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type usersCreateOrConnectWithoutLeetcodeInput = {
+    where: usersWhereUniqueInput
+    create: XOR<usersCreateWithoutLeetcodeInput, usersUncheckedCreateWithoutLeetcodeInput>
+  }
+
+  export type usersUpsertWithoutLeetcodeInput = {
+    update: XOR<usersUpdateWithoutLeetcodeInput, usersUncheckedUpdateWithoutLeetcodeInput>
+    create: XOR<usersCreateWithoutLeetcodeInput, usersUncheckedCreateWithoutLeetcodeInput>
+    where?: usersWhereInput
+  }
+
+  export type usersUpdateToOneWithWhereWithoutLeetcodeInput = {
+    where?: usersWhereInput
+    data: XOR<usersUpdateWithoutLeetcodeInput, usersUncheckedUpdateWithoutLeetcodeInput>
+  }
+
+  export type usersUpdateWithoutLeetcodeInput = {
+    firstname?: StringFieldUpdateOperationsInput | string
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    googleid?: NullableStringFieldUpdateOperationsInput | string | null
+    authprovider?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    skills?: NullableStringFieldUpdateOperationsInput | string | null
+    github?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolio?: NullableStringFieldUpdateOperationsInput | string | null
+    resumelink?: NullableStringFieldUpdateOperationsInput | string | null
+    profilelink?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codeforce?: codeforceUpdateOneWithoutUserNestedInput
+  }
+
+  export type usersUncheckedUpdateWithoutLeetcodeInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstname?: StringFieldUpdateOperationsInput | string
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    googleid?: NullableStringFieldUpdateOperationsInput | string | null
+    authprovider?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    skills?: NullableStringFieldUpdateOperationsInput | string | null
+    github?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolio?: NullableStringFieldUpdateOperationsInput | string | null
+    resumelink?: NullableStringFieldUpdateOperationsInput | string | null
+    profilelink?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codeforce?: codeforceUncheckedUpdateOneWithoutUserNestedInput
   }
 
 

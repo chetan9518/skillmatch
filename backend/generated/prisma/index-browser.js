@@ -163,6 +163,27 @@ exports.Prisma.MessagesScalarFieldEnum = {
   isread: 'isread'
 };
 
+exports.Prisma.CodeforceScalarFieldEnum = {
+  id: 'id',
+  handle: 'handle',
+  rating: 'rating',
+  maxRating: 'maxRating',
+  rank: 'rank',
+  contests: 'contests',
+  lastSynced: 'lastSynced',
+  userid: 'userid'
+};
+
+exports.Prisma.LeetcodeScalarFieldEnum = {
+  id: 'id',
+  easy: 'easy',
+  medium: 'medium',
+  hard: 'hard',
+  total: 'total',
+  lastSynced: 'lastSynced',
+  userid: 'userid'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -182,7 +203,9 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   users: 'users',
   jobs: 'jobs',
-  messages: 'messages'
+  messages: 'messages',
+  codeforce: 'codeforce',
+  leetcode: 'leetcode'
 };
 
 /**

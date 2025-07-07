@@ -1,4 +1,4 @@
-import express from "express"
+import express, { response } from "express"
 import { z } from "zod"
 import { client } from "../DB/postgre";
 import { redis } from "../conection/redis";
@@ -15,8 +15,16 @@ import { s3 } from "./upload";
 import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from "dotenv";
+import axios from "axios";
+import { v2 as cloudinary } from "cloudinary";
+import { buffer } from "stream/consumers";
+import { Variable } from "lucide-react";
 dotenv.config();
-
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 
 const storage = multer.memoryStorage();
@@ -255,76 +263,76 @@ userRouter.get("/me", auth, async function (req: Request, res: Response): Promis
 
 
 userRouter.post("/googleauth", async (req: Request, res: Response): Promise<any> => {
-  const { credentials } = req.body;
+    const { credentials } = req.body;
 
-  try {
-    const ticket = await googleclient.verifyIdToken({
-      idToken: credentials,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-
-    const payload = ticket.getPayload();
-    if (!payload) return res.status(400).json({ success: false, msg: "Invalid token" });
-    
-
-    const { sub, email, name, picture, given_name, family_name } = payload;
-    if (!email) {
-  return res.status(400).json({ success: false, msg: "Google account has no email" });
-}
-
-
-    const existingUser = await prisma.users.findUnique({
-      where: { email },
-    });
-
-    if (!existingUser) {
-      const firstname = given_name || name?.trim().split(" ")[0] || "User";
-      const lastname = family_name || name?.trim().split(" ").slice(1).join(" ") || null;
-
-      let key: string | null = null;
-
-      if (picture) {
-        
-        const response = await fetch(picture);
-        const buffer = await response.arrayBuffer();
-        const contentType = response.headers.get("content-type");
-
-        
-        key = `profile/${email}.${contentType}`;
-
-        const cmd = new PutObjectCommand({
-          Key: key,
-          Bucket: process.env.AWS_BUCKET_NAME,
-          Body: Buffer.from(buffer),
-          ContentType: `image/${contentType}`,
-          
+    try {
+        const ticket = await googleclient.verifyIdToken({
+            idToken: credentials,
+            audience: process.env.GOOGLE_CLIENT_ID,
         });
 
-        await s3.send(cmd);
-      }
+        const payload = ticket.getPayload();
+        if (!payload) return res.status(400).json({ success: false, msg: "Invalid token" });
 
-      await prisma.users.create({
-        data: {
-          firstname,
-          lastname,
-           email:email,
-          googleid: sub,
-          profilelink: key,
-        },
-      });
+
+        const { sub, email, name, picture, given_name, family_name } = payload;
+        if (!email) {
+            return res.status(400).json({ success: false, msg: "Google account has no email" });
+        }
+
+
+        const existingUser = await prisma.users.findUnique({
+            where: { email },
+        });
+
+        if (!existingUser) {
+            const firstname = given_name || name?.trim().split(" ")[0] || "User";
+            const lastname = family_name || name?.trim().split(" ").slice(1).join(" ") || null;
+
+            let key: string | null = null;
+
+            if (picture) {
+
+                const response = await fetch(picture);
+                const buffer = await response.arrayBuffer();
+                const contentType = response.headers.get("content-type");
+
+
+                key = `profile/${email}.${contentType}`;
+
+                const cmd = new PutObjectCommand({
+                    Key: key,
+                    Bucket: process.env.AWS_BUCKET_NAME,
+                    Body: Buffer.from(buffer),
+                    ContentType: `image/${contentType}`,
+
+                });
+
+                await s3.send(cmd);
+            }
+
+            await prisma.users.create({
+                data: {
+                    firstname,
+                    lastname,
+                    email: email,
+                    googleid: sub,
+                    profilelink: key,
+                },
+            });
+        }
+
+        const token = jwt.sign({ email }, secret_key);
+
+        return res.status(200).json({
+            success: true,
+            token,
+        });
+
+    } catch (err) {
+        console.error("Google Auth Error:", err);
+        return res.status(500).json({ success: false, msg: "Google login failed" });
     }
-
-    const token = jwt.sign({ email }, secret_key);
-
-    return res.status(200).json({
-      success: true,
-      token,
-    });
-
-  } catch (err) {
-    console.error("Google Auth Error:", err);
-    return res.status(500).json({ success: false, msg: "Google login failed" });
-  }
 });
 
 
@@ -469,90 +477,118 @@ userRouter.post("/signin", async (req: Request, res: Response): Promise<any> => 
 });
 
 
-userRouter.post("/update", upload.fields([{ name: "resume", maxCount: 1 }, { name: "profile", maxCount: 1 }]), auth, async function (req: Request, res: Response): Promise<any> {
-    try {
-        const body: updatedbody = req.body;
-        let zodbody = updateSchema.safeParse(body);
-        if (!zodbody.success) {
-            return res.status(401).json({
-                success: false,
-                msg: "Invalid input"
-            })
-        }
-
-        const bucketname = process.env.AWS_BUCKET_NAME!
-        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-        const file = files["resume"]?.[0];
-        const profile = files["profile"]?.[0]
-
-
-
-        const command = new PutObjectCommand({
-            Bucket: bucketname,
-            Key: `resume/${body.email}.pdf`,
-            Body: file?.buffer,
-            ContentType: file?.mimetype,
-        })
-
-
-        const originalName = profile?.originalname || "profile.jpg";
-        const extension = originalName.split(".").pop() || "jpg";
-
-        const command2 = new PutObjectCommand({
-            Bucket: bucketname,
-            Key: `profile/${body.email}.${extension}`,
-            Body: profile?.buffer,
-            ContentType: profile?.mimetype,
-        })
-
-        const data = await s3.send(command);
-        const data2 = await s3.send(command2);
-
-
-
-
-
-        const result = await prisma.users.update({
-            where: { email: body.email },
-            data: {
-                firstname: body.firstname,
-                lastname: body.lastname,
-                bio: body.bio,
-                skills: body.skills,
-                github: body.github,
-                portfolio: body.portfolio,
-                resumelink: `resume/${body.email}.pdf`,
-                profilelink: `profile/${body.email}.${extension}`
-            },
-            select: {
-                firstname: true,
-                lastname: true,
-                bio: true,
-                skills: true,
-                github: true,
-                portfolio: true,
-                resumelink: true,
-                profilelink: true
+userRouter.post(
+    "/update",
+    upload.fields([
+        { name: "resume", maxCount: 1 },
+        { name: "profile", maxCount: 1 },
+    ]),
+    auth,
+    async function (req: Request, res: Response): Promise<any> {
+        try {
+            const body: updatedbody = req.body;
+            const zodbody = updateSchema.safeParse(body);
+            if (!zodbody.success) {
+                return res.status(401).json({
+                    success: false,
+                    msg: "Invalid input",
+                });
             }
-        })
 
-        return res.status(200).json({
-            success: true,
-            msg: "Updated sucessfully",
-            user: result
-        })
+            const bucketname = process.env.AWS_BUCKET_NAME!;
+            const files = req.files as {
+                [fieldname: string]: Express.Multer.File[];
+            };
+            const file = files["resume"]?.[0];
+            const profile = files["profile"]?.[0];
+
+            let profileKey: string | undefined;
+
+            if (profile) {
+                const uploaded = await new Promise<any>((resolve, reject) => {
+                    const stream = cloudinary.uploader.upload_stream(
+                        { folder: "skillmatch" },
+                        (error, result) => {
+                            if (error || !result) return reject(error);
+                            resolve(result);
+                        }
+                    );
+                    stream.end(profile.buffer);
+                });
+
+                const croppedUrl = cloudinary.url(uploaded.public_id, {
+                    width: 300,
+                    height: 300,
+                    gravity: "face",
+                    crop: "thumb",
+                    secure: true,
+                });
+
+                const croppedImage = await fetch(croppedUrl);
+                const croppedBuffer = await croppedImage.arrayBuffer();
+
+                profileKey = `profile/${body.email}.jpg`;
+
+                const profileCommand = new PutObjectCommand({
+                    Bucket: bucketname,
+                    Key: profileKey,
+                    Body: Buffer.from(croppedBuffer),
+                    ContentType: "image/jpeg",
+                });
+
+                await s3.send(profileCommand);
+            }
+
+            if (file) {
+                const resumeCommand = new PutObjectCommand({
+                    Bucket: bucketname,
+                    Key: `resume/${body.email}.pdf`,
+                    Body: file.buffer,
+                    ContentType: file.mimetype,
+                });
+
+                await s3.send(resumeCommand);
+            }
+
+            const result = await prisma.users.update({
+                where: { email: body.email },
+                data: {
+                    firstname: body.firstname,
+                    lastname: body.lastname,
+                    bio: body.bio,
+                    skills: body.skills,
+                    github: body.github,
+                    portfolio: body.portfolio,
+                    resumelink: file ? `resume/${body.email}.pdf` : undefined,
+                    profilelink: profileKey || undefined,
+                },
+                select: {
+                    firstname: true,
+                    lastname: true,
+                    bio: true,
+                    skills: true,
+                    github: true,
+                    portfolio: true,
+                    resumelink: true,
+                    profilelink: true,
+                },
+            });
+
+            return res.status(200).json({
+                success: true,
+                msg: "Updated successfully",
+                user: result,
+            });
+        } catch (err: any) {
+            console.error("Update error:", err);
+            return res.status(500).json({
+                success: false,
+                msg: "Server error",
+            });
+        }
     }
+);
 
-    catch (err: unknown) {
-        console.error("Update error:", err);
-        return res.status(500).json({
-            success: false,
-            msg: "Server error"
-        })
-    }
-
-
-})
 
 
 userRouter.get("/profileurl", auth, async (req: Request, res: Response): Promise<any> => {
@@ -1198,6 +1234,250 @@ userRouter.delete("/deletejob/:id", auth, async (req: meget, res: Response): Pro
         console.error("Error deleting job:", error);
         return res.status(500).json({ success: false, msg: "Server error" });
     }
+});
+userRouter.get("/fetchusercf", auth, async (req: meget, res: Response): Promise<any> => {
+    try {
+        const email: string | null = req.email!
+        const user = await prisma.users.findUnique({
+            where: { email },
+            select: { codeforce: true }
+        })
+        if (!user) {
+            return res.status(404).json({ success: false, msg: "User not found" })
+        }
+        if (!user.codeforce) {
+            return res.status(404).json({
+                success: false,
+                msg: "Not found codeforce details"
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            codeforce: user.codeforce
+        })
+    }
+    catch (e) {
+        console.log(e)
+        return res.status(500).json({
+            success: false,
+            msg: "Server error"
+        })
+    }
+})
+
+userRouter.post("/postusercf", auth, async (req: meget, res: Response): Promise<any> => {
+    const email: string | null = req.email!;
+    const { userhandle } = req.body;
+
+    if (!userhandle || userhandle.trim().length < 3 || userhandle.trim().length > 24) {
+        return res.status(400).json({
+            success: false,
+            msg: "Invalid handle: Must be between 3 and 24 characters",
+        });
+    }
+
+    try {
+        const user = await prisma.users.findUnique({
+            where: { email },
+            select: { id: true },
+        });
+
+        if (!user) {
+            return res.status(404).json({ success: false, msg: "User not found" });
+        }
+
+        const handle = userhandle.trim();
+
+
+        const userCFInfo = await axios.get(`https://codeforces.com/api/user.info?handles=${handle}`);
+        const userData = userCFInfo.data.result[0];
+
+
+        let contests: number | null = null;
+        try {
+            const ratingRes = await axios.get(`https://codeforces.com/api/user.rating?handle=${handle}`);
+            contests = ratingRes.data.result.length || 0;
+        } catch (err: any) {
+            if (err.response?.data?.status === "FAILED") {
+                contests = 0;
+            } else {
+                throw err;
+            }
+        }
+
+
+        const details = await prisma.codeforce.upsert({
+            where: { userid: user.id },
+            update: {
+                handle,
+                rating: userData.rating,
+                maxRating: userData.maxRating,
+                rank: userData.rank,
+                contests,
+                lastSynced: new Date(),
+            },
+            create: {
+                handle,
+                userid: user.id,
+                rating: userData.rating,
+                maxRating: userData.maxRating,
+                rank: userData.rank,
+                contests,
+            },
+        });
+
+        return res.json({ success: true, details });
+    } catch (e: any) {
+        console.error("Codeforces fetch error:", e.response?.data || e.message || e);
+        return res.status(500).json({
+            success: false,
+            msg: "Failed to fetch Codeforces data. Check handle validity or try again later.",
+        });
+    }
+});
+
+userRouter.post("/cfrefresh", auth, async (req: meget, res: Response): Promise<any> => {
+    try {
+        const email = req.email!;
+
+
+        const user = await prisma.users.findUnique({
+            where: { email },
+            select: {
+                id: true,
+                codeforce: {
+                    select: { handle: true }
+                }
+            }
+        });
+
+        if (!user || !user.codeforce?.handle) {
+            return res.status(400).json({
+                success: false,
+                msg: "No Codeforces handle found. Please add one first.",
+            });
+        }
+
+        const handle = user.codeforce.handle;
+
+
+        const userInfoRes = await axios.get(`https://codeforces.com/api/user.info?handles=${handle}`);
+        const userData = userInfoRes.data.result[0];
+
+
+        let contestCount: number = 0;
+        try {
+            const ratingRes = await axios.get(`https://codeforces.com/api/user.rating?handle=${handle}`);
+            contestCount = ratingRes.data.result.length;
+        } catch (err: any) {
+            if (err.response?.data?.status === "FAILED") {
+                contestCount = 0;
+            } else {
+                throw err;
+            }
+        }
+
+
+        const updated = await prisma.codeforce.update({
+            where: { userid: user.id },
+            data: {
+                rating: userData.rating,
+                maxRating: userData.maxRating,
+                rank: userData.rank,
+                contests: contestCount,
+                lastSynced: new Date(),
+            },
+        });
+
+        return res.status(200).json({
+            success: true,
+            msg: "Codeforces data refreshed",
+            details: updated,
+        });
+
+    } catch (err: any) {
+        console.error("Refresh error:", err.response?.data || err.message);
+        return res.status(500).json({
+            success: false,
+            msg: "Failed to refresh Codeforces data",
+        });
+    }
+});
+
+
+userRouter.post("/lc-refresh", auth, async (req: meget, res: Response): Promise<any> => {
+  try {
+    const email = req.email!;
+    const { username } = req.body;
+
+    if (!username || username.trim() === "") {
+      return res.status(400).json({ success: false, msg: "Username is required" });
+    }
+
+    const response = await fetch("https://leetcode.com/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        query: `
+          query getUserProfile($username: String!) {
+            matchedUser(username: $username) {
+              submitStats {
+                acSubmissionNum {
+                  difficulty
+                  count
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          username: username
+        }
+      })
+    });
+
+    const json = await response.json();
+
+    if (!json.data || !json.data.matchedUser) {
+      return res.status(404).json({ success: false, msg: "User not found on LeetCode" });
+    }
+
+    const stats = json.data.matchedUser.submitStats.acSubmissionNum;
+
+    const easy = stats.find((s: any) => s.difficulty === "Easy")?.count || 0;
+    const medium = stats.find((s: any) => s.difficulty === "Medium")?.count || 0;
+    const hard = stats.find((s: any) => s.difficulty === "Hard")?.count || 0;
+    const total = stats.find((s: any) => s.difficulty === "All")?.count || 0;
+
+    const user = await prisma.users.findUnique({
+      where: { email },
+      select: { id: true }
+    });
+
+    if (!user) {
+      return res.status(404).json({ success: false, msg: "User not found in DB" });
+    }
+
+    const result = await prisma.leetcode.upsert({
+      where: { userid: user.id },
+      update: { easy, medium, hard, total },
+      create: {
+        userid: user.id,
+        easy,
+        medium,
+        hard,
+        total
+      }
+    });
+
+    return res.json({ success: true, details: result });
+
+  } catch (e) {
+    console.error("LeetCode Refresh Error:", e);
+    return res.status(500).json({ success: false, msg: "Server error during refresh" });
+  }
 });
 
 

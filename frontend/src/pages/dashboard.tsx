@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { motion } from "motion/react"
 
 
 type UserProfile = {
@@ -142,9 +143,17 @@ export default function Dashboard() {
           <p className="absolute top-4 left-6 text-sm text-zinc-500">{current}</p>
           <div className="mb-2 space-y-1">
             <h2 className="text-xl font-semibold">Hi {profile?.firstname || "there"} 👋</h2>
-            <p className=" text-zinc-600 dark:text-zinc-400">
-              {profile?.bio || "Start setting up your profile to get better matches!"}
-            </p>
+            <motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 1.0 }}
+>
+  <h1 className="text-3xl font-bold">Track. Grow. Showcase.</h1>
+</motion.div>
+            
+  <p className="text-sm text-gray-500 mt-1">
+    Build your resume. Master DSA. Get smarter with every line of code.
+  </p>
 
           </div>
           {profileUrl ? (
@@ -161,6 +170,7 @@ export default function Dashboard() {
             />
           )}
         </div>
+        
 
         <div className="dark:shadow-md dark:shadow-black/10 bg-white  dark:hover:bg-zinc-700 dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6 shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:bg-blue-50">
           <h3 className="text-lg font-semibold mb-4">Quick Profile Overview</h3>

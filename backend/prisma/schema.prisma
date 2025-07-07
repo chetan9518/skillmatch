@@ -22,6 +22,8 @@ model users {
   portfolio  String?
   resumelink String?
   profilelink String?
+  codeforce  codeforce?
+  leetcode   leetcode?
   created_at DateTime? @default(now()) @db.Timestamptz(6)
 }
 
@@ -49,4 +51,25 @@ model messages{
   content String
   created_at DateTime?  @default(now())
   isread    Boolean     @default(false)
+}
+model codeforce{
+  id       Int  @id@default(autoincrement())
+    handle      String   @unique
+  rating      Int?
+  maxRating   Int?
+  rank        String?
+  contests    Int?
+  lastSynced  DateTime @default(now())
+  user        users @relation(fields: [userid],references: [id])
+  userid   Int   @unique
+}
+model leetcode {
+  id Int @id@default(autoincrement())
+  easy Int 
+  medium Int 
+  hard  Int 
+  total Int
+  lastSynced  DateTime @default(now())
+  user users  @relation(fields: [userid],references: [id])
+  userid Int @unique
 }
