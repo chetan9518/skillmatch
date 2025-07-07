@@ -1405,79 +1405,109 @@ userRouter.post("/cfrefresh", auth, async (req: meget, res: Response): Promise<a
 });
 
 
-userRouter.post("/lc-refresh", auth, async (req: meget, res: Response): Promise<any> => {
-  try {
-    const email = req.email!;
-    const { username } = req.body;
-
-    if (!username || username.trim() === "") {
-      return res.status(400).json({ success: false, msg: "Username is required" });
-    }
-
-    const response = await fetch("https://leetcode.com/graphql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        query: `
-          query getUserProfile($username: String!) {
-            matchedUser(username: $username) {
-              submitStats {
-                acSubmissionNum {
-                  difficulty
-                  count
-                }
-              }
-            }
-          }
-        `,
-        variables: {
-          username: username
+userRouter.get("/fetchuserlc", auth, async (req: meget, res: Response): Promise<any> => {
+    try {
+        const email: string | null = req.email!
+        const user = await prisma.users.findUnique({
+            where: { email },
+            select: { leetcode: true }
+        })
+        if (!user) {
+            return res.status(404).json({ success: false, msg: "User not found" })
         }
-      })
-    });
-
-    const json = await response.json();
-
-    if (!json.data || !json.data.matchedUser) {
-      return res.status(404).json({ success: false, msg: "User not found on LeetCode" });
+        if (!user.leetcode) {
+            return res.status(404).json({
+                success: false,
+                msg: "Not found leetcode details"
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            leetcode: user.leetcode
+        })
     }
-
-    const stats = json.data.matchedUser.submitStats.acSubmissionNum;
-
-    const easy = stats.find((s: any) => s.difficulty === "Easy")?.count || 0;
-    const medium = stats.find((s: any) => s.difficulty === "Medium")?.count || 0;
-    const hard = stats.find((s: any) => s.difficulty === "Hard")?.count || 0;
-    const total = stats.find((s: any) => s.difficulty === "All")?.count || 0;
-
-    const user = await prisma.users.findUnique({
-      where: { email },
-      select: { id: true }
-    });
-
-    if (!user) {
-      return res.status(404).json({ success: false, msg: "User not found in DB" });
+    catch (e) {
+        console.log(e)
+        return res.status(500).json({
+            success: false,
+            msg: "Server error"
+        })
     }
+})
 
-    const result = await prisma.leetcode.upsert({
-      where: { userid: user.id },
-      update: { easy, medium, hard, total },
-      create: {
-        userid: user.id,
-        easy,
-        medium,
-        hard,
-        total
-      }
-    });
+userRouter.post("/lc-refresh", auth, async (req: meget, res: Response): Promise<any> => {
+    try {
+        const email = req.email!;
+        const { username } = req.body;
 
-    return res.json({ success: true, details: result });
+        if (!username || username.trim() === "") {
+            return res.status(400).json({ success: false, msg: "Username is required" });
+        }
 
-  } catch (e) {
-    console.error("LeetCode Refresh Error:", e);
-    return res.status(500).json({ success: false, msg: "Server error during refresh" });
-  }
+        const response = await fetch("https://leetcode.com/graphql", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                query: `
+                  query getUserProfile($username: String!) {
+                    matchedUser(username: $username) {
+                      submitStats {
+                        acSubmissionNum {
+                          difficulty
+                          count
+                        }
+                      }
+                    }
+                  }
+                `,
+                variables: {
+                    username: username.trim()
+                }
+            })
+        });
+
+        const json = await response.json();
+
+        if (!json.data || !json.data.matchedUser) {
+            return res.status(404).json({ success: false, msg: "User not found on LeetCode" });
+        }
+
+        const stats = json.data.matchedUser.submitStats.acSubmissionNum;
+
+        const easy = stats.find((s: any) => s.difficulty === "Easy")?.count || 0;
+        const medium = stats.find((s: any) => s.difficulty === "Medium")?.count || 0;
+        const hard = stats.find((s: any) => s.difficulty === "Hard")?.count || 0;
+        const total = stats.find((s: any) => s.difficulty === "All")?.count || 0;
+
+        const user = await prisma.users.findUnique({
+            where: { email },
+            select: { id: true }
+        });
+
+        if (!user) {
+            return res.status(404).json({ success: false, msg: "User not found in DB" });
+        }
+
+        const result = await prisma.leetcode.upsert({
+            where: { userid: user.id },
+            update: { easy, medium, hard, total, lastSynced: new Date() },
+            create: {
+                userid: user.id,
+                easy,
+                medium,
+                hard,
+                total
+            }
+        });
+
+        return res.json({ success: true, details: result });
+
+    } catch (e) {
+        console.error("LeetCode Refresh Error:", e);
+        return res.status(500).json({ success: false, msg: "Server error during refresh" });
+    }
 });
 
 

@@ -29,6 +29,7 @@ export function SkillTracker() {
   const [cfLoading, setCfLoading] = useState(false);
 
   // LeetCode State
+  const [haveLeetCode, setHaveLeetCode] = useState(false);
   const [leetCodeDetails, setLeetCodeDetails] = useState<LeetCodeDetails | null>(null);
   const [leetCodeUsername, setLeetCodeUsername] = useState("");
   const [leetCodeLoading, setLeetCodeLoading] = useState(false);
@@ -93,9 +94,41 @@ export function SkillTracker() {
   };
 
   // LeetCode Functions
+  const handleAddLeetCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!leetCodeUsername.trim()) return;
+
+    setLeetCodeLoading(true);
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/user/lc-refresh",
+        { username: leetCodeUsername.trim() },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (res.data.success) {
+        toast.success("LeetCode username added successfully!");
+        setHaveLeetCode(true);
+        setLeetCodeDetails(res.data.details);
+        // Save username to localStorage for future refreshes
+        localStorage.setItem("leetcode_username", leetCodeUsername.trim());
+        setLeetCodeUsername("");
+      } else {
+        toast.error("Failed to add LeetCode username");
+      }
+    } catch (err: any) {
+      toast.error(err.response?.data?.msg || "Invalid username or server error");
+    } finally {
+      setLeetCodeLoading(false);
+    }
+  };
+
   const handleRefreshLeetCode = async () => {
-    if (!leetCodeUsername.trim()) {
-      toast.error("Please enter a LeetCode username first");
+    if (!haveLeetCode) return;
+    
+    const savedUsername = localStorage.getItem("leetcode_username");
+    if (!savedUsername) {
+      toast.error("No saved LeetCode username found");
       return;
     }
 
@@ -103,7 +136,7 @@ export function SkillTracker() {
     try {
       const res = await axios.post(
         "http://localhost:3000/user/lc-refresh",
-        { username: leetCodeUsername.trim() },
+        { username: savedUsername },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -139,6 +172,20 @@ export function SkillTracker() {
         // CF data doesn't exist, which is fine
       }
 
+      try {
+        // Check LeetCode status
+        const lcRes = await axios.get("http://localhost:3000/user/fetchuserlc", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (lcRes.data.success && lcRes.data.leetcode) {
+          setHaveLeetCode(true);
+          setLeetCodeDetails(lcRes.data.leetcode);
+        }
+      } catch (e) {
+        // LC data doesn't exist, which is fine
+      }
+
       setInitialLoading(false);
     }
 
@@ -160,8 +207,6 @@ export function SkillTracker() {
     };
     return rankColors[rank?.toLowerCase()] || 'text-gray-500';
   };
-
-
 
   if (initialLoading) {
     return (
@@ -307,89 +352,99 @@ export function SkillTracker() {
                 LeetCode
               </h2>
             </div>
-            <motion.button
-              whileTap={{ rotate: 360 }}
-              transition={{ duration: 0.5 }}
-              onClick={handleRefreshLeetCode}
-              disabled={leetCodeLoading}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
-            >
-              <RotateCcw className={`h-5 w-5 text-gray-500 hover:text-orange-600 ${leetCodeLoading ? 'animate-spin' : ''}`} />
-            </motion.button>
+            {haveLeetCode && (
+              <motion.button
+                whileTap={{ rotate: 360 }}
+                transition={{ duration: 0.5 }}
+                onClick={handleRefreshLeetCode}
+                disabled={leetCodeLoading}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
+              >
+                <RotateCcw className={`h-5 w-5 text-gray-500 hover:text-orange-600 ${leetCodeLoading ? 'animate-spin' : ''}`} />
+              </motion.button>
+            )}
           </div>
 
-          <div className="space-y-4">
+          {!haveLeetCode ? (
             <div>
-              <label className="block text-sm text-gray-600 dark:text-gray-400 mb-2">
-                LeetCode Username
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. leetcode_user"
-                value={leetCodeUsername}
-                onChange={(e) => setLeetCodeUsername(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-zinc-600 dark:bg-zinc-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
-                disabled={leetCodeLoading}
-              />
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Enter your LeetCode username to track your problem-solving progress.
+              </p>
+              <form onSubmit={handleAddLeetCode} className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="e.g. leetcode_user"
+                  value={leetCodeUsername}
+                  onChange={(e) => setLeetCodeUsername(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-zinc-600 dark:bg-zinc-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  required
+                  disabled={leetCodeLoading}
+                />
+                <button
+                  type="submit"
+                  disabled={leetCodeLoading || !leetCodeUsername.trim()}
+                  className="w-full px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {leetCodeLoading ? "Adding..." : "Add LeetCode Username"}
+                </button>
+              </form>
             </div>
-
-            {leetCodeDetails && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
-                    <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
-                      <Trophy className="h-4 w-4" />
-                      Easy
-                    </div>
-                    <div className="font-semibold text-green-700 dark:text-green-300 text-lg">
-                      {leetCodeDetails.easy}
-                    </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
+                  <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+                    <Trophy className="h-4 w-4" />
+                    Easy
                   </div>
-                  <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg border border-orange-200 dark:border-orange-800">
-                    <div className="flex items-center gap-2 text-sm text-orange-600 dark:text-orange-400">
-                      <Trophy className="h-4 w-4" />
-                      Medium
-                    </div>
-                    <div className="font-semibold text-orange-700 dark:text-orange-300 text-lg">
-                      {leetCodeDetails.medium}
-                    </div>
+                  <div className="font-semibold text-green-700 dark:text-green-300 text-lg">
+                    {leetCodeDetails?.easy || 0}
                   </div>
-                  <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
-                    <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
-                      <Trophy className="h-4 w-4" />
-                      Hard
-                    </div>
-                    <div className="font-semibold text-red-700 dark:text-red-300 text-lg">
-                      {leetCodeDetails.hard}
-                    </div>
+                </div>
+                <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg border border-orange-200 dark:border-orange-800">
+                  <div className="flex items-center gap-2 text-sm text-orange-600 dark:text-orange-400">
+                    <Trophy className="h-4 w-4" />
+                    Medium
                   </div>
-                  <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg border border-purple-200 dark:border-purple-800">
-                    <div className="flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400">
-                      <Star className="h-4 w-4" />
-                      Total
-                    </div>
-                    <div className="font-semibold text-purple-700 dark:text-purple-300 text-lg">
-                      {leetCodeDetails.total}
-                    </div>
+                  <div className="font-semibold text-orange-700 dark:text-orange-300 text-lg">
+                    {leetCodeDetails?.medium || 0}
+                  </div>
+                </div>
+                <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
+                  <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
+                    <Trophy className="h-4 w-4" />
+                    Hard
+                  </div>
+                  <div className="font-semibold text-red-700 dark:text-red-300 text-lg">
+                    {leetCodeDetails?.hard || 0}
+                  </div>
+                </div>
+                <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg border border-purple-200 dark:border-purple-800">
+                  <div className="flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400">
+                    <Star className="h-4 w-4" />
+                    Total
+                  </div>
+                  <div className="font-semibold text-purple-700 dark:text-purple-300 text-lg">
+                    {leetCodeDetails?.total || 0}
                   </div>
                 </div>
               </div>
-            )}
-
-            {!leetCodeDetails && (
-              <div className="text-center py-8">
-                <p className="text-gray-500 dark:text-gray-400 mb-4">
-                  Enter your LeetCode username and click refresh to fetch your stats
-                </p>
-                <Code className="h-12 w-12 text-gray-300 dark:text-gray-600 mx-auto" />
+              <div className="bg-gray-50 dark:bg-zinc-700 p-3 rounded-lg">
+                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <Hash className="h-4 w-4" />
+                  Username
+                </div>
+                <div className="font-semibold text-gray-800 dark:text-white">
+                  {localStorage.getItem("leetcode_username") || "N/A"}
+                </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </motion.div>
       </div>
 
       {/* Stats Summary */}
-      {(haveCF || leetCodeDetails) && (
+      {(haveCF || haveLeetCode) && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -407,12 +462,12 @@ export function SkillTracker() {
                 </p>
               </div>
             )}
-            {leetCodeDetails && (
+            {haveLeetCode && (
               <div>
                 <h4 className="font-medium mb-2">LeetCode Progress</h4>
                 <p className="text-purple-100">
-                  <strong>{leetCodeDetails.total}</strong> total problems solved • 
-                  {leetCodeDetails.easy}E + {leetCodeDetails.medium}M + {leetCodeDetails.hard}H
+                  <strong>{leetCodeDetails?.total || 0}</strong> total problems solved • 
+                  {leetCodeDetails?.easy || 0}E + {leetCodeDetails?.medium || 0}M + {leetCodeDetails?.hard || 0}H
                 </p>
               </div>
             )}
