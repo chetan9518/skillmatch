@@ -1047,11 +1047,27 @@ type MessagePack = {
     created_at: string;
     isread: boolean;
 };
+userRouter.get("/unread-msg",auth,async (req:meget,res:Response):Promise<any>=>{
+    try{
+    const email:string|null= req.email!
+       const message = await prisma.messages.findMany({
+            where:{receiver:email}
+        })
+
+    res.status(200).json({ success: true, messagesNumber: message.length });
+    }
+     catch (error) {
+        console.error("Error fetching messages:", error);
+        res.status(500).json({ success: false, error: "Internal server error" });
+     }
+
+})
 
 userRouter.get("/getmessage", auth, async (req: meget, res: Response): Promise<void> => {
     try {
         console.log("   in get     ")
         const email: string = req.email!;
+     
 
         const rawMessages = await prisma.messages.findMany({
             where: {
@@ -1492,8 +1508,9 @@ userRouter.post("/lc-refresh", auth, async (req: meget, res: Response): Promise<
 
         const result = await prisma.leetcode.upsert({
             where: { userid: user.id },
-            update: { easy, medium, hard, total, lastSynced: new Date() },
+            update: { handle:username,easy, medium, hard, total, lastSynced: new Date() },
             create: {
+                handle:username,
                 userid: user.id,
                 easy,
                 medium,

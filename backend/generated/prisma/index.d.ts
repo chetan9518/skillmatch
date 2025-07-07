@@ -5841,6 +5841,7 @@ export namespace Prisma {
 
   export type LeetcodeMinAggregateOutputType = {
     id: number | null
+    handle: string | null
     easy: number | null
     medium: number | null
     hard: number | null
@@ -5851,6 +5852,7 @@ export namespace Prisma {
 
   export type LeetcodeMaxAggregateOutputType = {
     id: number | null
+    handle: string | null
     easy: number | null
     medium: number | null
     hard: number | null
@@ -5861,6 +5863,7 @@ export namespace Prisma {
 
   export type LeetcodeCountAggregateOutputType = {
     id: number
+    handle: number
     easy: number
     medium: number
     hard: number
@@ -5891,6 +5894,7 @@ export namespace Prisma {
 
   export type LeetcodeMinAggregateInputType = {
     id?: true
+    handle?: true
     easy?: true
     medium?: true
     hard?: true
@@ -5901,6 +5905,7 @@ export namespace Prisma {
 
   export type LeetcodeMaxAggregateInputType = {
     id?: true
+    handle?: true
     easy?: true
     medium?: true
     hard?: true
@@ -5911,6 +5916,7 @@ export namespace Prisma {
 
   export type LeetcodeCountAggregateInputType = {
     id?: true
+    handle?: true
     easy?: true
     medium?: true
     hard?: true
@@ -6008,6 +6014,7 @@ export namespace Prisma {
 
   export type LeetcodeGroupByOutputType = {
     id: number
+    handle: string
     easy: number
     medium: number
     hard: number
@@ -6037,6 +6044,7 @@ export namespace Prisma {
 
   export type leetcodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    handle?: boolean
     easy?: boolean
     medium?: boolean
     hard?: boolean
@@ -6048,6 +6056,7 @@ export namespace Prisma {
 
   export type leetcodeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    handle?: boolean
     easy?: boolean
     medium?: boolean
     hard?: boolean
@@ -6059,6 +6068,7 @@ export namespace Prisma {
 
   export type leetcodeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    handle?: boolean
     easy?: boolean
     medium?: boolean
     hard?: boolean
@@ -6070,6 +6080,7 @@ export namespace Prisma {
 
   export type leetcodeSelectScalar = {
     id?: boolean
+    handle?: boolean
     easy?: boolean
     medium?: boolean
     hard?: boolean
@@ -6078,7 +6089,7 @@ export namespace Prisma {
     userid?: boolean
   }
 
-  export type leetcodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "easy" | "medium" | "hard" | "total" | "lastSynced" | "userid", ExtArgs["result"]["leetcode"]>
+  export type leetcodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "handle" | "easy" | "medium" | "hard" | "total" | "lastSynced" | "userid", ExtArgs["result"]["leetcode"]>
   export type leetcodeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | usersDefaultArgs<ExtArgs>
   }
@@ -6096,6 +6107,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      handle: string
       easy: number
       medium: number
       hard: number
@@ -6527,6 +6539,7 @@ export namespace Prisma {
    */
   interface leetcodeFieldRefs {
     readonly id: FieldRef<"leetcode", 'Int'>
+    readonly handle: FieldRef<"leetcode", 'String'>
     readonly easy: FieldRef<"leetcode", 'Int'>
     readonly medium: FieldRef<"leetcode", 'Int'>
     readonly hard: FieldRef<"leetcode", 'Int'>
@@ -7029,6 +7042,7 @@ export namespace Prisma {
 
   export const LeetcodeScalarFieldEnum: {
     id: 'id',
+    handle: 'handle',
     easy: 'easy',
     medium: 'medium',
     hard: 'hard',
@@ -7475,6 +7489,7 @@ export namespace Prisma {
     OR?: leetcodeWhereInput[]
     NOT?: leetcodeWhereInput | leetcodeWhereInput[]
     id?: IntFilter<"leetcode"> | number
+    handle?: StringFilter<"leetcode"> | string
     easy?: IntFilter<"leetcode"> | number
     medium?: IntFilter<"leetcode"> | number
     hard?: IntFilter<"leetcode"> | number
@@ -7486,6 +7501,7 @@ export namespace Prisma {
 
   export type leetcodeOrderByWithRelationInput = {
     id?: SortOrder
+    handle?: SortOrder
     easy?: SortOrder
     medium?: SortOrder
     hard?: SortOrder
@@ -7497,6 +7513,7 @@ export namespace Prisma {
 
   export type leetcodeWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    handle?: string
     userid?: number
     AND?: leetcodeWhereInput | leetcodeWhereInput[]
     OR?: leetcodeWhereInput[]
@@ -7507,10 +7524,11 @@ export namespace Prisma {
     total?: IntFilter<"leetcode"> | number
     lastSynced?: DateTimeFilter<"leetcode"> | Date | string
     user?: XOR<UsersScalarRelationFilter, usersWhereInput>
-  }, "id" | "userid">
+  }, "id" | "handle" | "userid">
 
   export type leetcodeOrderByWithAggregationInput = {
     id?: SortOrder
+    handle?: SortOrder
     easy?: SortOrder
     medium?: SortOrder
     hard?: SortOrder
@@ -7529,6 +7547,7 @@ export namespace Prisma {
     OR?: leetcodeScalarWhereWithAggregatesInput[]
     NOT?: leetcodeScalarWhereWithAggregatesInput | leetcodeScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"leetcode"> | number
+    handle?: StringWithAggregatesFilter<"leetcode"> | string
     easy?: IntWithAggregatesFilter<"leetcode"> | number
     medium?: IntWithAggregatesFilter<"leetcode"> | number
     hard?: IntWithAggregatesFilter<"leetcode"> | number
@@ -7911,6 +7930,7 @@ export namespace Prisma {
   }
 
   export type leetcodeCreateInput = {
+    handle: string
     easy: number
     medium: number
     hard: number
@@ -7921,6 +7941,7 @@ export namespace Prisma {
 
   export type leetcodeUncheckedCreateInput = {
     id?: number
+    handle: string
     easy: number
     medium: number
     hard: number
@@ -7930,6 +7951,7 @@ export namespace Prisma {
   }
 
   export type leetcodeUpdateInput = {
+    handle?: StringFieldUpdateOperationsInput | string
     easy?: IntFieldUpdateOperationsInput | number
     medium?: IntFieldUpdateOperationsInput | number
     hard?: IntFieldUpdateOperationsInput | number
@@ -7940,6 +7962,7 @@ export namespace Prisma {
 
   export type leetcodeUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    handle?: StringFieldUpdateOperationsInput | string
     easy?: IntFieldUpdateOperationsInput | number
     medium?: IntFieldUpdateOperationsInput | number
     hard?: IntFieldUpdateOperationsInput | number
@@ -7950,6 +7973,7 @@ export namespace Prisma {
 
   export type leetcodeCreateManyInput = {
     id?: number
+    handle: string
     easy: number
     medium: number
     hard: number
@@ -7959,6 +7983,7 @@ export namespace Prisma {
   }
 
   export type leetcodeUpdateManyMutationInput = {
+    handle?: StringFieldUpdateOperationsInput | string
     easy?: IntFieldUpdateOperationsInput | number
     medium?: IntFieldUpdateOperationsInput | number
     hard?: IntFieldUpdateOperationsInput | number
@@ -7968,6 +7993,7 @@ export namespace Prisma {
 
   export type leetcodeUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    handle?: StringFieldUpdateOperationsInput | string
     easy?: IntFieldUpdateOperationsInput | number
     medium?: IntFieldUpdateOperationsInput | number
     hard?: IntFieldUpdateOperationsInput | number
@@ -8385,6 +8411,7 @@ export namespace Prisma {
 
   export type leetcodeCountOrderByAggregateInput = {
     id?: SortOrder
+    handle?: SortOrder
     easy?: SortOrder
     medium?: SortOrder
     hard?: SortOrder
@@ -8404,6 +8431,7 @@ export namespace Prisma {
 
   export type leetcodeMaxOrderByAggregateInput = {
     id?: SortOrder
+    handle?: SortOrder
     easy?: SortOrder
     medium?: SortOrder
     hard?: SortOrder
@@ -8414,6 +8442,7 @@ export namespace Prisma {
 
   export type leetcodeMinOrderByAggregateInput = {
     id?: SortOrder
+    handle?: SortOrder
     easy?: SortOrder
     medium?: SortOrder
     hard?: SortOrder
@@ -8785,6 +8814,7 @@ export namespace Prisma {
   }
 
   export type leetcodeCreateWithoutUserInput = {
+    handle: string
     easy: number
     medium: number
     hard: number
@@ -8794,6 +8824,7 @@ export namespace Prisma {
 
   export type leetcodeUncheckedCreateWithoutUserInput = {
     id?: number
+    handle: string
     easy: number
     medium: number
     hard: number
@@ -8848,6 +8879,7 @@ export namespace Prisma {
   }
 
   export type leetcodeUpdateWithoutUserInput = {
+    handle?: StringFieldUpdateOperationsInput | string
     easy?: IntFieldUpdateOperationsInput | number
     medium?: IntFieldUpdateOperationsInput | number
     hard?: IntFieldUpdateOperationsInput | number
@@ -8857,6 +8889,7 @@ export namespace Prisma {
 
   export type leetcodeUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
+    handle?: StringFieldUpdateOperationsInput | string
     easy?: IntFieldUpdateOperationsInput | number
     medium?: IntFieldUpdateOperationsInput | number
     hard?: IntFieldUpdateOperationsInput | number

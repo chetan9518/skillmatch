@@ -176,6 +176,7 @@ exports.Prisma.CodeforceScalarFieldEnum = {
 
 exports.Prisma.LeetcodeScalarFieldEnum = {
   id: 'id',
+  handle: 'handle',
   easy: 'easy',
   medium: 'medium',
   hard: 'hard',

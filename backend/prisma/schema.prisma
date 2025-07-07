@@ -65,6 +65,7 @@ model codeforce{
 }
 model leetcode {
   id Int @id@default(autoincrement())
+  handle  String @unique
   easy Int 
   medium Int 
   hard  Int 
