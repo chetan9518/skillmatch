@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { Briefcase } from "lucide-react";
 
 export function EditJob() {
   const { id } = useParams();
@@ -101,8 +103,18 @@ export function EditJob() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto bg-white dark:bg-zinc-900 p-6 rounded-xl shadow mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-zinc-800 dark:text-white">Edit Job</h2>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="max-w-2xl mx-auto bg-white/90 dark:bg-zinc-900/90 p-8 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-700 mt-10 mb-10 backdrop-blur-md"
+    >
+      <div className="flex justify-center -mt-16 mb-6">
+        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center shadow-lg border-4 border-white dark:border-zinc-900">
+          <Briefcase className="w-8 h-8 text-white" />
+        </div>
+      </div>
+      <h2 className="text-2xl font-bold mb-6 text-zinc-800 dark:text-white text-center">Edit Job</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {[
@@ -128,7 +140,7 @@ export function EditJob() {
               onChange={handleChange}
               className={`w-full px-3 py-2 rounded-md text-sm border ${
                 errors[name] ? "border-red-500" : "border-gray-300"
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              } focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-zinc-800`}
             />
           </div>
         ))}
@@ -144,7 +156,7 @@ export function EditJob() {
             onChange={handleChange}
             className={`w-full px-3 py-2 rounded-md text-sm border ${
               errors.jobtype ? "border-red-500" : "border-gray-300"
-            } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            } focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-zinc-800`}
           >
             <option>Full-time</option>
             <option>Part-time</option>
@@ -165,19 +177,21 @@ export function EditJob() {
             onChange={handleChange}
             className={`w-full px-3 py-2 rounded-md text-sm border ${
               errors.aboutjob ? "border-red-500" : "border-gray-300"
-            } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            } focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-zinc-800`}
           />
         </div>
       </div>
 
-      <div className="mt-6 text-right">
-        <button
+      <div className="mt-8 text-right">
+        <motion.button
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
           onClick={handleSubmit}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-2 rounded-lg font-semibold shadow-lg transition focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           Update Job
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 }

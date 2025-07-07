@@ -16,7 +16,7 @@ interface NavItem {
 const publicNavItems: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Features", href: "/features" },
+  { label: "Features", href: "/feature" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -25,7 +25,7 @@ export default function Navbar({ isLoggedIn, onLogin, onLogout }: NavbarProps) {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Handle scroll effect for background change
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -67,7 +67,7 @@ export default function Navbar({ isLoggedIn, onLogin, onLogout }: NavbarProps) {
             </div>
           </motion.div>
 
-          {/* Center Navigation - Only show on public pages */}
+          
           {!isLoggedIn && (
             <div className="hidden md:flex items-center space-x-1">
               {publicNavItems.map((item) => {
@@ -121,7 +121,7 @@ export default function Navbar({ isLoggedIn, onLogin, onLogout }: NavbarProps) {
                 </motion.button>
               </div>
             ) : (
-              // Logged In State - Simple indicators
+             
               <div className="flex items-center space-x-4">
                 {/* Dashboard Quick Access */}
                 <motion.button

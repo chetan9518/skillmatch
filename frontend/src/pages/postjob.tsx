@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { Briefcase } from "lucide-react";
 
 export function Postjob() {
   const navigate = useNavigate();
@@ -25,7 +27,6 @@ export function Postjob() {
   const [aboutjob, setaboutjob] = useState("");
   const [link, setlink] = useState("");
   const [type, settype] = useState("");
-
 
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
@@ -66,7 +67,6 @@ export function Postjob() {
           skills: skills,
           aboutjob: aboutjob,
           link: link,
-
         },
         {
           headers: {
@@ -82,20 +82,29 @@ export function Postjob() {
     }
   }
 
-
   return (
-    <div className="max-w-2xl mx-auto bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-md">
-      <h2 className="text-2xl font-bold mb-4 text-zinc-800 dark:text-white">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="max-w-2xl mx-auto bg-white/90 dark:bg-zinc-900/90 p-8 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-700 mt-10 mb-10 backdrop-blur-md"
+    >
+      <div className="flex justify-center -mt-16 mb-6">
+        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center shadow-lg border-4 border-white dark:border-zinc-900">
+          <Briefcase className="w-8 h-8 text-white" />
+        </div>
+      </div>
+      <h2 className="text-2xl font-bold mb-6 text-zinc-800 dark:text-white text-center">
         Post a New Job Opportunity
       </h2>
 
       <div className="flex flex-col gap-1 mb-4">
-        <label className="text-sm font-medium text-gray-700">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
           Company Name <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
-          className={`w-full border p-2 rounded-md transition ${errors.title ? "border-red-500" : "border-gray-300"
+          className={`w-full border p-2 rounded-md transition bg-gray-50 dark:bg-zinc-800 ${errors.company ? "border-red-500" : "border-gray-300"
             }`}
           placeholder="Enter company name"
           onChange={(e) => {
@@ -107,12 +116,12 @@ export function Postjob() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Job Title <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
-            className={`w-full border p-2 rounded-md transition ${errors.title ? "border-red-500" : "border-gray-300"
+            className={`w-full border p-2 rounded-md transition bg-gray-50 dark:bg-zinc-800 ${errors.title ? "border-red-500" : "border-gray-300"
               }`}
             placeholder="Enter job title"
             onChange={(e) => {
@@ -123,11 +132,11 @@ export function Postjob() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Job Type <span className="text-red-500">*</span>
           </label>
           <select
-            className={`w-full border p-2 rounded-md transition ${errors.title ? "border-red-500" : "border-gray-300"
+            className={`w-full border p-2 rounded-md transition bg-gray-50 dark:bg-zinc-800 ${errors.type ? "border-red-500" : "border-gray-300"
               }`}
             onChange={(e) => {
               settype(e.target.value);
@@ -143,12 +152,12 @@ export function Postjob() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Location <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
-            className={`w-full border p-2 rounded-md transition ${errors.title ? "border-red-500" : "border-gray-300"
+            className={`w-full border p-2 rounded-md transition bg-gray-50 dark:bg-zinc-800 ${errors.location ? "border-red-500" : "border-gray-300"
               }`}
             placeholder="Enter location"
             onChange={(e) => {
@@ -159,12 +168,12 @@ export function Postjob() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Salary (INR) <span className="text-red-500">*</span>
           </label>
           <input
             type="number"
-            className={`w-full border p-2 rounded-md transition ${errors.title ? "border-red-500" : "border-gray-300"
+            className={`w-full border p-2 rounded-md transition bg-gray-50 dark:bg-zinc-800 ${errors.salary ? "border-red-500" : "border-gray-300"
               }`}
             placeholder="Enter salary"
             onChange={(e) => {
@@ -175,12 +184,12 @@ export function Postjob() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Duration <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
-            className={`w-full border p-2 rounded-md transition ${errors.title ? "border-red-500" : "border-gray-300"
+            className={`w-full border p-2 rounded-md transition bg-gray-50 dark:bg-zinc-800 ${errors.duration ? "border-red-500" : "border-gray-300"
               }`}
             placeholder="e.g. 6 months"
             onChange={(e) => {
@@ -191,12 +200,12 @@ export function Postjob() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Deadline <span className="text-red-500">*</span>
           </label>
           <input
             type="date"
-            className={`w-full border p-2 rounded-md transition ${errors.title ? "border-red-500" : "border-gray-300"
+            className={`w-full border p-2 rounded-md transition bg-gray-50 dark:bg-zinc-800 ${errors.deadline ? "border-red-500" : "border-gray-300"
               }`}
             onChange={(e) => {
               setdeadline(new Date(e.target.value));
@@ -208,12 +217,12 @@ export function Postjob() {
 
       <div className="mt-4 flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Eligibility <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
-            className={`w-full border p-2 rounded-md transition ${errors.title ? "border-red-500" : "border-gray-300"
+            className={`w-full border p-2 rounded-md transition bg-gray-50 dark:bg-zinc-800 ${errors.eligibility ? "border-red-500" : "border-gray-300"
               }`}
             placeholder="e.g. B.Tech, MCA"
             onChange={(e) => {
@@ -224,12 +233,12 @@ export function Postjob() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Required Skills <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
-            className={`w-full border p-2 rounded-md transition ${errors.title ? "border-red-500" : "border-gray-300"
+            className={`w-full border p-2 rounded-md transition bg-gray-50 dark:bg-zinc-800 ${errors.skills ? "border-red-500" : "border-gray-300"
               }`}
             placeholder="e.g. React, Node.js"
             onChange={(e) => {
@@ -240,11 +249,11 @@ export function Postjob() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             About the Job <span className="text-red-500">*</span>
           </label>
           <textarea
-            className={`w-full border p-2 rounded-md transition ${errors.title ? "border-red-500" : "border-gray-300"
+            className={`w-full border p-2 rounded-md transition bg-gray-50 dark:bg-zinc-800 ${errors.aboutjob ? "border-red-500" : "border-gray-300"
               }`}
             placeholder="Describe the job..."
             onChange={(e) => {
@@ -255,12 +264,12 @@ export function Postjob() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Application Link <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
-            className={`w-full border p-2 rounded-md transition ${errors.title ? "border-red-500" : "border-gray-300"
+            className={`w-full border p-2 rounded-md transition bg-gray-50 dark:bg-zinc-800 ${errors.link ? "border-red-500" : "border-gray-300"
               }`}
             placeholder="Enter application link"
             onChange={(e) => {
@@ -271,14 +280,16 @@ export function Postjob() {
         </div>
       </div>
 
-      <div className="mt-6 text-right">
-        <button
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition"
+      <div className="mt-8 text-right">
+        <motion.button
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-2 rounded-lg font-semibold shadow-lg transition focus:outline-none focus:ring-2 focus:ring-blue-400"
           onClick={fetch}
         >
           Post Job
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 }
