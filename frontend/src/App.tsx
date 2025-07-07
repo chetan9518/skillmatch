@@ -20,6 +20,7 @@ import { ChatWrapper } from "./pages/Chatwrraper"
 import { MessageDashboard } from "./pages/messagehome"
 import { EditJob } from "./pages/jobedit"
 import { SkillTracker } from "./pages/skilltracker";
+import About from "./pages/about";
   const id = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
 
@@ -65,6 +66,7 @@ const [islogin, setislogin] = useState(() => {
         <Route path="/signup" element={<Signup />} />
         
         <Route path= "/verification" element = {<Otp/>}/>
+        <Route path="/about"  element={<About/>}/>
         
         <Route path= "/dashboard" element={<MainLayout/>}>
         

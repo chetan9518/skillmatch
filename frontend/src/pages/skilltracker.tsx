@@ -181,6 +181,7 @@ export function SkillTracker() {
         if (lcRes.data.success && lcRes.data.leetcode) {
           setHaveLeetCode(true);
           setLeetCodeDetails(lcRes.data.leetcode);
+          localStorage.setItem("leetcode_username",lcRes.data.leetcode.handle)
         }
       } catch (e) {
         // LC data doesn't exist, which is fine
@@ -391,6 +392,16 @@ export function SkillTracker() {
             </div>
           ) : (
             <div className="space-y-4">
+            <div className="bg-gray-50 dark:bg-zinc-700 p-3 rounded-lg">
+                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <Hash className="h-4 w-4" />
+                  Username
+                </div>
+                <div className="font-semibold text-gray-800 dark:text-white">
+                  {localStorage.getItem("leetcode_username") || "N/A"}
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
                   <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
@@ -429,15 +440,7 @@ export function SkillTracker() {
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 dark:bg-zinc-700 p-3 rounded-lg">
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                  <Hash className="h-4 w-4" />
-                  Username
-                </div>
-                <div className="font-semibold text-gray-800 dark:text-white">
-                  {localStorage.getItem("leetcode_username") || "N/A"}
-                </div>
-              </div>
+              
             </div>
           )}
         </motion.div>
