@@ -13,10 +13,13 @@
     "@react-oauth/google": "^0.12.2",
     "@tailwindcss/vite": "^4.1.8",
     "axios": "^1.10.0",
+    "framer-motion": "^11.14.9",
+    "lucide-react": "^0.469.0",
     "multer": "^2.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
+    "sonner": "^1.7.1",
     "tailwindcss": "^4.1.8"
   },
   "devDependencies": {

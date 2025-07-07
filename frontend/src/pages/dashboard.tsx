@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { motion } from "motion/react"
+import { motion } from "framer-motion"
 
 
 type UserProfile = {
@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [profileUrl, setProfileUrl] = useState<string | null>(null);
-  const [resumeUrl, setResumeUrl] = useState<string | null>(null);
+  const [resumeUrl] = useState<string | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
 
   type Job = {

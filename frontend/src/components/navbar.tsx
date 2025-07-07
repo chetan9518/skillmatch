@@ -8,7 +8,7 @@ type NavbarProps = {
   onLogout: () => void;
 };
 
-export default function Navbar({ isLoggedIn, onLogin, onLogout }: NavbarProps) {
+export default function Navbar({ isLoggedIn, onLogin, onLogout: _onLogout }: NavbarProps) {
   const navigate = useNavigate();
 
 
