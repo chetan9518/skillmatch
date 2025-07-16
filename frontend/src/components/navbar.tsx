@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 
 type NavbarProps = {
   isLoggedIn: boolean;
@@ -78,7 +78,7 @@ function AuthButtons({ isLoggedIn, onLogin, onLogout, onSignup, onDashboard }: {
         title="Sign Out"
         aria-label="Sign Out"
       >
-        <X className="w-5 h-5" />
+        <LogOut className="w-5 h-5" />
       </motion.button>
     </div>
   ) : (
