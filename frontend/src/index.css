@@ -1,0 +1,5 @@
+@import "tailwindcss";
+/* index.css */
+.sidebar-link {
+  @apply block py-2 px-4 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 shadow transition;
+}
