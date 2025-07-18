@@ -493,7 +493,7 @@ const About = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => navigate("/features")}
+                onClick={() => navigate("/feature")}
                 className="px-8 py-4 border-2 border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold text-lg hover:bg-gray-50 dark:hover:bg-zinc-800 transition-all duration-300"
               >
                 Explore Features
