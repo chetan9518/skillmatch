@@ -1064,7 +1064,10 @@ userRouter.get("/unread-msg", auth, async (req: meget, res: Response): Promise<a
     try {
         const email: string | null = req.email!
         const message = await prisma.messages.findMany({
-            where: { receiver: email }
+          where: {
+    receiver: email,
+    isread: false,
+  }
         })
 
         res.status(200).json({ success: true, messagesNumber: message.length });
@@ -1086,6 +1089,16 @@ userRouter.get("/getmessage/:otherEmail", auth, async (req: meget, res: Response
             })
         }
     const otherEmail: string = req.params.otherEmail;
+    const x = await prisma.messages.updateMany({
+  where: {
+    AND: [
+      { receiver: myEmail },
+      { sender: otherEmail }
+    ]
+  },
+  data: { isread: true }
+});
+
 
     const rawMessages = await prisma.messages.findMany({
       where: {
