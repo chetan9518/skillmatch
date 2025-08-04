@@ -238,11 +238,11 @@ const token= localStorage.getItem("token")
       })
 
       if(res.data.success){
-        setunreadmsg(res.data.messageNumber)
+        setunreadmsg(res.data.messagesNumber)
       }
       }
       catch(e){
-
+      
       }
     }
     fetchm()
