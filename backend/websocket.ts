@@ -1,7 +1,7 @@
 import { WebSocket,WebSocketServer } from "ws"
 import jwt from "jsonwebtoken"
 import { secret_key } from "./key"
-import { PrismaClient } from "./generated/prisma";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 interface user {

@@ -21,7 +21,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { buffer } from "stream/consumers";
 import { Variable } from "lucide-react";
 import OpenAI from "openai";
-import { PrismaClient } from "../generated/prisma";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 dotenv.config();

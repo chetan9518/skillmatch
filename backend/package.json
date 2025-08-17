@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npx prisma generate && tsc",
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon",
-    "postinstall": "npx prisma generate"
+    "postinstall": "npx prisma generate",
+    "clean": "rm -rf dist generated",
+    "prebuild": "npm run clean"
   },
   "keywords": [],
   "author": "",

@@ -3,7 +3,7 @@ import cors from "cors"
 import http from "http"
 import { websocket } from "./websocket";
 const express = require("express")
-import { PrismaClient } from "./generated/prisma";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 

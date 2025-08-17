@@ -98,6 +98,10 @@ dist
 # public
 
 # vuepress build output
+
+# Prisma
+generated/
+prisma/migrations/
 .vuepress/dist
 
 # vuepress v2.x temp and cache directory
