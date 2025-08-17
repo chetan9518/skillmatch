@@ -1,16 +1,15 @@
 import { WebSocket,WebSocketServer } from "ws"
-import path from "path";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { PrismaClient } = require(path.resolve(__dirname, "../generated/prisma"));
 import jwt from "jsonwebtoken"
 import { secret_key } from "./key"
+import { PrismaClient } from "./generated/prisma";
+
+const prisma = new PrismaClient();
 interface user {
     email :string
 }
 interface Usermap {
     [email:string]:WebSocket
 }
-const prisma = new PrismaClient();
 export  function websocket(server:import("http").Server){
 
     const Users :Usermap= {}

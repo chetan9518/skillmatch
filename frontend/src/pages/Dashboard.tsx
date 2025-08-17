@@ -185,9 +185,9 @@ const WelcomeCard = ({ profile, profileUrl, currentDate }: {
   >
     <p className="absolute top-4 left-6 text-sm text-zinc-500">{currentDate}</p>
     
-    <div className="flex justify-between items-center">
-      <div className="space-y-2">
-        <h2 className="text-xl font-semibold">
+    <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="space-y-2 text-center sm:text-left flex-1">
+        <h2 className="text-lg sm:text-xl font-semibold">
           Hi {profile?.firstname || "there"} 👋
         </h2>
         
@@ -196,12 +196,12 @@ const WelcomeCard = ({ profile, profileUrl, currentDate }: {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.0, delay: 0.2 }}
         >
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Track. Grow. Showcase.
           </h1>
         </motion.div>
         
-        <p className="text-sm text-gray-500 max-w-md">
+        <p className="text-xs sm:text-sm text-gray-500 max-w-md mx-auto sm:mx-0">
           Build your resume. Master DSA. Get smarter with every line of code.
         </p>
       </div>
@@ -209,17 +209,18 @@ const WelcomeCard = ({ profile, profileUrl, currentDate }: {
       <motion.div
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}
+        className="flex-shrink-0"
       >
         {profileUrl ? (
           <img
             src={profileUrl}
-            className="w-24 h-24 rounded-full border-3 border-blue-500 shadow-lg object-cover"
+            className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-3 border-blue-500 shadow-lg object-cover"
             alt="Profile"
           />
         ) : (
           <img
-            src={`https://ui-avatars.com/api/?name=${profile?.firstname}&background=random&size=96`}
-            className="w-24 h-24 shadow-lg object-cover rounded-full border-3 border-white"
+            src={`https://ui-avatars.com/api/?name=${profile?.firstname}&background=random&size=80`}
+            className="w-20 h-20 sm:w-24 sm:h-24 shadow-lg object-cover rounded-full border-3 border-white"
             alt="Avatar"
           />
         )}

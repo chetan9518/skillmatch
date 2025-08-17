@@ -10,8 +10,6 @@ import { secret_key } from "../key";
 import bcrypt from "bcrypt"
 import { auth } from "./middleware";
 import { OAuth2Client } from "google-auth-library";
-// @ts-ignore
-import { PrismaClient } from "../../generated/prisma";
 import { Request, Response } from "express";
 import multer from "multer"
 import { s3 } from "./upload";
@@ -23,6 +21,9 @@ import { v2 as cloudinary } from "cloudinary";
 import { buffer } from "stream/consumers";
 import { Variable } from "lucide-react";
 import OpenAI from "openai";
+import { PrismaClient } from "../generated/prisma";
+
+const prisma = new PrismaClient();
 dotenv.config();
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -33,7 +34,6 @@ cloudinary.config({
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })
-const prisma = new PrismaClient();
 const salt: number = 10
 export const userRouter = express.Router();
 const googleclient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)

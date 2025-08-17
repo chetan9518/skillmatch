@@ -3,7 +3,9 @@ import cors from "cors"
 import http from "http"
 import { websocket } from "./websocket";
 const express = require("express")
-import { prisma } from "./prisma/prismashut"; 
+import { PrismaClient } from "./generated/prisma";
+
+const prisma = new PrismaClient();
 
 process.on('SIGINT', async () => {
   console.log("SIGINT received. Cleaning up...");
