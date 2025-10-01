@@ -7,9 +7,9 @@ export function Home() {
 
   // Quick stats for subtle social proof
   const stats = [
-    { icon: Users, value: "100+", label: "Developers Joined" },
-    { icon: Briefcase, value: "50+", label: "Jobs Posted" },
-    { icon: Code, value: "500+", label: "Skills Tracked" },
+    { icon: Users, value: "10+", label: "Developers Joined" },
+    { icon: Briefcase, value: "00+", label: "Jobs Posted" },
+    { icon: Code, value: "10+", label: "Skills Tracked" },
   ];
 
   return (
