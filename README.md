@@ -73,86 +73,65 @@ URL Persistence: The public URL returned by S3 is saved in the user's record in 
 
 Access: This URL is then used to display a link on the user's public profile, allowing anyone to view or download the resume.
 
-🚀 Getting Started
+## 🚀 Getting Started
+
 Follow these instructions to set up and run the project locally on your machine.
 
-Prerequisites
-Node.js (v18 or later)
+### Prerequisites
 
-npm or yarn
+-   Node.js (v18 or later)
+-   npm or yarn
+-   PostgreSQL database
+-   Redis instance
+-   AWS S3 Bucket and IAM credentials
+-   Resend API Key
 
-PostgreSQL database
+### Backend Setup
 
-Redis instance
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/skillmatch.git
+    cd skillmatch/backend
+    ```
 
-AWS S3 Bucket and IAM credentials
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-Resend API Key
+3.  **Set up environment variables:**
+    Create a `.env` file in the `backend` directory and add your credentials.
 
-Backend Setup
-Clone the repository:
+4.  **Run database migrations:**
+    ```bash
+    npx prisma migrate dev
+    ```
 
-Bash
+5.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+    The backend will be running at `http://localhost:3000`.
 
-git clone https://github.com/your-username/skillmatch.git
-cd skillmatch/backend
-Install dependencies:
+### Frontend Setup
 
-Bash
+1.  **Navigate to the frontend directory:**
+    ```bash
+    cd ../frontend
+    ```
 
-npm install
-Set up environment variables:
-Create a .env file in the backend directory and add the following keys. Populate them with your own credentials.
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-Code snippet
+3.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+    The frontend will be available at `http://localhost:5173`.
 
-# PostgreSQL Database URL
-DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
-
-# JWT Secret
-JWT_SECRET="your-super-secret-key"
-
-# AWS S3 Credentials
-AWS_ACCESS_KEY_ID="your-aws-access-key"
-AWS_SECRET_ACCESS_KEY="your-aws-secret-key"
-AWS_S3_BUCKET_NAME="your-s3-bucket-name"
-AWS_REGION="your-aws-region"
-
-# Resend API Key for OTP Emails
-RESEND_API_KEY="your-resend-api-key"
-
-# Redis URL
-REDIS_URL="redis://127.0.0.1:6379"
-Run database migrations:
-
-Bash
-
-npx prisma migrate dev
-Start the development server:
-
-Bash
-
-npm run dev
-The backend will be running at http://localhost:3000.
-
-Frontend Setup
-Navigate to the frontend directory:
-
-Bash
-
-cd ../frontend
-Install dependencies:
-
-Bash
-
-npm install
-Start the development server:
-
-Bash
-
-npm run dev
-The frontend will be available at http://localhost:5173.
-
+    
 ✨ Author
 Chetan
 CSE Undergrad @ IIIT Agartala
