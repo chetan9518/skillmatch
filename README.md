@@ -1,141 +1,171 @@
-# 🚀 SkillMatch – Developer Profile & Skill-Based Matching Platform
+🚀 SkillMatch – Developer Profile & Skill-Based Matching Platform
+SkillMatch is a full-stack platform designed for developers to create professional profiles, showcase their skills, and connect with peers based on shared expertise. This project was built from the ground up to demonstrate a deep understanding of modern backend systems, cloud infrastructure, and secure authentication workflows.
 
-**SkillMatch** is a full-stack platform designed for developers to:
+🧑‍💻 Mission: To move beyond simple portfolio projects and build something scalable, secure, and useful for the developer community.
 
-- Create and manage professional profiles (bio, skills, resume)
-- Upload resumes securely to AWS S3
-- Match with other developers based on overlapping skills
-- Share a public profile with GitHub/portfolio/resume
-- Post & browse collaboration or internship opportunities (upcoming)
-- Use secure OTP verification via Resend + Redis
+📸 Screenshots & Features
+Here are the key features of SkillMatch in action.
+<img width="1919" height="1079" alt="Screenshot 2025-10-02 205449" src="https://github.com/user-attachments/assets/efa7a4bc-2780-4add-b736-a321a34dd0d2" />
+<img width="1919" height="1079" alt="Screenshot 2025-10-02 205528" src="https://github.com/user-attachments/assets/d0289744-0860-41d4-89e2-86fd6b5f9493" />
+<img width="1919" height="1077" alt="Screenshot 2025-10-02 205732" src="https://github.com/user-attachments/assets/ce3e6376-7835-4b9b-a9e9-e58388e10769" />
+<img width="1906" height="1069" alt="Screenshot 2025-10-02 205749" src="https://github.com/user-attachments/assets/15ed6c10-052b-42f4-945b-b4da3c94a869" />
+<img width="1915" height="1078" alt="Screenshot 2025-10-02 205813" src="https://github.com/user-attachments/assets/6bcf481b-f4fb-42e0-b66e-c571118b80ca" />
+<img width="1856" height="1071" alt="Screenshot 2025-10-02 205822" src="https://github.com/user-attachments/assets/aa0ff46e-fae2-4806-bb7e-edc5a52bdb3d" />
+<img width="1916" height="1078" alt="Screenshot 2025-10-02 205907" src="https://github.com/user-attachments/assets/e9301d1e-0922-401c-9ea1-12f01af598d3" />
+<img width="1839" height="1079" alt="Screenshot 2025-10-02 210001" src="https://github.com/user-attachments/assets/14a11980-2db0-4ea1-8f5c-801883dfba8b" />
 
-> 🧑‍💻 Built from scratch to gain real-world backend, database, cloud & authentication skills — not just for showcase.
-
----
-
-## 🛠️ Tech Stack
-
-| Layer       | Tech Used                                  |
-|-------------|--------------------------------------------|
-| Frontend    | React, TypeScript, Tailwind CSS            |
-| Backend     | Node.js, Express.js, Zod                   |
-| Database    | PostgreSQL (via Prisma ORM)                |
-| Caching     | Redis (for OTPs and fast access)           |
-| File Upload | AWS S3 (Resume & Profile Pic Storage)      |
-| Email OTP   | Resend (Email provider for login/signup)   |
-| Auth        | JWT (token-based, secure routes)           |
-| Deployment  | Vercel, Render, S3 Hosting (coming soon)   |
-
----
-
-## 🔑 Core Features
-
-- ✅ Full Auth System (OTP + JWT secured login/signup)
-- ✅ Dev Profile: Skills, Bio, Resume Upload, GitHub, Portfolio
-- ✅ Resume upload to AWS S3 (with public URL)
-- ✅ Profile picture & dark mode support
-- ✅ Skill-based matchmaking between developers
-- ✅ Redis + Resend OTP integration (fast, secure)
-- ✅ Strong backend validation using Zod
-- ✅ PostgreSQL for relational, production-grade storage
-- 🔜 Job posting & apply/bookmark system
-- 🔜 Public profile sharing with username
-
----
-
-## 📦 Resume Upload Logic
-
-1. User uploads resume via dashboard form
-2. Backend receives file and uploads to S3
-3. File URL is saved in PostgreSQL (via Prisma)
-4. URL is used in public profile and resume view
-
----
-
-## 🔐 OTP + JWT Authentication Flow
-
-1. User enters email on signup
-2. OTP sent via Resend (email service)
-3. OTP stored temporarily in Redis with expiry
-4. After OTP verification, JWT token issued
-5. Token used in all secure API requests
-
----
-
-## 🧪 Matching Logic
-
-- User skills are stored in the database
-- Backend compares logged-in user's skills with others using SQL array matching
-- Returns a ranked list of best-matching developers
-
----
-
-## 🖼️ Screenshots
+<img width="1915" height="1077" alt="Screenshot 2025-10-02 210008" src="https://github.com/user-attachments/assets/6aca9eae-8a54-46ae-96de-84d42b6a351f" />
 
 
+🔑 Core Features
+✅ Full Authentication System: Secure, passwordless login using Email OTPs (via Resend & Redis) and JWT for session management.
 
----
+✅ Complete Developer Profile: Manage your bio, skills, profile picture, and links to GitHub/Portfolio.
 
-## 🚀 Getting Started
+✅ Secure Resume Upload to AWS S3: Seamlessly upload and store your resume, making it accessible via a public URL.
 
-### Backend Setup
+✅ Skill-Based Developer Matching: Find and connect with other developers based on a ranked matching of your shared technical skills.
 
-```bash
-cd backend
+✅ Competitive Programming Tracker: Integrate your LeetCode and Codeforces handles to automatically track and showcase your problem-solving progress.
+
+✅ Direct Messaging: A built-in chat system to communicate with other developers you've matched with.
+
+✅ Job & Collaboration Board: A dedicated section to post and browse job opportunities, internships, and project collaborations.
+
+✅ Robust Backend: Built with Node.js and Express, featuring strong, type-safe data validation with Zod.
+
+✅ Public profile sharing via username and a dedicated job board for internships and collaborations.
+
+🛠️ Tech Stack
+Layer	Technology	Purpose
+Frontend	React, TypeScript, Tailwind CSS	A modern, responsive, and type-safe user interface.
+Backend	Node.js, Express.js	A robust and scalable server-side foundation.
+Database	PostgreSQL + Prisma ORM	Reliable, relational data storage with type-safe queries.
+Caching	Redis	In-memory data store for fast OTP verification and caching.
+File Storage	AWS S3	Secure, scalable cloud storage for user resumes and profile pictures.
+Authentication	JWT & Resend	Token-based authorization and reliable email OTP delivery.
+Validation	Zod	Schema declaration and validation for backend requests.
+Deployment	Vercel (Frontend), Render (Backend)	Modern, CI/CD-friendly hosting platforms.
+
+Export to Sheets
+⚙️ System Architecture & Logic
+🔐 OTP + JWT Authentication Flow
+Initiation: User enters their email to sign up or log in.
+
+OTP Generation: The backend generates a secure OTP and sends it to the user's email via Resend.
+
+Temporary Storage: The OTP is stored in Redis with a short expiration time (e.g., 5 minutes) for quick verification.
+
+Verification: The user submits the received OTP. The backend validates it against the value in Redis.
+
+Token Issuance: Upon successful verification, a JWT (JSON Web Token) is generated and sent to the client.
+
+Authenticated Access: The client includes the JWT in the header of all subsequent requests to access protected routes.
+
+📦 Resume Upload Logic
+Client-Side: A user selects and submits their resume file through a form on their dashboard.
+
+Backend Reception: The Express server receives the file as multipart/form-data.
+
+Cloud Upload: The backend uploads the file directly to a designated AWS S3 bucket.
+
+URL Persistence: The public URL returned by S3 is saved in the user's record in the PostgreSQL database via Prisma.
+
+Access: This URL is then used to display a link on the user's public profile, allowing anyone to view or download the resume.
+
+🚀 Getting Started
+Follow these instructions to set up and run the project locally on your machine.
+
+Prerequisites
+Node.js (v18 or later)
+
+npm or yarn
+
+PostgreSQL database
+
+Redis instance
+
+AWS S3 Bucket and IAM credentials
+
+Resend API Key
+
+Backend Setup
+Clone the repository:
+
+Bash
+
+git clone https://github.com/your-username/skillmatch.git
+cd skillmatch/backend
+Install dependencies:
+
+Bash
+
 npm install
-# Add your .env file with:
-# DATABASE_URL=...
-# AWS credentials
-# RESEND_API_KEY=...
-# REDIS_URL=...
+Set up environment variables:
+Create a .env file in the backend directory and add the following keys. Populate them with your own credentials.
+
+Code snippet
+
+# PostgreSQL Database URL
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
+
+# JWT Secret
+JWT_SECRET="your-super-secret-key"
+
+# AWS S3 Credentials
+AWS_ACCESS_KEY_ID="your-aws-access-key"
+AWS_SECRET_ACCESS_KEY="your-aws-secret-key"
+AWS_S3_BUCKET_NAME="your-s3-bucket-name"
+AWS_REGION="your-aws-region"
+
+# Resend API Key for OTP Emails
+RESEND_API_KEY="your-resend-api-key"
+
+# Redis URL
+REDIS_URL="redis://127.0.0.1:6379"
+Run database migrations:
+
+Bash
+
+npx prisma migrate dev
+Start the development server:
+
+Bash
+
 npm run dev
-```
+The backend will be running at http://localhost:3000.
 
-### Frontend Setup
+Frontend Setup
+Navigate to the frontend directory:
 
-```bash
-cd frontend
+Bash
+
+cd ../frontend
+Install dependencies:
+
+Bash
+
 npm install
+Start the development server:
+
+Bash
+
 npm run dev
-```
+The frontend will be available at http://localhost:5173.
 
-The frontend will be available at `http://localhost:5173` (or your configured Vite port).
+✨ Author
+Chetan
+CSE Undergrad @ IIIT Agartala
 
----
-
-## 🧠 Learnings & Intent
-
-This project was built to:
-
-- Understand real-world full-stack dev workflows
-- Work with production-level tools like Redis, AWS, PostgreSQL
-- Create something useful and scalable for developers
-- Demonstrate actual backend + infra + frontend skills
-
----
-
-## ✨ Author
-
-**Chetan**  
-CSE Undergrad @ IIIT Agartala  
 Learning deeply by building from scratch — full-stack, cloud-native, and industry-aligned.
 
-> LinkedIn: [https://www.linkedin.com/in/chetan-bb87bb31a/](#)  
-> GitHub: [github.com/chetan9518/](#)
+LinkedIn: https://www.linkedin.com/in/chetan-bb87bb31a/
+GitHub: https://github.com/chetan9518/
 
----
+🤝 Contributing
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change. Please make sure to update tests as appropriate.
 
+📣 Acknowledgements
+Built with inspiration from real-world developer needs.
 
-
----
-
-## 🤝 Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
----
-
-## 📣 Acknowledgements
-
-- Built with inspiration from real-world developer needs
-- Thanks to open-source contributors and the developer community
+Thanks to the open-source community for providing the amazing tools that made this project possible.
