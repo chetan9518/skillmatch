@@ -442,14 +442,7 @@ export function Update() {
 
           
           if (data.profilelink) {
-            const API = import.meta.env.VITE_API_URL;
-            const profileRes = await axios.get(`${API}/user/profileurl`, {
-              params: { profilelink: data.profilelink },
-              headers: { Authorization: `Bearer ${token}` },
-            });
-            if (profileRes.data.success) {
-              setProfileImage(profileRes.data.profileUrl);
-            }
+            setProfileImage(data.profilelink);
           }
 
           if (data.resumelink) {
