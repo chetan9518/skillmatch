@@ -2,7 +2,7 @@
 export function PageWrapper({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className=" relative min-h-screen bg-cover bg-center flex items-center justify-center pt-24 px-4"
+      className=" relative min-h-screen bg-cover bg-center flex items-center justify-center "
       style={{
         backgroundImage: "url('images/pexels-fauxels-3184418.jpg')",
       }}

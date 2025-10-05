@@ -1844,7 +1844,7 @@ userRouter.get("/ai/motivation", auth, async (req: meget, res: Response): Promis
         return res.status(500).json({ success: false, msg: "AI generation failed" });
     }
 })
-userRouter.get("/health", (res: Response): void => {
+userRouter.get("/health", (req: Request, res: Response): void => {
     
   res.status(200).send("OK");
 });
