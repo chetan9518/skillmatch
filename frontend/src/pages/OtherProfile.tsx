@@ -23,7 +23,7 @@ export function Profile() {
   const { email } = useParams();
 
   const [user, setUser] = useState<UserProfile | null>(null);
-  const [profile, setProfile] = useState<string | null>(null);
+
 
   useEffect(() => {
     if (!token) {
@@ -33,21 +33,6 @@ export function Profile() {
     }
 
     const API = import.meta.env.VITE_API_URL;
-
-    const fetchProfileImage = async (profileKey: string) => {
-      try {
-        const response = await axios.get(`${API}/user/profileurl`, {
-          params: { profilelink: profileKey },
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (response.data.success) {
-          setProfile(response.data.profileUrl);
-        }
-      } catch (error) {
-        console.error("Failed to fetch profile image", error);
-      }
-    };
 
     const fetchUserData = async () => {
       try {
@@ -61,8 +46,6 @@ export function Profile() {
         }
 
         setUser(result.data.details);
-        const { profilelink } = result.data.details;
-        if (profilelink) await fetchProfileImage(profilelink);
       } catch (error) {
         toast.error("Server error while fetching profile");
       }
@@ -82,7 +65,7 @@ export function Profile() {
     >
       <div className="relative flex flex-col items-center pt-10 pb-4 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-zinc-800 dark:to-zinc-900">
         <motion.img
-          src={profile || "/images/default-avatar.png"}
+          src={user?.profilelink || "/images/default-avatar.png"}
           alt={user?.firstname}
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}

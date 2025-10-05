@@ -693,8 +693,8 @@ userRouter.get("/fetchinfo", auth, async (req: meget, res: Response): Promise<an
             github: result.github,
             portfolio: result.portfolio,
             resumelink: result.resumelink,
-            profilelink: result.profilelink,
-            profileUrl: profileUrl
+            profilelink: profileUrl,
+           
         }
     })
 })
@@ -817,6 +817,16 @@ userRouter.get("/fetchone", auth, async (req: meget, res: Response): Promise<any
             msg: "User not found"
         })
     }
+    
+    let profileUrl = null;
+    if (result.profilelink) {
+        const cmd = new GetObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME!,
+            Key: result.profilelink
+        });
+        profileUrl = await getSignedUrl(s3, cmd, { expiresIn: 86400 });
+    }
+    
     return res.status(200).json({
         success: true,
         details: {
@@ -828,7 +838,7 @@ userRouter.get("/fetchone", auth, async (req: meget, res: Response): Promise<any
             github: result.github,
             portfolio: result.portfolio,
             resumelink: result.resumelink,
-            profilelink: result.profilelink
+            profilelink: profileUrl
 
         }
     })

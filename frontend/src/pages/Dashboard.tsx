@@ -56,26 +56,11 @@ const useAuth = () => {
 
 const useUserProfile = (token: string | null) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [profileUrl, setProfileUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const API = import.meta.env.VITE_API_URL;
 
-  const fetchSignedUrls = useCallback(async (profileKey: string) => {
-    try {
-      const response = await axios.get(`${API}/user/profileurl`, {
-        params: { profilelink: profileKey },
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      
-      if (response.data.success) {
-        setProfileUrl(response.data.profileUrl);
-      }
-    } catch (error) {
-      console.error("Failed to fetch signed URLs", error);
-    }
-  }, [token, API]);
 
   const fetchUserData = useCallback(async () => {
     if (!token) return;
@@ -91,10 +76,6 @@ const useUserProfile = (token: string | null) => {
       if (response.data.success) {
         setProfile(response.data.details);
         
-        const { profilelink } = response.data.details;
-        if (profilelink) {
-          await fetchSignedUrls(profilelink);
-        }
       }
     } catch (error) {
       console.error("Failed to fetch user data", error);
@@ -103,13 +84,13 @@ const useUserProfile = (token: string | null) => {
     } finally {
       setLoading(false);
     }
-  }, [token, fetchSignedUrls, API]);
+  }, [token, API]);
 
   useEffect(() => {
     fetchUserData();
   }, [fetchUserData]);
 
-  return { profile, profileUrl, loading, error, refetch: fetchUserData };
+  return { profile, loading, error, refetch: fetchUserData };
 };
 
 const useJobs = (token: string | null) => {
@@ -473,7 +454,7 @@ const QuickActionsCard = ({ navigate }: { navigate: (path: string) => void }) =>
 export default function Dashboard() {
   const navigate = useNavigate();
   const token = useAuth();
-  const { profile, profileUrl, loading: profileLoading, error } = useUserProfile(token);
+  const { profile, loading: profileLoading, error } = useUserProfile(token);
   const { jobs, deleteJob } = useJobs(token);
 
   const currentDate = useMemo(() => 
@@ -543,7 +524,7 @@ export default function Dashboard() {
       <div className="max-w-6xl mx-auto space-y-6">
         <WelcomeCard 
           profile={profile} 
-          profileUrl={profileUrl} 
+          profileUrl={profile?.profilelink|| "/images/default-avatar.png"} 
           currentDate={currentDate} 
         />
         

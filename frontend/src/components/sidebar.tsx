@@ -29,7 +29,6 @@ interface UserProfile {
 
 function SidebarContent({
   userProfile,
-  profileUrl,
   profileCompletion,
   loading,
   navigationItems,
@@ -59,9 +58,9 @@ function SidebarContent({
           >
             <div className="flex items-center space-x-3">
               <div className="relative">
-                {profileUrl ? (
+                {userProfile.profilelink ? (
                   <img
-                    src={profileUrl}
+                    src={userProfile.profilelink}
                     alt="Profile"
                     className="w-12 h-12 rounded-full border-2 border-blue-500 object-cover"
                   />
@@ -206,7 +205,6 @@ export function Sidebar() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [profileUrl, setProfileUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [unreadmsg,setunreadmsg]= useState(0)
   const navigate = useNavigate();
@@ -259,9 +257,6 @@ const token= localStorage.getItem("token")
         });
         if (res.data.success) {
           setUserProfile(res.data.details);
-          if (res.data.details.profileUrl) {
-            setProfileUrl(res.data.details.profileUrl);
-          }
         }
       } catch (err) {
         console.error("Failed to fetch profile:", err);
@@ -352,11 +347,11 @@ const token= localStorage.getItem("token")
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
           className="w-72 bg-white dark:bg-zinc-800 border-r border-zinc-200 dark:border-zinc-700 fixed top-16 left-0 h-[calc(100vh-4rem)] z-40 shadow-xl flex flex-col md:hidden"
         >
-          <SidebarContent {...{ userProfile, profileUrl, profileCompletion, loading, navigationItems, setIsSidebarOpen, handleLogout, navigate }} />
+          <SidebarContent {...{ userProfile, profileCompletion, loading, navigationItems, setIsSidebarOpen, handleLogout, navigate }} />
         </motion.aside>
       ) : (
         <aside className="w-72 bg-white dark:bg-zinc-800 border-r border-zinc-200 dark:border-zinc-700 fixed top-16 left-0 h-[calc(100vh-4rem)] z-40 shadow-xl  flex-col hidden md:flex">
-          <SidebarContent {...{ userProfile, profileUrl, profileCompletion, loading, navigationItems, setIsSidebarOpen, handleLogout, navigate }} />
+          <SidebarContent {...{ userProfile, profileCompletion, loading, navigationItems, setIsSidebarOpen, handleLogout, navigate }} />
         </aside>
       )}
     </>
