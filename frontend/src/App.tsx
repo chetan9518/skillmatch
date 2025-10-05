@@ -58,7 +58,7 @@ function App2() {
   }
   return <div>
     <UserContext.Provider value={{ islogin, setislogin }}>
-      <div className=" bg-zinc-950">
+      <div className="pt-16 bg-zinc-950">
         <Navbar isLoggedIn={islogin} onLogin={login} onLogout={logout} />
         <Toaster position="top-right" richColors />
         
