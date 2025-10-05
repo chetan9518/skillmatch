@@ -21,7 +21,7 @@ const publicNavItems: NavItem[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-// NavLinks subcomponent
+//navlinkssubcomponent
 function NavLinks({ items, onNavigate, activePath, vertical = false }: { items: NavItem[]; onNavigate: (href: string) => void; activePath: string; vertical?: boolean }) {
   return (
     <nav aria-label="Main navigation">

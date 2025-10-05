@@ -259,12 +259,8 @@ const token= localStorage.getItem("token")
         });
         if (res.data.success) {
           setUserProfile(res.data.details);
-          if (res.data.details.profilelink) {
-            const imageRes = await axios.get(`${API}/user/profileurl`, {
-              params: { profilelink: res.data.details.profilelink },
-              headers: { Authorization: `Bearer ${token}` },
-            });
-            if (imageRes.data.success) setProfileUrl(imageRes.data.profileUrl);
+          if (res.data.details.profileUrl) {
+            setProfileUrl(res.data.details.profileUrl);
           }
         }
       } catch (err) {
