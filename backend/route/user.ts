@@ -826,6 +826,14 @@ userRouter.get("/fetchone", auth, async (req: meget, res: Response): Promise<any
         });
         profileUrl = await getSignedUrl(s3, cmd, { expiresIn: 86400 });
     }
+    let resumeUrl = null;
+    if(result.resumelink){
+        const cmd = new GetObjectCommand({
+            Bucket:process.env.AWS_BUCKET_NAME!,
+            Key:result.resumelink
+        })
+        resumeUrl = await getSignedUrl(s3,cmd,{ expiresIn: 86400 });
+    }
     
     return res.status(200).json({
         success: true,
@@ -837,7 +845,7 @@ userRouter.get("/fetchone", auth, async (req: meget, res: Response): Promise<any
             skills: result.skills,
             github: result.github,
             portfolio: result.portfolio,
-            resumelink: result.resumelink,
+            resumelink: resumeUrl,
             profilelink: profileUrl
 
         }
