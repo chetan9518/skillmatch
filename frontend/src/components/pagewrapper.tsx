@@ -8,9 +8,7 @@ export function PageWrapper({ children }: { children: React.ReactNode }) {
       }}
     >
         <div className="absolute inset-0 bg-black/50 z-0" />
-      <div className=" relative bg-white/90 dark:bg-zinc-800/80 backdrop-blur-md rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-md">
-        {children}
-      </div>
+      {children}
     </div>
   );
 }

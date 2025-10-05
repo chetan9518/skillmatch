@@ -51,11 +51,12 @@ export function Signup() {
 
   return (
     <PageWrapper>
+      <main className=" min-h-screen w-full flex justify-center items-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="max-w-md mx-auto bg-white dark:bg-zinc-900 rounded-2xl shadow-xl p-8 mt-10 mb-10"
+        className="relative z-10 w-full sm:max-w-md mx-auto backdrop-blur-md bg-white dark:bg-zinc-900/80 rounded-2xl shadow-xl p-6 sm:p-8   "
       >
         <form className="space-y-6" onSubmit={handleSubmit}>
           <Heading label="Sign up to your account" />
@@ -102,14 +103,17 @@ export function Signup() {
             {loading ? "Wait..." : "Sign up"}
           </motion.button>
         </form>
-        <div className="flex items-center justify-center my-6">
-          <span className="text-zinc-400 text-sm">OR</span>
+       <div className="flex items-center justify-center my-4">
+          <div className="flex-grow border-t border-gray-600"></div>
+          <span className="text-zinc-400 text-sm mx-4">OR</span>
+          <div className="flex-grow border-b border-gray-600"></div>
         </div>
         <Googleauth />
         <div className="mt-8">
           <Slide label={"Already have an account?"} to={"/signin"} text={"Sign in"} />
         </div>
       </motion.div>
+      </main>
     </PageWrapper>
   );
 }

@@ -161,7 +161,7 @@ const useJobs = (token: string | null) => {
   return { jobs, loading, deleteJob, refetch: fetchJobs };
 };
 
-// Components
+// compnents
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-screen">
     <motion.div

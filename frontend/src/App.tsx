@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom"
- import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Signin } from "./pages/Signin.tsx"
 import { Signup } from "./pages/Signup.tsx"
 import { Home } from "./pages/Home.tsx"
@@ -24,79 +24,82 @@ import About from "./pages/About.tsx";
 import FeaturesSection from "./pages/Features.tsx";
 import Contact from "./pages/Contact.tsx";
 import { AiInsight } from "./pages/AiInsight.tsx";
-  const id = import.meta.env.VITE_GOOGLE_CLIENT_ID
+
+const id = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
 
 function App() {
 
   return <BrowserRouter>
     <GoogleOAuthProvider clientId={id}>
-    <App2 />
- </GoogleOAuthProvider>
+      <App2 />
+    </GoogleOAuthProvider>
   </BrowserRouter>
 }
 
 
 function App2() {
   const navigate = useNavigate()
-  
-const [islogin, setislogin] = useState(() => {
-  return !!localStorage.getItem("token");
-});
 
-  
+  const [islogin, setislogin] = useState(() => {
+    return !!localStorage.getItem("token");
+  });
+
+
 
   const login = () => {
     navigate("/signin")
 
   }
   function logout() {
-     localStorage.setItem("token","")
-      
+    localStorage.setItem("token", "")
+
     navigate("/")
   }
   return <div>
-<UserContext.Provider value ={{islogin,setislogin}}>
-    <div className="pt-16 bg-zinc-950">
-      <Navbar isLoggedIn={islogin} onLogin={login} onLogout={logout} />
-      <Toaster position="top-right" richColors/>
-      <Routes>
+    <UserContext.Provider value={{ islogin, setislogin }}>
+      <div className=" bg-zinc-950">
+        <Navbar isLoggedIn={islogin} onLogin={login} onLogout={logout} />
+        <Toaster position="top-right" richColors />
         
-       
-        <Route path="/" element={<Home />} />
-        
-        <Route path="/signin" element={<Signin />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/feature" element={<FeaturesSection />} />
-        <Route path="/contact" element={<Contact />} />
-        
-        
-        <Route path= "/verification" element = {<Otp/>}/>
-        <Route path="/about"  element={<About/>}/>
-        
-        <Route path= "/dashboard" element={<MainLayout/>}>
-        
-        <Route index element= {<Dashboard/>}/>
-        <Route path="seekjob" element={<Seekjobs/>}></Route>
-        <Route path="jobdetail" element={<JobDetails/>}/>
-        <Route path="postjob" element={<Postjob/>}/>
-        <Route path="update" element={<Update/>}/>
-        <Route path="ai-insights" element={<AiInsight/>}/>
-        <Route path="search" element={<Search/>}></Route>
-        <Route path= "profile/:email" element={<Profile/>}/>
-        <Route path="chat" element={<ChatWrapper/>}/>
-        <Route path ="msg" element={<MessageDashboard/>}/>
-        <Route path ="edit-job/:id" element={<EditJob/>}/>
-        <Route path= "skilltracker" element={<SkillTracker/>}/>
-        </Route>
-       
-      </Routes>
-      
-    </div>
+          <Routes>
 
-     </UserContext.Provider>
+
+            <Route path="/" element={<Home />} />
+
+            <Route path="/signin" element={<Signin />}/>
+
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/feature" element={<FeaturesSection />} />
+            <Route path="/contact" element={<Contact />} />
+
+
+            <Route path="/verification" element={<Otp />} />
+            <Route path="/about" element={<About />} />
+
+            <Route path="/dashboard" element={<MainLayout />}>
+
+              <Route index element={<Dashboard />} />
+              <Route path="seekjob" element={<Seekjobs />}></Route>
+              <Route path="jobdetail" element={<JobDetails />} />
+              <Route path="postjob" element={<Postjob />} />
+              <Route path="update" element={<Update />} />
+              <Route path="ai-insights" element={<AiInsight />} />
+              <Route path="search" element={<Search />}></Route>
+              <Route path="profile/:email" element={<Profile />} />
+              <Route path="chat" element={<ChatWrapper />} />
+              <Route path="msg" element={<MessageDashboard />} />
+              <Route path="edit-job/:id" element={<EditJob />} />
+              <Route path="skilltracker" element={<SkillTracker />} />
+            </Route>
+
+          </Routes>
+      
+      </div>
+
+    </UserContext.Provider>
   </div>
-  
+
 
 
 }

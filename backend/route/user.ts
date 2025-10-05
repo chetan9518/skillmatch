@@ -1,8 +1,7 @@
 
-////////////////////////////////////////////////////////////////
-import express, { response } from "express"
+import express from "express"
 import { z } from "zod"
-import { client } from "../DB/postgre";
+
 import { redis } from "../conection/redis";
 import { resend } from "../conection/resend";
 import jwt from "jsonwebtoken"
@@ -18,9 +17,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from "dotenv";
 import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
-import { buffer } from "stream/consumers";
-import { Variable } from "lucide-react";
-import OpenAI from "openai";
+
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -1769,7 +1766,7 @@ userRouter.get("/ai/weekly-plan", auth, async (req: meget, res: Response): Promi
     }
     catch (err) {
         console.error("AI Suggestion Error:", err);
-        return res.status(500).json({ success: false, msg: "AI generation failed" });
+        return res.status(500).json({ success: false, msg: "Suggestion failed,try again later" });
     }
 
 })
@@ -1847,10 +1844,7 @@ userRouter.get("/ai/motivation", auth, async (req: meget, res: Response): Promis
         return res.status(500).json({ success: false, msg: "AI generation failed" });
     }
 })
-
-
-
-
-
-
-
+userRouter.get("/health", (res: Response): void => {
+    
+  res.status(200).send("OK");
+});
