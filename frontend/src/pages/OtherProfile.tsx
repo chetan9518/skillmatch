@@ -24,6 +24,7 @@ export function Profile() {
 
   const [user, setUser] = useState<UserProfile | null>(null);
 
+
   useEffect(() => {
     if (!token) {
       toast.error("Session Expired");
