@@ -9,6 +9,7 @@ interface Props {
   currentUser: { email: string };
   receiverEmail: string;
   hideHeader?: boolean;
+
 }
 
 interface Message {
@@ -16,7 +17,7 @@ interface Message {
   from: string;
 }
 
-export function Chat({ currentUser, receiverEmail, hideHeader }: Props) {
+export function Chat({ currentUser, receiverEmail, hideHeader}: Props) {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState<Message[]>([]);
   const socket = useRef<WebSocket | null>(null);
@@ -87,7 +88,7 @@ export function Chat({ currentUser, receiverEmail, hideHeader }: Props) {
   return (
     <div className="h-full w-full flex flex-col bg-white/80 dark:bg-zinc-900/80 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-2xl backdrop-blur-xl">
       {!hideHeader && (
-        <div className="p-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-2xl border-b flex items-center gap-2 shadow">
+        <div className="p-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-2xl border-b flex items-center gap-2 shadow">
           <span className="font-semibold text-lg">Chat with</span>
           <span className="font-bold">{receiverEmail}</span>
         </div>

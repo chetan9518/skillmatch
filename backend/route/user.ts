@@ -701,7 +701,14 @@ userRouter.get("/fetchinfo", auth, async (req: meget, res: Response): Promise<an
 
 userRouter.get("/fetchuser", auth, async (req: meget, res: Response): Promise<any> => {
     try {
+        const email:string = req.email!
+
         const users = await prisma.users.findMany({
+            where:{
+                email: {
+                    not: email
+                }
+            },
             take: 10,
             select: {
                 firstname: true,
