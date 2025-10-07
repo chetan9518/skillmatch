@@ -24,7 +24,6 @@ export function Profile() {
 
   const [user, setUser] = useState<UserProfile | null>(null);
 
-
   useEffect(() => {
     if (!token) {
       toast.error("Session Expired");
@@ -55,6 +54,24 @@ export function Profile() {
   }, [email, navigate, token]);
 
   const skills = user?.skills?.split(",").map(skill => skill.trim()) || [];
+
+  const startChat = () => {
+    if (!user) return;
+    const receiverEmail = user.email;
+    const username = `${user.firstname}${user.lastname ? " " + user.lastname : ""}`;
+    const profilelink = user.profilelink;
+    const isDesktop = window.innerWidth >= 768;
+
+    if (isDesktop) {
+      navigate("/dashboard/msg", {
+        state: { receiverEmail, username, profilelink }
+      });
+    } else {
+      navigate(`/dashboard/chat/${encodeURIComponent(receiverEmail)}`, {
+        state: { receiverEmail, username, profilelink }
+      });
+    }
+  };
 
   return (
     <motion.div
@@ -129,7 +146,7 @@ export function Profile() {
             </a>
           )}
           <button
-            onClick={() => navigate("/dashboard/chat", { state: { receiverEmail: user?.email } })}
+            onClick={startChat}
             className="inline-flex items-center gap-2 px-5 py-2 bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-semibold shadow transition"
           >
             <MessageCircle className="w-4 h-4" /> Message

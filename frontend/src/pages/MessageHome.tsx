@@ -4,6 +4,7 @@ import { Chat } from "./Message";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircleCodeIcon } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface RecentChat {
   receiveremail: string;
@@ -17,6 +18,23 @@ export function MessageDashboard() {
   const [chats, setChats] = useState<RecentChat[] | null>(null);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<RecentChat | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const openchat = (c: RecentChat) =>{
+    if(window.innerWidth >= 768){
+      setSelected(c)
+    }
+    else{
+      navigate(`/dashboard/chat/${encodeURIComponent(c.receiveremail)}`,{
+        state: { receiverEmail: c.receiveremail,
+                 username: c.firstname + " " + c.lastname,
+                profilelink: c.profilelink
+         }
+      })
+    }
+
+  
+  }
 
   useEffect(() => {
     (async () => {
@@ -38,6 +56,35 @@ export function MessageDashboard() {
     })();
   }, []);
 
+ 
+  useEffect(() => {
+    const s = location.state as
+      | undefined
+      | { receiverEmail?: string; username?: string; profilelink?: string };
+    if (!s?.receiverEmail) return;
+    if (window.innerWidth < 768) return; 
+
+   
+    const found = chats?.find((c) => c.receiveremail === s.receiverEmail);
+    if (found) {
+      setSelected(found);
+      return;
+    }
+
+    
+    const [firstname = "", lastname = ""] = (s.username || "").split(" ");
+    const optimistic: RecentChat = {
+      receiveremail: s.receiverEmail,
+      firstname,
+      lastname,
+      profilelink: s.profilelink || "",
+      lastmessage: "",
+    };
+
+    setChats((prev) => (prev ? [optimistic, ...prev] : [optimistic]));
+    setSelected(optimistic);
+  }, [location.state, chats]);
+
   const filtered = chats?.filter((c) =>
     `${c.firstname} ${c.lastname}`.toLowerCase().includes(search.toLowerCase())
   );
@@ -45,7 +92,7 @@ export function MessageDashboard() {
   return (
     <div className="h-screen overflow-hidden flex flex-col md:flex-row bg-white dark:bg-zinc-900 rounded-t-2xl">
       {/* Sidebar */}
-      <aside className="overflow-hidden flex flex-col bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-zinc-700 rounded-l-2xl shadow-lg shrink-0 basis-full md:basis-[30%] lg:basis-[28%] min-w-[280px] md:min-w-[320px]">
+      <aside className="overflow-hidden flex flex-col bg-white dark:bg-zinc-800/80 border-r border-gray-200 dark:border-zinc-700 rounded-l-2xl shadow-lg ring-1 ring-black/5 dark:ring-white/5 shrink-0 basis-full md:basis-[30%] lg:basis-[28%] min-w-[280px] md:min-w-[320px]">
         <div className="sticky top-0 z-10 h-14 px-4 flex items-center justify-between bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-tl-2xl border-b">
           <h2 className="text-lg font-bold flex items-center gap-2">
             <MessageCircleCodeIcon className="w-5 h-5" /> Messages
@@ -60,7 +107,7 @@ export function MessageDashboard() {
             className="w-full px-3 py-2 text-sm bg-gray-100 dark:bg-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <ul className="flex-1 overflow-y-auto space-y-1 p-2 divide-y divide-gray-100 dark:divide-zinc-700 bg-white dark:bg-zinc-900">
+        <ul className="flex-1 overflow-y-auto space-y-1 p-2 divide-y divide-gray-100 dark:divide-zinc-700 bg-white dark:bg-transparent">
           {!chats ? (
             <p className="text-center text-gray-500 mt-4">Loading…</p>
           ) : filtered && filtered.length === 0 ? (
@@ -70,15 +117,15 @@ export function MessageDashboard() {
               {filtered?.map((c) => (
                 <motion.li
                   key={c.receiveremail}
-                  onClick={() => setSelected(c)}
+                  onClick={() => openchat(c)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 ${
                     selected?.receiveremail === c.receiveremail
-                      ? "bg-gray-100 dark:bg-zinc-800"
-                      : "hover:bg-gray-50 dark:hover:bg-zinc-800/80"
+                      ? "bg-gray-100 dark:bg-zinc-700"
+                      : "hover:bg-gray-50 dark:hover:bg-zinc-800"
                   }`}
                   aria-selected={selected?.receiveremail === c.receiveremail}
                 >
@@ -102,7 +149,7 @@ export function MessageDashboard() {
         </ul>
       </aside>
       {/* Chat Area */}
-      <section className="flex-1 overflow-hidden flex flex-col bg-white dark:bg-zinc-900 rounded-r-2xl shadow-lg basis-full md:basis-[70%] lg:basis-[72%]">
+      <section className="hidden  md:flex md:flex-1 overflow-hidden flex flex-col bg-white dark:bg-zinc-800/80 rounded-r-2xl shadow-lg ring-1 ring-black/5 dark:ring-white/5 basis-full md:basis-[70%] lg:basis-[72%]">
       
         <motion.div
           key={selected?.receiveremail || "empty"}

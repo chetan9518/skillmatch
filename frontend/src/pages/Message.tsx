@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send } from "lucide-react";
+import { Send ,ArrowLeft} from "lucide-react";
 
 interface Props {
   currentUser: { email: string };
@@ -89,6 +89,7 @@ export function Chat({ currentUser, receiverEmail,username,profilelink}: Props) 
     <div className="h-full w-full pb-14 flex flex-col bg-white dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-lg">
 
         <div className="sticky top-0 z-10 h-14 w-full px-4 bg-gradient-to-l from-blue-600 to-purple-600 text-white  border-b flex items-center gap-3">
+          <button onClick={() => navigate("/dashboard/msg")} className="text-white"><ArrowLeft className="w-4 h-4" /></button>
         <img
             src={profilelink || "https://www.gravatar.com/avatar/?d=mp"}
             alt={username}
@@ -100,7 +101,7 @@ export function Chat({ currentUser, receiverEmail,username,profilelink}: Props) 
 
       <div
         ref={messageBoxRef}
-        className={`flex-1 pt-14 pb-16 p-4 space-y-1 overflow-y-auto bg-gray-100 dark:bg-zinc-900 rounded-b-2xl`}
+        className={`flex-1 pt-14 pb-16 p-4 space-y-1 overflow-y-auto bg-gray-50/70 dark:bg-zinc-800/70 rounded-b-2xl`}
         tabIndex={0}
         aria-label="Message history"
       >

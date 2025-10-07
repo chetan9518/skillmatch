@@ -87,7 +87,7 @@ function App2() {
               <Route path="ai-insights" element={<AiInsight />} />
               <Route path="search" element={<Search />}></Route>
               <Route path="profile/:email" element={<Profile />} />
-              <Route path="chat" element={<ChatWrapper />} />
+              <Route path="chat/:email" element={<ChatWrapper />} />
               <Route path="msg" element={<MessageDashboard />} />
               <Route path="edit-job/:id" element={<EditJob />} />
               <Route path="skilltracker" element={<SkillTracker />} />
