@@ -8,8 +8,8 @@ import { Send } from "lucide-react";
 interface Props {
   currentUser: { email: string };
   receiverEmail: string;
-  hideHeader?: boolean;
-
+  username?: string;
+  profilelink?: string;
 }
 
 interface Message {
@@ -17,7 +17,7 @@ interface Message {
   from: string;
 }
 
-export function Chat({ currentUser, receiverEmail, hideHeader}: Props) {
+export function Chat({ currentUser, receiverEmail,username,profilelink}: Props) {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState<Message[]>([]);
   const socket = useRef<WebSocket | null>(null);
@@ -86,17 +86,21 @@ export function Chat({ currentUser, receiverEmail, hideHeader}: Props) {
   };
 
   return (
-    <div className="h-full w-full flex flex-col bg-white/80 dark:bg-zinc-900/80 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-2xl backdrop-blur-xl">
-      {!hideHeader && (
-        <div className="p-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-2xl border-b flex items-center gap-2 shadow">
-          <span className="font-semibold text-lg">Chat with</span>
-          <span className="font-bold">{receiverEmail}</span>
+    <div className="h-full w-full pb-14 flex flex-col bg-white dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-lg">
+
+        <div className="sticky top-0 z-10 h-14 w-full px-4 bg-gradient-to-l from-blue-600 to-purple-600 text-white  border-b flex items-center gap-3">
+        <img
+            src={profilelink || "https://www.gravatar.com/avatar/?d=mp"}
+            alt={username}
+            className="w-8 h-8 rounded-full object-cover border border-gray-200 dark:border-zinc-700"
+          />
+          <span className="font-semibold text-sm md:text-base">{username}</span>
+
         </div>
-      )}
 
       <div
         ref={messageBoxRef}
-        className={`flex-1 p-4 space-y-2 overflow-y-auto bg-gray-50 dark:bg-zinc-800 ${hideHeader ? "rounded-2xl" : "rounded-b-2xl"}`}
+        className={`flex-1 pt-14 pb-16 p-4 space-y-1 overflow-y-auto bg-gray-100 dark:bg-zinc-900 rounded-b-2xl`}
         tabIndex={0}
         aria-label="Message history"
       >
@@ -127,13 +131,13 @@ export function Chat({ currentUser, receiverEmail, hideHeader}: Props) {
         </AnimatePresence>
       </div>
 
-      <div className="p-4 flex items-center gap-2 border-t bg-white/80 dark:bg-zinc-900/80 rounded-b-2xl">
+      <div className="sticky bottom-0 z-10 p-3 flex items-center gap-2 border-t bg-white dark:bg-zinc-900 rounded-b-2xl">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           placeholder="Type a message…"
-          className="flex-1 px-4 py-2 rounded-full border shadow-sm text-sm bg-gray-100 dark:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 px-3 py-2 rounded-full border shadow-sm text-sm bg-gray-100 dark:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           aria-label="Type a message"
         />
         <motion.button
