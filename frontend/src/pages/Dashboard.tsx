@@ -56,6 +56,7 @@ const useAuth = () => {
 
 const useUserProfile = (token: string | null) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profileUrl, setProfileUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -76,6 +77,9 @@ const useUserProfile = (token: string | null) => {
       if (response.data.success) {
         setProfile(response.data.details);
         
+        if (response.data.details.profileUrl) {
+          setProfileUrl(response.data.details.profileUrl);
+        }
       }
     } catch (error) {
       console.error("Failed to fetch user data", error);
@@ -90,7 +94,7 @@ const useUserProfile = (token: string | null) => {
     fetchUserData();
   }, [fetchUserData]);
 
-  return { profile, loading, error, refetch: fetchUserData };
+  return { profile, profileUrl, loading, error, refetch: fetchUserData };
 };
 
 const useJobs = (token: string | null) => {
@@ -454,7 +458,7 @@ const QuickActionsCard = ({ navigate }: { navigate: (path: string) => void }) =>
 export default function Dashboard() {
   const navigate = useNavigate();
   const token = useAuth();
-  const { profile, loading: profileLoading, error } = useUserProfile(token);
+  const { profile, profileUrl, loading: profileLoading, error } = useUserProfile(token);
   const { jobs, deleteJob } = useJobs(token);
 
   const currentDate = useMemo(() => 
@@ -524,7 +528,7 @@ export default function Dashboard() {
       <div className="max-w-6xl mx-auto space-y-6">
         <WelcomeCard 
           profile={profile} 
-          profileUrl={profile?.profilelink|| "/images/default-avatar.png"} 
+          profileUrl={profileUrl} 
           currentDate={currentDate} 
         />
         

@@ -17,13 +17,14 @@ useEffect(() => {
   const fetchUser = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("/fetchinfo", {
+      const response = await axios.get(`${API}/user/fetchinfo`, {
         headers: {
           Authorization: `Bearer ${token}`,
-   
         },
       });
-      setUser(response.data);
+      if (response.data.success) {
+        setUser(response.data.details);
+      }
     } catch (error) {
       console.error("Error fetching user data:", error);
       setUser(null);

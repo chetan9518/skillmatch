@@ -29,7 +29,7 @@ export  function websocket(server:import("http").Server){
       }
       
     }
-    wss.on("connection",(ws,req)=>{
+    wss.on("connection",(ws,req)=>{ 
         const token = new URLSearchParams(req.url?.split("?")[1]).get("token");
         const user= verifytoken(token)
         if (!token) {

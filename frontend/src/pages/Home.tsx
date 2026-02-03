@@ -1,11 +1,18 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Users, Briefcase, Code } from "lucide-react";
+import { useEffect } from "react";
 
 export function Home() {
   const navigate = useNavigate();
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    if(token){
+      navigate("/dashboard")
+    }
+  },[]);
 
-  // Quick stats for subtle social proof
+  
   const stats = [
     { icon: Users, value: "10+", label: "Developers Joined" },
     { icon: Briefcase, value: "00+", label: "Jobs Posted" },
