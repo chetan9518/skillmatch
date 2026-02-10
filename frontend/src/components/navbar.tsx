@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 type NavbarProps = {
   isLoggedIn: boolean;
@@ -59,7 +59,7 @@ function NavLinks({ items, onNavigate, activePath, vertical = false }: { items: 
 }
 
 // AuthButtons subcomponent
-function AuthButtons({ isLoggedIn, onLogin, onLogout, onSignup, onDashboard }: { isLoggedIn: boolean; onLogin: () => void; onLogout: () => void; onSignup: () => void; onDashboard: () => void }) {
+function AuthButtons({ isLoggedIn, onLogin, onSignup, onDashboard }: { isLoggedIn: boolean; onLogin: () => void; onLogout: () => void; onSignup: () => void; onDashboard: () => void }) {
   return isLoggedIn ? (
     <div className="flex items-center space-x-2 sm:space-x-4">
       <motion.button
@@ -69,16 +69,6 @@ function AuthButtons({ isLoggedIn, onLogin, onLogout, onSignup, onDashboard }: {
         className="flex items-center space-x-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all duration-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <span>Dashboard</span>
-      </motion.button>
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={onLogout}
-        className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-400"
-        title="Sign Out"
-        aria-label="Sign Out"
-      >
-        <LogOut className="w-5 h-5" />
       </motion.button>
     </div>
   ) : (

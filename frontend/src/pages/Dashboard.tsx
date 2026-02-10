@@ -76,9 +76,10 @@ const useUserProfile = (token: string | null) => {
 
       if (response.data.success) {
         setProfile(response.data.details);
-        
-        if (response.data.details.profileUrl) {
-          setProfileUrl(response.data.details.profileUrl);
+         console.log(response.data.details.profilelink);
+        if (response.data.details.profilelink) {
+         
+          setProfileUrl(response.data.details.profilelink);
         }
       }
     } catch (error) {
