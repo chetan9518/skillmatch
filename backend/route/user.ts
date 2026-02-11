@@ -1813,7 +1813,7 @@ userRouter.get("/ai/weekly-plan", auth, async (req: meget, res: Response): Promi
                          `;
 
         const result = await ai.models.generateContent({
-            model: "gemini-1.5-pro",
+            model: "models/gemini-2.5-flash",
             contents: prompt,
 
         })
@@ -1915,7 +1915,7 @@ userRouter.get("/ai/motivation", auth, async (req: meget, res: Response): Promis
                          `;
 
         const result = await ai.models.generateContent({
-            model: "gemini-1.5-pro",
+            model: "models/gemini-2.5-flash",
             contents: prompt,
 
         })
