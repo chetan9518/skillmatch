@@ -66,6 +66,8 @@ export function Search() {
       return;
     }
     setsearchuser(result.data.users);
+    console.log("Search results:", result.data.users);
+    console.log("First user profileurl:", result.data.users[0]?.profileurl);
   }
 
   return (
@@ -130,7 +132,6 @@ type user = {
   lastname: string;
   email: string;
   skills?: string;
-  profilelink?: string;
   profileurl: string | null;
 };
 

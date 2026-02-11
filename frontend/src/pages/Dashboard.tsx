@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Types
+
 interface UserProfile {
   firstname: string;
   lastname?: string;
@@ -39,7 +39,7 @@ interface DashboardStats {
   skillsCount: number;
 }
 
-// Custom hooks
+
 const useAuth = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");

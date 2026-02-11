@@ -789,9 +789,25 @@ userRouter.get("/searchuser", auth, async (req: meget, res: Response): Promise<a
                 msg: "User not found"
             })
         }
+        const updated = await Promise.all(users.map(async (user: any) => {
+            const profilekey = user.profilelink
+
+            if (profilekey) {
+                const cmd = new GetObjectCommand({
+                    Bucket: process.env.AWS_BUCKET_NAME,
+                    Key: profilekey
+                })
+                const profileurl = await getSignedUrl(s3, cmd, { expiresIn: 86400 })
+                return { ...user, profileurl: profileurl }
+
+            }
+            else return { ...user, profileurl: null }
+
+        }))
+        console.log("Updated users array:", JSON.stringify(updated, null, 2));
         return res.status(200).json({
             success: true,
-            users: users
+            users: updated
         })
     }
     catch (e) {
@@ -1799,9 +1815,27 @@ userRouter.get("/ai/weekly-plan", auth, async (req: meget, res: Response): Promi
 
 
     }
-    catch (err) {
+    catch (err: any) {
         console.error("AI Suggestion Error:", err);
-        return res.status(500).json({ success: false, msg: "Suggestion failed,try again later" });
+        
+        // Handle specific AI API errors
+        if (err.status === 400) {
+            return res.status(400).json({ success: false, msg: "Invalid request format for AI generation" });
+        } else if (err.status === 401) {
+            return res.status(401).json({ success: false, msg: "AI API authentication failed" });
+        } else if (err.status === 403) {
+            return res.status(403).json({ success: false, msg: "AI API access forbidden" });
+        } else if (err.status === 429) {
+            return res.status(429).json({ success: false, msg: "AI service rate limit exceeded. Please try again later." });
+        } else if (err.status === 500) {
+            return res.status(502).json({ success: false, msg: "AI service temporarily unavailable" });
+        } else if (err.message?.includes("quota")) {
+            return res.status(429).json({ success: false, msg: "AI quota exceeded. Please check billing." });
+        } else if (err.message?.includes("network") || err.code === 'ENOTFOUND') {
+            return res.status(503).json({ success: false, msg: "Unable to connect to AI service" });
+        } else {
+            return res.status(500).json({ success: false, msg: "AI generation failed. Please try again." });
+        }
     }
 
 })
@@ -1874,9 +1908,27 @@ userRouter.get("/ai/motivation", auth, async (req: meget, res: Response): Promis
 
 
     }
-    catch (err) {
-        console.error("AI Suggestion Error:", err);
-        return res.status(500).json({ success: false, msg: "AI generation failed" });
+    catch (err: any) {
+        console.error("AI Motivation Error:", err);
+        
+        // Handle specific AI API errors
+        if (err.status === 400) {
+            return res.status(400).json({ success: false, msg: "Invalid request format for AI generation" });
+        } else if (err.status === 401) {
+            return res.status(401).json({ success: false, msg: "AI API authentication failed" });
+        } else if (err.status === 403) {
+            return res.status(403).json({ success: false, msg: "AI API access forbidden" });
+        } else if (err.status === 429) {
+            return res.status(429).json({ success: false, msg: "AI service rate limit exceeded. Please try again later." });
+        } else if (err.status === 500) {
+            return res.status(502).json({ success: false, msg: "AI service temporarily unavailable" });
+        } else if (err.message?.includes("quota")) {
+            return res.status(429).json({ success: false, msg: "AI quota exceeded. Please check billing." });
+        } else if (err.message?.includes("network") || err.code === 'ENOTFOUND') {
+            return res.status(503).json({ success: false, msg: "Unable to connect to AI service" });
+        } else {
+            return res.status(500).json({ success: false, msg: "AI generation failed. Please try again." });
+        }
     }
 })
 userRouter.get("/health", (req: Request, res: Response): void => {

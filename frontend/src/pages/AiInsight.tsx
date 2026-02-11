@@ -1,131 +1,230 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const gradientBg = "bg-gradient-to-r from-indigo-500 via-sky-400 to-purple-400";
-const glassCard = "backdrop-blur-md bg-white/70 dark:bg-zinc-900/70 border border-white/30 shadow-xl rounded-2xl p-6 transition-transform hover:scale-[1.025]";
+import { AlertTriangle, RefreshCw, Share2, Brain, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+
+const gradientBg = "bg-gradient-to-br from-indigo-500 via-sky-400 to-purple-400";
+const glassCard = "backdrop-blur-md bg-white/70 dark:bg-zinc-900/70 border border-white/30 shadow-xl rounded-2xl p-6 transition-all duration-300 hover:shadow-2xl";
 const API = import.meta.env.VITE_API_URL;
+
 export const AiInsight: React.FC = () => {
   const [weeklyPlan, setWeeklyPlan] = useState<string>("");
   const [motivation, setMotivation] = useState<string>("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [user, setUser] = useState<{ firstname?: string } | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   // Fetch user info for personalization
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError("Please log in to access AI insights");
+          return;
+        }
 
-
-useEffect(() => {
-  const fetchUser = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${API}/user/fetchinfo`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.data.success) {
-        setUser(response.data.details);
+        const response = await axios.get(`${API}/user/fetchinfo`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.data.success) {
+          setUser(response.data.details);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setError("Failed to load user profile");
+        setUser(null);
       }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      setUser(null);
-    }
-  };
+    };
 
-  fetchUser();
-}, []);
+    fetchUser();
+  }, []);
 
   // Fetch both insights
-  const fetchInsights = async () => {
-    setLoading(true);
+  const fetchInsights = async (isRefresh = false) => {
+    if (isRefresh) setIsRefreshing(true);
+    else setLoading(true);
     setError("");
+
     try {
-      const data1 = await axios.get(`${API}/user/ai/weekly-plan`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Authentication required");
+      }
+
+      // Fetch weekly plan
+      const weeklyPlanResponse = await axios.get(`${API}/user/ai/weekly-plan`, {
+        headers: { Authorization: `Bearer ${token}` }
       });
       
-      if (!data1.data.success) throw new Error(data1.data.msg || "Failed to fetch weekly plan");
-      setWeeklyPlan(data1.data.plan);
+      if (!weeklyPlanResponse.data.success) {
+        throw new Error(weeklyPlanResponse.data.msg || "Failed to fetch weekly plan");
+      }
+      setWeeklyPlan(weeklyPlanResponse.data.plan);
 
-      const data2 = await axios.get(`${API}/user/ai/motivation`, {
-
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      // Fetch motivation
+      const motivationResponse = await axios.get(`${API}/user/ai/motivation`, {
+        headers: { Authorization: `Bearer ${token}` }
       });
       
-      if (!data2.data.success) throw new Error(data2.data.msg || "Failed to fetch motivation");
-      setMotivation(data2.data.plan);
+      if (!motivationResponse.data.success) {
+        throw new Error(motivationResponse.data.msg || "Failed to fetch motivation");
+      }
+      setMotivation(motivationResponse.data.plan);
 
     } catch (err: any) {
-      setError(err.message || "Something went wrong");
+      console.error("AI Insights Error:", err);
+      
+      // Handle specific error cases
+      if (err.response?.status === 429) {
+        setError("🚀 AI service is currently experiencing high demand. Please try again in a few minutes.");
+      } else if (err.response?.status === 401) {
+        setError("🔐 Session expired. Please log in again.");
+      } else if (err.response?.status === 403) {
+        setError("⚠️ AI service temporarily unavailable. Our team is working on it.");
+      } else if (err.message?.includes("Network Error")) {
+        setError("🌐 Network connection issue. Please check your internet and try again.");
+      } else {
+        setError(err.message || "Something went wrong while fetching AI insights");
+      }
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
     fetchInsights();
-    // eslint-disable-next-line
   }, []);
 
-  // Share to clipboard
-  const handleShare = () => {
-    navigator.clipboard.writeText(
-      `My AI Weekly Plan:\n${weeklyPlan}\n\nMotivation:\n${motivation}`
-    );
-    alert("Insights copied! Share with your friends 🚀");
+  // Share to clipboard with better feedback
+  const handleShare = async () => {
+    try {
+      const content = `🤖 My AI-Powered Learning Plan\n\n📅 Weekly DSA Plan:\n${weeklyPlan}\n\n💡 Daily Motivation:\n${motivation}\n\n🚀 Generated by SkillMatch AI`;
+      
+      await navigator.clipboard.writeText(content);
+      toast.success("✅ Insights copied to clipboard! Share your learning journey 🚀");
+    } catch (error) {
+      toast.error("❌ Failed to copy to clipboard");
+      console.error("Clipboard error:", error);
+    }
   };
 
   return (
-    <div className={`max-w-4xl mx-auto py-10 px-4 ${gradientBg} rounded-3xl shadow-2xl`}>
-      {/* Hero Section */}
-      <div className="text-center mb-10">
-        <h1 className="text-4xl font-extrabold text-white drop-shadow-lg mb-2 animate-fade-in">
-          AI Insights
-        </h1>
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 animate-fade-in">
-          {user?.firstname ? `Welcome back, ${user.firstname}!` : "Welcome to your Growth Hub!"}
-        </h2>
-        <p className="text-lg text-white/80 mb-4 animate-fade-in-slow">
-          Unlock your personalized DSA journey and daily motivation powered by AI.
-        </p>
-        <div className="flex justify-center gap-4">
+    <div className={`min-h-screen ${gradientBg} p-4 md:p-8`}>
+      <div className="max-w-6xl mx-auto">
+        {/* Hero Section */}
+        <div className="text-center mb-10">
+          <div className="flex justify-center items-center gap-3 mb-4">
+            <Brain className="w-10 h-10 text-white animate-pulse" />
+            <h1 className="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg">
+              AI Growth Hub
+            </h1>
+          </div>
+          <h2 className="text-xl md:text-2xl font-semibold text-white/90 mb-3">
+            {user?.firstname ? `Welcome back, ${user.firstname}! 🎯` : "Welcome to your Personalized Learning Hub! 🚀"}
+          </h2>
+          <p className="text-base md:text-lg text-white/80 max-w-2xl mx-auto">
+            Unlock your personalized DSA journey with AI-powered weekly plans and daily motivation
+          </p>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex justify-center gap-4 mb-8">
           <button
-            onClick={fetchInsights}
-            className="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow transition"
+            onClick={() => fetchInsights(true)}
+            disabled={loading || isRefreshing}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white/20 hover:bg-white/30 text-white font-semibold shadow-lg backdrop-blur-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border border-white/30"
           >
-            Refresh Insights
+            <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {isRefreshing ? 'Refreshing...' : 'Refresh Insights'}
           </button>
           <button
             onClick={handleShare}
-            className="px-5 py-2 rounded-lg bg-white/80 hover:bg-white/90 text-indigo-700 font-semibold shadow transition"
+            disabled={!weeklyPlan && !motivation}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white hover:bg-gray-50 text-indigo-600 font-semibold shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Share
+            <Share2 className="w-4 h-4" />
+            Share Journey
           </button>
         </div>
+
+        {/* Content */}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="flex items-center gap-3 text-white text-xl">
+              <Sparkles className="w-6 h-6 animate-pulse" />
+              <span>Generating your personalized AI insights...</span>
+            </div>
+            <p className="text-white/70 mt-2">This usually takes a few seconds ⏱️</p>
+          </div>
+        ) : error ? (
+          <div className={`${glassCard} max-w-2xl mx-auto`}>
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-6 h-6 text-red-500 mt-1 flex-shrink-0" />
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
+                  Unable to Load AI Insights
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{error}</p>
+                <button
+                  onClick={() => fetchInsights(true)}
+                  className="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
+                >
+                  Try Again
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            {/* Weekly Plan Card */}
+            <div className={`${glassCard} flex-1 relative overflow-hidden group`}>
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-bl-full"></div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-lg">
+                  <span className="text-2xl">�</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+                    Weekly DSA Plan
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Personalized for your progress</p>
+                </div>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 max-h-96 overflow-y-auto">
+                <pre className="whitespace-pre-wrap font-sans text-sm text-gray-700 dark:text-gray-200 leading-relaxed">
+                  {weeklyPlan || "No plan available"}
+                </pre>
+              </div>
+            </div>
+
+            {/* Motivational Message Card */}
+            <div className={`${glassCard} flex-1 relative overflow-hidden group bg-gradient-to-br from-yellow-50/90 to-orange-50/90 dark:from-yellow-900/30 dark:to-orange-900/30`}>
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-bl-full"></div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-yellow-100 dark:bg-yellow-900/50 rounded-lg">
+                  <span className="text-2xl">💡</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+                    Daily Motivation
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">AI-powered encouragement</p>
+                </div>
+              </div>
+              <blockquote className="border-l-4 border-yellow-400 dark:border-yellow-500 pl-4 py-2">
+                <p className="text-gray-700 dark:text-gray-200 text-lg leading-relaxed italic">
+                  {motivation || "No motivation available"}
+                </p>
+              </blockquote>
+            </div>
+          </div>
+        )}
       </div>
-      {/* Insights */}
-      {loading ? (
-        <div className="text-xl text-white text-center my-16 animate-pulse">Loading your AI insights...</div>
-      ) : error ? (
-        <div className="text-lg text-red-200 text-center my-8">{error}</div>
-      ) : (
-        <div className="flex flex-col md:flex-row gap-8 mt-4">
-          {/* Weekly Plan Card */}
-          <div className={`${glassCard} flex-1`}>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-2xl">🗓️</span>
-              <h3 className="text-xl font-bold text-indigo-700 dark:text-indigo-300">Weekly DSA Plan</h3>
-            </div>
-            <pre className="whitespace-pre-wrap font-sans text-gray-800 dark:text-gray-100 text-base mt-2">{weeklyPlan}</pre>
-          </div>
-          {/* Motivational Message Card */}
-          <div className={`${glassCard} flex-1 bg-gradient-to-br from-yellow-100/80 to-pink-100/80 dark:from-yellow-900/60 dark:to-pink-900/60`}>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-2xl">💡</span>
-              <h3 className="text-xl font-bold text-pink-700 dark:text-pink-200">Motivation</h3>
-            </div>
-            <blockquote className="italic text-lg text-gray-700 dark:text-gray-100 border-l-4 border-pink-400 pl-4 mt-2">{motivation}</blockquote>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
