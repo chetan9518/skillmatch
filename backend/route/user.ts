@@ -17,6 +17,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from "dotenv";
 import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
+import { GoogleGenAI } from "@google/genai";
 
 import { PrismaClient } from "@prisma/client";
 
@@ -27,6 +28,13 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 })
+
+// Initialize Google AI with error handling
+const apiKey = process.env.GEMINI_API_KEY;
+if (!apiKey) {
+    console.error("GEMINI_API_KEY is not set in environment variables");
+}
+const ai = apiKey ? new GoogleGenAI({ apiKey: apiKey }) : null;
 
 
 const storage = multer.memoryStorage();
@@ -1734,16 +1742,17 @@ userRouter.get("/getSolvedProblems", auth, async (req: meget, res: Response): Pr
         });
     }
 });
-import { GoogleGenAI } from "@google/genai";
-
-const apiKey = process.env.GEMINI_API_KEY
-const ai = new GoogleGenAI({ apiKey: apiKey })
-
-
-
-
 userRouter.get("/ai/weekly-plan", auth, async (req: meget, res: Response): Promise<any> => {
+    console.log("inside weekly plan")
     try {
+       
+        if (!ai) {
+            return res.status(503).json({ 
+                success: false, 
+                msg: "AI service not configured. Please check API key configuration." 
+            });
+        }
+
         const email: string | null = req.email!;
 
         const user = await prisma.users.findUnique({
@@ -1804,7 +1813,7 @@ userRouter.get("/ai/weekly-plan", auth, async (req: meget, res: Response): Promi
                          `;
 
         const result = await ai.models.generateContent({
-            model: "gemini-1.5-flash",
+            model: "gemini-1.5-pro",
             contents: prompt,
 
         })
@@ -1818,7 +1827,7 @@ userRouter.get("/ai/weekly-plan", auth, async (req: meget, res: Response): Promi
     catch (err: any) {
         console.error("AI Suggestion Error:", err);
         
-        // Handle specific AI API errors
+      
         if (err.status === 400) {
             return res.status(400).json({ success: false, msg: "Invalid request format for AI generation" });
         } else if (err.status === 401) {
@@ -1840,7 +1849,16 @@ userRouter.get("/ai/weekly-plan", auth, async (req: meget, res: Response): Promi
 
 })
 userRouter.get("/ai/motivation", auth, async (req: meget, res: Response): Promise<any> => {
+     console.log("inside motivation")
     try {
+        // Check if AI client is available
+        if (!ai) {
+            return res.status(503).json({ 
+                success: false, 
+                msg: "AI service not configured. Please check API key configuration." 
+            });
+        }
+
         const email: string | null = req.email!;
 
         const user = await prisma.users.findUnique({
@@ -1897,7 +1915,7 @@ userRouter.get("/ai/motivation", auth, async (req: meget, res: Response): Promis
                          `;
 
         const result = await ai.models.generateContent({
-            model: "gemini-1.5-flash",
+            model: "gemini-1.5-pro",
             contents: prompt,
 
         })
@@ -1911,7 +1929,7 @@ userRouter.get("/ai/motivation", auth, async (req: meget, res: Response): Promis
     catch (err: any) {
         console.error("AI Motivation Error:", err);
         
-        // Handle specific AI API errors
+       
         if (err.status === 400) {
             return res.status(400).json({ success: false, msg: "Invalid request format for AI generation" });
         } else if (err.status === 401) {
